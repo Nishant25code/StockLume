@@ -1,0 +1,27 @@
+{
+  "name": "stocklume",
+  "version": "0.1.0",
+  "private": true,
+  "description": "StockLume — smart inventory and replenishment platform for retailers and wholesalers",
+  "workspaces": [
+    "apps/web",
+    "apps/api"
+  ],
+  "scripts": {
+    "dev": "npm-run-all --parallel dev:api dev:web",
+    "dev:web": "npm run dev --workspace @stocklume/web",
+    "dev:api": "npm run dev --workspace @stocklume/api",
+    "build": "npm run build --workspace @stocklume/web",
+    "build:web": "npm run build --workspace @stocklume/web",
+    "start:api": "npm run start --workspace @stocklume/api",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspace @stocklume/web",
+    "check": "npm run lint && npm run build:web"
+  },
+  "devDependencies": {
+    "npm-run-all2": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}

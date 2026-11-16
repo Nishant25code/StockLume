@@ -16,6 +16,9 @@
    | `SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_URL` | Project Settings → API → Project URL |
    | `SUPABASE_ANON_KEY` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Project Settings → API → `anon` public key |
    | `DATABASE_URL` | Connect → **Transaction pooler** (port `6543`) URI, with your DB password |
+   | `DATABASE_CA_CERT` | Project Settings → Database → **SSL Configuration → Download certificate** — paste the file's contents |
+
+   **Why the CA certificate?** It lets the API check that it is really talking to Supabase (TLS certificate verification), not just that the connection is encrypted. Without it, someone between Vercel and Supabase could impersonate the database. In production the API **refuses to start** without `DATABASE_CA_CERT`. (Escape hatch, not recommended: `DATABASE_SSL_ALLOW_UNVERIFIED=true`.) In local development it only prints a warning.
 
    Share these with the team privately (not in Git, not in a public chat).
 
@@ -31,7 +34,7 @@ Import the GitHub repository into Vercel **twice**.
 | Framework Preset | Express (auto-detected from `src/app.js`) — "Other" also works |
 | Install Command | default (`npm install` — Vercel uses the root workspace lockfile) |
 | Build Command | none |
-| Environment variables | `DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `CORS_ORIGINS=https://<web-project>.vercel.app` |
+| Environment variables | `DATABASE_URL`, `DATABASE_CA_CERT`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `CORS_ORIGINS=https://<web-project>.vercel.app` |
 
 `src/app.js` default-exports the Express app, which Vercel runs as a serverless function. `server.js` skips `listen()` when the `VERCEL` env var is present. In production, missing env variables make the function fail fast with a clear message in the Vercel logs.
 

@@ -30,6 +30,11 @@ export const env = Object.freeze({
     .map((origin) => origin.trim())
     .filter(Boolean),
   databaseUrl: process.env.DATABASE_URL ?? '',
+  // Supabase's root CA (PEM). Lets us verify the database server's TLS certificate.
+  // Escaped "\n" sequences are turned back into real newlines for single-line env values.
+  databaseCaCert: (process.env.DATABASE_CA_CERT ?? '').replace(/\\n/g, '\n').trim(),
+  // Explicit, documented escape hatch — encrypted but NOT verified. Avoid in production.
+  databaseSslAllowUnverified: process.env.DATABASE_SSL_ALLOW_UNVERIFIED === 'true',
   supabaseUrl: process.env.SUPABASE_URL ?? '',
   supabaseAnonKey: process.env.SUPABASE_ANON_KEY ?? '',
   missing,

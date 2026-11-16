@@ -30,6 +30,35 @@ function isLocalDatabase(url) {
   return /@(localhost|127\.0\.0\.1)(:|\/)/.test(url);
 }
 
+/**
+ * TLS settings for the database connection.
+ * - Local Postgres: no TLS.
+ * - DATABASE_CA_CERT set: encrypt AND verify the server certificate (secure default).
+ * - Otherwise: only allowed in development, or when DATABASE_SSL_ALLOW_UNVERIFIED=true
+ *   is set on purpose. Encrypted but unverified connections can be intercepted
+ *   by a man-in-the-middle, so production refuses them by default.
+ */
+export function buildSslConfig() {
+  if (isLocalDatabase(env.databaseUrl)) return false;
+
+  if (env.databaseCaCert) {
+    return { ca: env.databaseCaCert, rejectUnauthorized: true };
+  }
+
+  if (env.isProduction && !env.databaseSslAllowUnverified) {
+    throw new Error(
+      'DATABASE_CA_CERT is required in production so the database TLS certificate can be verified. ' +
+        'Download it from Supabase → Project Settings → Database → SSL Configuration. See docs/DEPLOYMENT.md',
+    );
+  }
+
+  console.warn(
+    '[db] DATABASE_CA_CERT not set — the connection is encrypted but the server certificate is NOT verified. ' +
+      'Set DATABASE_CA_CERT to enable verification.',
+  );
+  return { rejectUnauthorized: false };
+}
+
 export function getPool() {
   if (!env.databaseUrl) {
     throw ApiError.serviceNotConfigured('Database');
@@ -37,8 +66,7 @@ export function getPool() {
   if (!pool) {
     pool = new Pool({
       connectionString: env.databaseUrl,
-      // Supabase requires SSL; a local Postgres usually does not.
-      ssl: isLocalDatabase(env.databaseUrl) ? false : { rejectUnauthorized: false },
+      ssl: buildSslConfig(),
       // Keep this small: serverless functions open many short-lived pools.
       max: 5,
       idleTimeoutMillis: 10_000,

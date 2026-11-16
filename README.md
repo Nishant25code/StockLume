@@ -120,6 +120,7 @@ Until login is implemented, the login page has **Retailer UI / Wholesaler UI** p
 | Variable | App | Required | Description |
 |---|---|---|---|
 | `DATABASE_URL` | api | ✅ | Supabase Postgres URI (Transaction pooler, port 6543) |
+| `DATABASE_CA_CERT` | api | ✅ in production | Supabase root CA (PEM) — enables TLS certificate verification ([why](docs/DEPLOYMENT.md#1-supabase-database--auth)) |
 | `SUPABASE_URL` | api | ✅ | Supabase project URL |
 | `SUPABASE_ANON_KEY` | api | ✅ | Supabase anon key (used to verify user tokens) |
 | `CORS_ORIGINS` | api | | Comma-separated allowed origins (default `http://localhost:3000`) |

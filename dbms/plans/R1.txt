@@ -1,0 +1,17 @@
+=== R1 run 1 ===
+-- EXECUTE s
+Result  (cost=0.00..0.01 rows=1 width=12) (actual time=0.001..0.002 rows=1 loops=1)
+Planning Time: 0.057 ms
+Execution Time: 0.025 ms
+
+=== R1 run 2 ===
+-- EXECUTE s
+Result  (cost=0.00..0.01 rows=1 width=12) (actual time=0.002..0.002 rows=1 loops=1)
+Planning Time: 0.041 ms
+Execution Time: 0.022 ms
+
+=== R1 run 3 ===
+-- EXECUTE s
+Result  (cost=0.00..0.01 rows=1 width=12) (actual time=0.002..0.003 rows=1 loops=1)
+Planning Time: 0.085 ms
+Execution Time: 0.049 ms

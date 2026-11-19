@@ -1,0 +1,38 @@
+=== R22 run 1 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521')
+Aggregate  (cost=5.28..5.29 rows=1 width=8) (actual time=0.099..0.100 rows=1 loops=1)
+  Buffers: shared hit=3
+  ->  Index Only Scan using notifications_business_unread_idx on notifications  (cost=0.29..5.17 rows=44 width=0) (actual time=0.088..0.090 rows=18 loops=1)
+        Index Cond: ((business_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (is_read = false))
+        Heap Fetches: 0
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=131
+Planning Time: 0.581 ms
+Execution Time: 0.128 ms
+
+=== R22 run 2 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521')
+Aggregate  (cost=5.28..5.29 rows=1 width=8) (actual time=0.099..0.099 rows=1 loops=1)
+  Buffers: shared hit=3
+  ->  Index Only Scan using notifications_business_unread_idx on notifications  (cost=0.29..5.17 rows=44 width=0) (actual time=0.086..0.088 rows=18 loops=1)
+        Index Cond: ((business_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (is_read = false))
+        Heap Fetches: 0
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=131
+Planning Time: 0.633 ms
+Execution Time: 0.135 ms
+
+=== R22 run 3 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521')
+Aggregate  (cost=5.28..5.29 rows=1 width=8) (actual time=0.081..0.081 rows=1 loops=1)
+  Buffers: shared hit=3
+  ->  Index Only Scan using notifications_business_unread_idx on notifications  (cost=0.29..5.17 rows=44 width=0) (actual time=0.066..0.068 rows=18 loops=1)
+        Index Cond: ((business_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (is_read = false))
+        Heap Fetches: 0
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=131
+Planning Time: 0.595 ms
+Execution Time: 0.110 ms

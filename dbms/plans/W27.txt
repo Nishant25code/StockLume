@@ -1,0 +1,62 @@
+=== W27 run 1 ===
+-- EXECUTE s('e5372ed6-adfd-4583-9849-442211fa5164', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on inventory  (cost=4.45..23.37 rows=5 width=68) (actual time=1.278..2.692 rows=5 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: inventory_unique_product_per_business
+  Tuples Inserted: 0
+  Conflicting Tuples: 5
+  Buffers: shared hit=127 read=8 dirtied=8
+  ->  Bitmap Heap Scan on order_items oi  (cost=4.45..23.37 rows=5 width=68) (actual time=0.022..0.033 rows=5 loops=1)
+        Recheck Cond: (order_id = 'e5372ed6-adfd-4583-9849-442211fa5164'::uuid)
+        Heap Blocks: exact=3
+        Buffers: shared hit=6
+        ->  Bitmap Index Scan on order_items_unique_product_per_order  (cost=0.00..4.45 rows=5 width=0) (actual time=0.008..0.008 rows=5 loops=1)
+              Index Cond: (order_id = 'e5372ed6-adfd-4583-9849-442211fa5164'::uuid)
+              Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=175
+Planning Time: 0.255 ms
+Trigger inventory_set_updated_at: time=0.082 calls=5
+Execution Time: 2.734 ms
+
+=== W27 run 2 ===
+-- EXECUTE s('e5372ed6-adfd-4583-9849-442211fa5164', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on inventory  (cost=4.45..23.37 rows=5 width=68) (actual time=1.229..1.273 rows=5 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: inventory_unique_product_per_business
+  Tuples Inserted: 0
+  Conflicting Tuples: 5
+  Buffers: shared hit=141
+  ->  Bitmap Heap Scan on order_items oi  (cost=4.45..23.37 rows=5 width=68) (actual time=0.040..0.051 rows=5 loops=1)
+        Recheck Cond: (order_id = 'e5372ed6-adfd-4583-9849-442211fa5164'::uuid)
+        Heap Blocks: exact=3
+        Buffers: shared hit=6
+        ->  Bitmap Index Scan on order_items_unique_product_per_order  (cost=0.00..4.45 rows=5 width=0) (actual time=0.016..0.016 rows=5 loops=1)
+              Index Cond: (order_id = 'e5372ed6-adfd-4583-9849-442211fa5164'::uuid)
+              Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=175
+Planning Time: 0.870 ms
+Trigger inventory_set_updated_at: time=0.110 calls=5
+Execution Time: 1.394 ms
+
+=== W27 run 3 ===
+-- EXECUTE s('e5372ed6-adfd-4583-9849-442211fa5164', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on inventory  (cost=4.45..23.37 rows=5 width=68) (actual time=1.739..1.859 rows=5 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: inventory_unique_product_per_business
+  Tuples Inserted: 0
+  Conflicting Tuples: 5
+  Buffers: shared hit=141
+  ->  Bitmap Heap Scan on order_items oi  (cost=4.45..23.37 rows=5 width=68) (actual time=0.042..0.066 rows=5 loops=1)
+        Recheck Cond: (order_id = 'e5372ed6-adfd-4583-9849-442211fa5164'::uuid)
+        Heap Blocks: exact=3
+        Buffers: shared hit=6
+        ->  Bitmap Index Scan on order_items_unique_product_per_order  (cost=0.00..4.45 rows=5 width=0) (actual time=0.016..0.016 rows=5 loops=1)
+              Index Cond: (order_id = 'e5372ed6-adfd-4583-9849-442211fa5164'::uuid)
+              Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=175
+Planning Time: 0.729 ms
+Trigger inventory_set_updated_at: time=0.189 calls=5
+Execution Time: 1.973 ms

@@ -1,0 +1,65 @@
+=== W17 run 1 ===
+-- EXECUTE s('31bba45b-606d-4019-95ab-85178c11e03a', '73731027-e653-4f12-b079-5d4d5b8ad601', 10, NULL, '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on order_items  (cost=0.56..16.62 rows=1 width=78) (actual time=0.955..0.958 rows=1 loops=1)
+  Buffers: shared hit=69 read=2 dirtied=4 written=1
+  ->  Nested Loop  (cost=0.56..16.62 rows=1 width=78) (actual time=0.076..0.079 rows=1 loops=1)
+        Join Filter: (o.wholesaler_id = p.wholesaler_id)
+        Buffers: shared hit=6
+        ->  Index Scan using orders_pkey on orders o  (cost=0.29..8.31 rows=1 width=32) (actual time=0.040..0.042 rows=1 loops=1)
+              Index Cond: (id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+              Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+              Buffers: shared hit=3
+        ->  Index Scan using products_pkey on products p  (cost=0.28..8.29 rows=1 width=38) (actual time=0.013..0.013 rows=1 loops=1)
+              Index Cond: (id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid)
+              Filter: is_active
+              Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=350
+Planning Time: 1.588 ms
+Trigger for constraint order_items_order_id_fkey: time=0.188 calls=1
+Trigger for constraint order_items_product_id_fkey: time=0.089 calls=1
+Execution Time: 1.293 ms
+
+=== W17 run 2 ===
+-- EXECUTE s('31bba45b-606d-4019-95ab-85178c11e03a', '73731027-e653-4f12-b079-5d4d5b8ad601', 10, NULL, '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on order_items  (cost=0.56..16.62 rows=1 width=78) (actual time=0.724..0.728 rows=1 loops=1)
+  Buffers: shared hit=68 read=1 dirtied=1
+  ->  Nested Loop  (cost=0.56..16.62 rows=1 width=78) (actual time=0.067..0.070 rows=1 loops=1)
+        Join Filter: (o.wholesaler_id = p.wholesaler_id)
+        Buffers: shared hit=6
+        ->  Index Scan using orders_pkey on orders o  (cost=0.29..8.31 rows=1 width=32) (actual time=0.033..0.035 rows=1 loops=1)
+              Index Cond: (id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+              Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+              Buffers: shared hit=3
+        ->  Index Scan using products_pkey on products p  (cost=0.28..8.29 rows=1 width=38) (actual time=0.013..0.013 rows=1 loops=1)
+              Index Cond: (id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid)
+              Filter: is_active
+              Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=350
+Planning Time: 1.554 ms
+Trigger for constraint order_items_order_id_fkey: time=0.292 calls=1
+Trigger for constraint order_items_product_id_fkey: time=0.102 calls=1
+Execution Time: 1.189 ms
+
+=== W17 run 3 ===
+-- EXECUTE s('31bba45b-606d-4019-95ab-85178c11e03a', '73731027-e653-4f12-b079-5d4d5b8ad601', 10, NULL, '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on order_items  (cost=0.56..16.62 rows=1 width=78) (actual time=1.083..1.088 rows=1 loops=1)
+  Buffers: shared hit=68 read=1 dirtied=1
+  ->  Nested Loop  (cost=0.56..16.62 rows=1 width=78) (actual time=0.123..0.127 rows=1 loops=1)
+        Join Filter: (o.wholesaler_id = p.wholesaler_id)
+        Buffers: shared hit=6
+        ->  Index Scan using orders_pkey on orders o  (cost=0.29..8.31 rows=1 width=32) (actual time=0.055..0.058 rows=1 loops=1)
+              Index Cond: (id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+              Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+              Buffers: shared hit=3
+        ->  Index Scan using products_pkey on products p  (cost=0.28..8.29 rows=1 width=38) (actual time=0.023..0.023 rows=1 loops=1)
+              Index Cond: (id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid)
+              Filter: is_active
+              Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=350
+Planning Time: 2.125 ms
+Trigger for constraint order_items_order_id_fkey: time=0.294 calls=1
+Trigger for constraint order_items_product_id_fkey: time=0.061 calls=1
+Execution Time: 1.512 ms

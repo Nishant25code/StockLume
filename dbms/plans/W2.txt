@@ -1,0 +1,29 @@
+=== W2 run 1 ===
+-- EXECUTE s('00000000-0000-0000-0000-0000000000ff', '312727fe-1c8a-40af-8c7b-a10e9db80ad7', 'New Owner', 'new@shop.test')
+Insert on profiles  (cost=0.00..0.01 rows=1 width=112) (actual time=0.252..0.252 rows=1 loops=1)
+  Buffers: shared hit=8 read=1 dirtied=1
+  ->  Result  (cost=0.00..0.01 rows=1 width=112) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.022 ms
+Trigger for constraint profiles_id_fkey: time=0.085 calls=1
+Trigger for constraint profiles_business_id_fkey: time=0.166 calls=1
+Execution Time: 0.510 ms
+
+=== W2 run 2 ===
+-- EXECUTE s('00000000-0000-0000-0000-0000000000ff', '312727fe-1c8a-40af-8c7b-a10e9db80ad7', 'New Owner', 'new@shop.test')
+Insert on profiles  (cost=0.00..0.01 rows=1 width=112) (actual time=0.063..0.063 rows=1 loops=1)
+  Buffers: shared hit=9
+  ->  Result  (cost=0.00..0.01 rows=1 width=112) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.023 ms
+Trigger for constraint profiles_id_fkey: time=0.087 calls=1
+Trigger for constraint profiles_business_id_fkey: time=0.129 calls=1
+Execution Time: 0.285 ms
+
+=== W2 run 3 ===
+-- EXECUTE s('00000000-0000-0000-0000-0000000000ff', '312727fe-1c8a-40af-8c7b-a10e9db80ad7', 'New Owner', 'new@shop.test')
+Insert on profiles  (cost=0.00..0.01 rows=1 width=112) (actual time=0.038..0.038 rows=1 loops=1)
+  Buffers: shared hit=9
+  ->  Result  (cost=0.00..0.01 rows=1 width=112) (actual time=0.000..0.001 rows=1 loops=1)
+Planning Time: 0.018 ms
+Trigger for constraint profiles_id_fkey: time=0.072 calls=1
+Trigger for constraint profiles_business_id_fkey: time=0.113 calls=1
+Execution Time: 0.229 ms

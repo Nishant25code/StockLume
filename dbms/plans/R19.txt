@@ -1,0 +1,62 @@
+=== R19 run 1 ===
+-- EXECUTE s('dcd58d85-f903-433e-a81b-a19be3f1c89a', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Nested Loop  (cost=0.83..24.99 rows=1 width=245) (actual time=0.013..0.013 rows=1 loops=1)
+  Buffers: shared hit=9
+  ->  Nested Loop  (cost=0.56..16.65 rows=1 width=229) (actual time=0.010..0.010 rows=1 loops=1)
+        Buffers: shared hit=6
+        ->  Index Scan using orders_pkey on orders o  (cost=0.29..8.31 rows=1 width=213) (actual time=0.006..0.007 rows=1 loops=1)
+              Index Cond: (id = 'dcd58d85-f903-433e-a81b-a19be3f1c89a'::uuid)
+              Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) OR ((wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status <> 'DRAFT'::order_status)))
+              Buffers: shared hit=3
+        ->  Index Scan using businesses_pkey on businesses r  (cost=0.27..8.29 rows=1 width=32) (actual time=0.002..0.002 rows=1 loops=1)
+              Index Cond: (id = o.retailer_id)
+              Buffers: shared hit=3
+  ->  Index Scan using businesses_pkey on businesses w  (cost=0.27..8.29 rows=1 width=32) (actual time=0.002..0.002 rows=1 loops=1)
+        Index Cond: (id = o.wholesaler_id)
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=360
+Planning Time: 0.549 ms
+Execution Time: 0.033 ms
+
+=== R19 run 2 ===
+-- EXECUTE s('dcd58d85-f903-433e-a81b-a19be3f1c89a', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Nested Loop  (cost=0.83..24.99 rows=1 width=245) (actual time=0.010..0.011 rows=1 loops=1)
+  Buffers: shared hit=9
+  ->  Nested Loop  (cost=0.56..16.65 rows=1 width=229) (actual time=0.008..0.008 rows=1 loops=1)
+        Buffers: shared hit=6
+        ->  Index Scan using orders_pkey on orders o  (cost=0.29..8.31 rows=1 width=213) (actual time=0.005..0.005 rows=1 loops=1)
+              Index Cond: (id = 'dcd58d85-f903-433e-a81b-a19be3f1c89a'::uuid)
+              Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) OR ((wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status <> 'DRAFT'::order_status)))
+              Buffers: shared hit=3
+        ->  Index Scan using businesses_pkey on businesses r  (cost=0.27..8.29 rows=1 width=32) (actual time=0.002..0.002 rows=1 loops=1)
+              Index Cond: (id = o.retailer_id)
+              Buffers: shared hit=3
+  ->  Index Scan using businesses_pkey on businesses w  (cost=0.27..8.29 rows=1 width=32) (actual time=0.002..0.002 rows=1 loops=1)
+        Index Cond: (id = o.wholesaler_id)
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=360
+Planning Time: 0.456 ms
+Execution Time: 0.029 ms
+
+=== R19 run 3 ===
+-- EXECUTE s('dcd58d85-f903-433e-a81b-a19be3f1c89a', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Nested Loop  (cost=0.83..24.99 rows=1 width=245) (actual time=0.034..0.036 rows=1 loops=1)
+  Buffers: shared hit=9
+  ->  Nested Loop  (cost=0.56..16.65 rows=1 width=229) (actual time=0.028..0.028 rows=1 loops=1)
+        Buffers: shared hit=6
+        ->  Index Scan using orders_pkey on orders o  (cost=0.29..8.31 rows=1 width=213) (actual time=0.020..0.021 rows=1 loops=1)
+              Index Cond: (id = 'dcd58d85-f903-433e-a81b-a19be3f1c89a'::uuid)
+              Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) OR ((wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status <> 'DRAFT'::order_status)))
+              Buffers: shared hit=3
+        ->  Index Scan using businesses_pkey on businesses r  (cost=0.27..8.29 rows=1 width=32) (actual time=0.004..0.004 rows=1 loops=1)
+              Index Cond: (id = o.retailer_id)
+              Buffers: shared hit=3
+  ->  Index Scan using businesses_pkey on businesses w  (cost=0.27..8.29 rows=1 width=32) (actual time=0.006..0.006 rows=1 loops=1)
+        Index Cond: (id = o.wholesaler_id)
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=360
+Planning Time: 1.676 ms
+Execution Time: 0.105 ms

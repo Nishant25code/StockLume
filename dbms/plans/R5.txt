@@ -1,0 +1,74 @@
+=== R5 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Sort  (cost=15.08..15.13 rows=20 width=50) (actual time=0.287..0.289 rows=16 loops=1)
+  Sort Key: b.name
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=12
+  ->  Hash Anti Join  (cost=4.40..14.65 rows=20 width=50) (actual time=0.116..0.169 rows=16 loops=1)
+        Hash Cond: (b.id = c.wholesaler_id)
+        Buffers: shared hit=9
+        ->  Seq Scan on businesses b  (cost=0.00..10.00 rows=20 width=50) (actual time=0.013..0.059 rows=20 loops=1)
+              Filter: (type = 'WHOLESALER'::business_type)
+              Rows Removed by Filter: 300
+              Buffers: shared hit=6
+        ->  Hash  (cost=4.35..4.35 rows=4 width=16) (actual time=0.089..0.089 rows=4 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=3
+              ->  Index Only Scan using business_connections_unique_pair on business_connections c  (cost=0.28..4.35 rows=4 width=16) (actual time=0.080..0.081 rows=4 loops=1)
+                    Index Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                    Heap Fetches: 0
+                    Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=277
+Planning Time: 1.596 ms
+Execution Time: 0.347 ms
+
+=== R5 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Sort  (cost=15.08..15.13 rows=20 width=50) (actual time=0.196..0.199 rows=16 loops=1)
+  Sort Key: b.name
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=12
+  ->  Hash Anti Join  (cost=4.40..14.65 rows=20 width=50) (actual time=0.073..0.116 rows=16 loops=1)
+        Hash Cond: (b.id = c.wholesaler_id)
+        Buffers: shared hit=9
+        ->  Seq Scan on businesses b  (cost=0.00..10.00 rows=20 width=50) (actual time=0.010..0.047 rows=20 loops=1)
+              Filter: (type = 'WHOLESALER'::business_type)
+              Rows Removed by Filter: 300
+              Buffers: shared hit=6
+        ->  Hash  (cost=4.35..4.35 rows=4 width=16) (actual time=0.054..0.054 rows=4 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=3
+              ->  Index Only Scan using business_connections_unique_pair on business_connections c  (cost=0.28..4.35 rows=4 width=16) (actual time=0.048..0.049 rows=4 loops=1)
+                    Index Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                    Heap Fetches: 0
+                    Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=277
+Planning Time: 1.075 ms
+Execution Time: 0.243 ms
+
+=== R5 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Sort  (cost=15.08..15.13 rows=20 width=50) (actual time=0.233..0.236 rows=16 loops=1)
+  Sort Key: b.name
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=12
+  ->  Hash Anti Join  (cost=4.40..14.65 rows=20 width=50) (actual time=0.097..0.140 rows=16 loops=1)
+        Hash Cond: (b.id = c.wholesaler_id)
+        Buffers: shared hit=9
+        ->  Seq Scan on businesses b  (cost=0.00..10.00 rows=20 width=50) (actual time=0.011..0.049 rows=20 loops=1)
+              Filter: (type = 'WHOLESALER'::business_type)
+              Rows Removed by Filter: 300
+              Buffers: shared hit=6
+        ->  Hash  (cost=4.35..4.35 rows=4 width=16) (actual time=0.074..0.075 rows=4 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=3
+              ->  Index Only Scan using business_connections_unique_pair on business_connections c  (cost=0.28..4.35 rows=4 width=16) (actual time=0.066..0.067 rows=4 loops=1)
+                    Index Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                    Heap Fetches: 0
+                    Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=277
+Planning Time: 1.219 ms
+Execution Time: 0.280 ms

@@ -1,0 +1,47 @@
+=== W15 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', 'aef21b4b-83ce-452d-88de-a5367af15521', 'restock', true, '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on orders  (cost=0.28..8.31 rows=1 width=221) (actual time=0.487..0.490 rows=1 loops=1)
+  Buffers: shared hit=100 read=3 dirtied=2
+  ->  Index Scan using business_connections_unique_pair on business_connections c  (cost=0.28..8.31 rows=1 width=221) (actual time=0.346..0.349 rows=1 loops=1)
+        Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid))
+        Filter: (status = 'ACTIVE'::connection_status)
+        Buffers: shared hit=13 read=2 dirtied=1
+Planning:
+  Buffers: shared hit=138
+Planning Time: 0.239 ms
+Trigger for constraint orders_retailer_id_fkey: time=0.121 calls=1
+Trigger for constraint orders_wholesaler_id_fkey: time=0.015 calls=1
+Trigger for constraint orders_created_by_fkey: time=0.088 calls=1
+Execution Time: 0.728 ms
+
+=== W15 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', 'aef21b4b-83ce-452d-88de-a5367af15521', 'restock', true, '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on orders  (cost=0.28..8.31 rows=1 width=221) (actual time=0.624..0.627 rows=1 loops=1)
+  Buffers: shared hit=101
+  ->  Index Scan using business_connections_unique_pair on business_connections c  (cost=0.28..8.31 rows=1 width=221) (actual time=0.098..0.100 rows=1 loops=1)
+        Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid))
+        Filter: (status = 'ACTIVE'::connection_status)
+        Buffers: shared hit=13
+Planning:
+  Buffers: shared hit=138
+Planning Time: 1.010 ms
+Trigger for constraint orders_retailer_id_fkey: time=0.357 calls=1
+Trigger for constraint orders_wholesaler_id_fkey: time=0.044 calls=1
+Trigger for constraint orders_created_by_fkey: time=0.213 calls=1
+Execution Time: 1.296 ms
+
+=== W15 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', 'aef21b4b-83ce-452d-88de-a5367af15521', 'restock', true, '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on orders  (cost=0.28..8.31 rows=1 width=221) (actual time=0.144..0.144 rows=1 loops=1)
+  Buffers: shared hit=101
+  ->  Index Scan using business_connections_unique_pair on business_connections c  (cost=0.28..8.31 rows=1 width=221) (actual time=0.023..0.024 rows=1 loops=1)
+        Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid))
+        Filter: (status = 'ACTIVE'::connection_status)
+        Buffers: shared hit=13
+Planning:
+  Buffers: shared hit=138
+Planning Time: 0.246 ms
+Trigger for constraint orders_retailer_id_fkey: time=0.127 calls=1
+Trigger for constraint orders_wholesaler_id_fkey: time=0.018 calls=1
+Trigger for constraint orders_created_by_fkey: time=0.087 calls=1
+Execution Time: 0.391 ms

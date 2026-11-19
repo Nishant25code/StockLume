@@ -1,0 +1,80 @@
+=== R30 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+GroupAggregate  (cost=133.48..133.85 rows=7 width=12) (actual time=0.090..0.093 rows=7 loops=1)
+  Group Key: status
+  Buffers: shared hit=43
+  ->  Sort  (cost=133.48..133.58 rows=40 width=4) (actual time=0.087..0.089 rows=40 loops=1)
+        Sort Key: status
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=43
+        ->  Bitmap Heap Scan on orders o  (cost=8.90..132.42 rows=40 width=4) (actual time=0.019..0.052 rows=40 loops=1)
+              Recheck Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) OR (wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid))
+              Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) OR ((wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status <> 'DRAFT'::order_status)))
+              Heap Blocks: exact=34
+              Buffers: shared hit=38
+              ->  BitmapOr  (cost=8.90..8.90 rows=40 width=0) (actual time=0.013..0.013 rows=0 loops=1)
+                    Buffers: shared hit=4
+                    ->  Bitmap Index Scan on orders_retailer_status_idx  (cost=0.00..4.58 rows=40 width=0) (actual time=0.010..0.010 rows=40 loops=1)
+                          Index Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                          Buffers: shared hit=2
+                    ->  Bitmap Index Scan on orders_wholesaler_status_idx  (cost=0.00..4.29 rows=1 width=0) (actual time=0.003..0.003 rows=0 loops=1)
+                          Index Cond: (wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                          Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=174
+Planning Time: 0.252 ms
+Execution Time: 0.108 ms
+
+=== R30 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+GroupAggregate  (cost=133.48..133.85 rows=7 width=12) (actual time=0.076..0.079 rows=7 loops=1)
+  Group Key: status
+  Buffers: shared hit=43
+  ->  Sort  (cost=133.48..133.58 rows=40 width=4) (actual time=0.073..0.074 rows=40 loops=1)
+        Sort Key: status
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=43
+        ->  Bitmap Heap Scan on orders o  (cost=8.90..132.42 rows=40 width=4) (actual time=0.020..0.054 rows=40 loops=1)
+              Recheck Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) OR (wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid))
+              Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) OR ((wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status <> 'DRAFT'::order_status)))
+              Heap Blocks: exact=34
+              Buffers: shared hit=38
+              ->  BitmapOr  (cost=8.90..8.90 rows=40 width=0) (actual time=0.014..0.014 rows=0 loops=1)
+                    Buffers: shared hit=4
+                    ->  Bitmap Index Scan on orders_retailer_status_idx  (cost=0.00..4.58 rows=40 width=0) (actual time=0.011..0.011 rows=40 loops=1)
+                          Index Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                          Buffers: shared hit=2
+                    ->  Bitmap Index Scan on orders_wholesaler_status_idx  (cost=0.00..4.29 rows=1 width=0) (actual time=0.003..0.003 rows=0 loops=1)
+                          Index Cond: (wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                          Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=174
+Planning Time: 0.279 ms
+Execution Time: 0.095 ms
+
+=== R30 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+GroupAggregate  (cost=133.48..133.85 rows=7 width=12) (actual time=0.059..0.061 rows=7 loops=1)
+  Group Key: status
+  Buffers: shared hit=43
+  ->  Sort  (cost=133.48..133.58 rows=40 width=4) (actual time=0.057..0.058 rows=40 loops=1)
+        Sort Key: status
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=43
+        ->  Bitmap Heap Scan on orders o  (cost=8.90..132.42 rows=40 width=4) (actual time=0.016..0.046 rows=40 loops=1)
+              Recheck Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) OR (wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid))
+              Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) OR ((wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status <> 'DRAFT'::order_status)))
+              Heap Blocks: exact=34
+              Buffers: shared hit=38
+              ->  BitmapOr  (cost=8.90..8.90 rows=40 width=0) (actual time=0.011..0.011 rows=0 loops=1)
+                    Buffers: shared hit=4
+                    ->  Bitmap Index Scan on orders_retailer_status_idx  (cost=0.00..4.58 rows=40 width=0) (actual time=0.009..0.009 rows=40 loops=1)
+                          Index Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                          Buffers: shared hit=2
+                    ->  Bitmap Index Scan on orders_wholesaler_status_idx  (cost=0.00..4.29 rows=1 width=0) (actual time=0.002..0.002 rows=0 loops=1)
+                          Index Cond: (wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                          Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=174
+Planning Time: 0.229 ms
+Execution Time: 0.075 ms

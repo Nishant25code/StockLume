@@ -381,6 +381,7 @@ RETURNING id, sold_at, unit_price;
 -- POST /api/sales/simulate · demo data: 0-4 random sales per stocked product
 -- per day for the last $2 days (history only, inventory is not reduced).
 -- Sale times fall between 09:00 and 21:00 but never in the future.
+-- Days are clamped to 1..90 in SQL so one request cannot insert unbounded rows.
 -- $1 = retailer id, $2 = number of days
 INSERT INTO sales (retailer_id, product_id, quantity, unit_price, sold_at)
 SELECT i.business_id,
@@ -390,7 +391,7 @@ SELECT i.business_id,
        least(d.day + interval '9 hours' + random() * interval '12 hours', now())
 FROM inventory i
 JOIN products p ON p.id = i.product_id
-CROSS JOIN generate_series(current_date - ($2::int - 1), current_date, interval '1 day') AS d(day)
+CROSS JOIN generate_series(current_date - (least(greatest($2::int, 1), 90) - 1), current_date, interval '1 day') AS d(day)
 WHERE i.business_id = $1
   AND random() < 0.8
 RETURNING id;
@@ -496,26 +497,32 @@ WHERE oi.order_id   = o.id
 -- W17 -- WRITE
 -- PUT /api/orders/:id/items (and suggestions) · step 2 of 3: add one item.
 -- unit_price is copied from products.price (price snapshot). The join makes
--- sure the product belongs to the order's wholesaler and is active.
--- $1 = order id, $2 = product id, $3 = quantity, $4 = suggested quantity (or NULL)
+-- sure the product belongs to the order's wholesaler and is active, and the
+-- order must be the caller's own DRAFT (0 rows → 404).
+-- $1 = order id, $2 = product id, $3 = quantity, $4 = suggested quantity (or NULL),
+-- $5 = retailer id (caller)
 INSERT INTO order_items (order_id, product_id, quantity, suggested_quantity, unit_price)
 SELECT o.id, p.id, $3, $4, p.price
 FROM orders o
 JOIN products p ON p.wholesaler_id = o.wholesaler_id
-WHERE o.id     = $1
-  AND o.status = 'DRAFT'
+WHERE o.id          = $1
+  AND o.retailer_id = $5
+  AND o.status      = 'DRAFT'
   AND p.id     = $2
   AND p.is_active
 RETURNING id, product_id, quantity, unit_price;
 
 -- W18 -- WRITE
 -- PUT /api/orders/:id/items · step 3 of 3: recalculate the order total
--- $1 = order id
+-- (only the caller's own DRAFT)
+-- $1 = order id, $2 = retailer id (caller)
 UPDATE orders o
 SET total_amount = coalesce((SELECT sum(oi.quantity * oi.unit_price)
                              FROM order_items oi
                              WHERE oi.order_id = o.id), 0)
 WHERE o.id = $1
+  AND o.retailer_id = $2
+  AND o.status = 'DRAFT'
 RETURNING total_amount;
 
 -- R17 -- READ
@@ -824,11 +831,11 @@ SELECT
 -- R26 -- READ
 -- GET /api/analytics/sales-trend (retailer) · daily sales for the last $2 days.
 -- generate_series + LEFT JOIN so days without sales show 0 (the chart has no gaps).
--- $1 = retailer id, $2 = days (e.g. 30)
+-- $1 = retailer id, $2 = days (e.g. 30; clamped to 1..90)
 SELECT d.day::date                                AS day,
        coalesce(sum(s.quantity * s.unit_price), 0) AS sales_amount,
        coalesce(sum(s.quantity), 0)                AS units_sold
-FROM generate_series(current_date - ($2::int - 1), current_date, interval '1 day') AS d(day)
+FROM generate_series(current_date - (least(greatest($2::int, 1), 90) - 1), current_date, interval '1 day') AS d(day)
 LEFT JOIN sales s ON s.retailer_id = $1
                  AND s.sold_at >= d.day
                  AND s.sold_at <  d.day + interval '1 day'
@@ -837,11 +844,11 @@ ORDER BY d.day;
 
 -- R27 -- READ
 -- GET /api/analytics/sales-trend (wholesaler) · value of orders delivered per day
--- $1 = wholesaler id, $2 = days
+-- $1 = wholesaler id, $2 = days (clamped to 1..90)
 SELECT d.day::date                       AS day,
        coalesce(sum(o.total_amount), 0)  AS delivered_amount,
        count(o.id)                       AS orders_delivered
-FROM generate_series(current_date - ($2::int - 1), current_date, interval '1 day') AS d(day)
+FROM generate_series(current_date - (least(greatest($2::int, 1), 90) - 1), current_date, interval '1 day') AS d(day)
 LEFT JOIN orders o ON o.wholesaler_id = $1
                   AND o.status = 'DELIVERED'
                   AND o.delivered_at >= d.day
@@ -861,7 +868,7 @@ WHERE s.retailer_id = $1
   AND s.sold_at >= now() - interval '30 days'
 GROUP BY p.id, p.name
 ORDER BY units_sold DESC
-LIMIT $2;
+LIMIT least($2::int, 50);
 
 -- R29 -- READ
 -- GET /api/analytics/top-products (wholesaler) and the wholesaler dashboard ·
@@ -878,7 +885,7 @@ WHERE o.wholesaler_id = $1
   AND o.status IN ('ACCEPTED', 'DISPATCHED', 'DELIVERED')
 GROUP BY p.id, p.name
 ORDER BY units_ordered DESC
-LIMIT $2;
+LIMIT least($2::int, 50);
 
 -- R30 -- READ
 -- GET /api/analytics/orders-summary · number of orders per status.

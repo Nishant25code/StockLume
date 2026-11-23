@@ -45,6 +45,76 @@ export interface CurrentUser {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   Member 2 & 4 — Inventory, Sales & Prediction Types
+   ───────────────────────────────────────────────────────────── */
+
+export type StockMovementReason =
+  | "INITIAL_STOCK"
+  | "SALE"
+  | "ORDER_DISPATCHED"
+  | "ORDER_DELIVERED"
+  | "MANUAL_ADJUSTMENT";
+
+export interface InventoryItem {
+  id: string;
+  businessId: string;
+  productId: string;
+  productName: string;
+  sku: string;
+  category?: string;
+  unit: string;
+  price: number;
+  quantity: number;
+  minStock?: number;
+  reorderQuantity?: number;
+  wholesalerId?: string;
+  wholesalerName?: string;
+  risk?: StockoutRisk;
+  daysOfStockLeft?: number;
+  stockoutProbability?: number;
+  suggestedQuantity?: number;
+  updatedAt?: string;
+}
+
+export interface StockMovement {
+  id: string;
+  businessId: string;
+  productId: string;
+  productName?: string;
+  quantityChange: number;
+  quantityAfter: number;
+  reason: StockMovementReason;
+  saleId?: string | null;
+  orderId?: string | null;
+  note?: string | null;
+  createdAt: string;
+}
+
+export interface StockoutPrediction {
+  productId: string;
+  productName: string;
+  wholesalerId: string;
+  stock: number;
+  avgDailyDemand: number;
+  leadTimeDays: number;
+  stockoutProbability: number;
+  risk: StockoutRisk;
+  method: "POISSON" | "THRESHOLD";
+  daysOfStockLeft: number;
+  suggestedQuantity: number;
+}
+
+export interface RecordSalePayload {
+  productId: string;
+  quantity: number;
+  unitPrice?: number;
+}
+
+export interface SimulateSalesPayload {
+  days?: number;
+}
+
+/* ─────────────────────────────────────────────────────────────
    Member 4 — Notifications & Analytics Types
    ───────────────────────────────────────────────────────────── */
 

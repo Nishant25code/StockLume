@@ -2,21 +2,21 @@
  * notifications routes — mounted at /api/notifications
  * OWNER: Member 4 — Notifications & Analytics
  *
- * Planned endpoints (see docs/API.md — keep both in sync):
+ * Endpoints:
  *   GET    /api/notifications               current business notifications (unread first)
- *   GET    /api/notifications/unread-count
- *   PATCH  /api/notifications/:id/read
- *   PATCH  /api/notifications/read-all
- *
- * Pattern:
- *   import { requireAuth, requireRole } from '../middleware/auth.js';
- *   import * as controller from '../controllers/notifications.controller.js';
- *   router.get('/', requireAuth(), controller.list);
+ *   GET    /api/notifications/unread-count  unread count for header bell
+ *   PATCH  /api/notifications/read-all      mark all notifications as read
+ *   PATCH  /api/notifications/:id/read      mark one notification as read
  */
 import { Router } from 'express';
+import { requireAuth } from '../middleware/auth.js';
+import * as controller from '../controllers/notifications.controller.js';
 
 const router = Router();
 
-// TODO(Member 4): add notifications endpoints here.
+router.get('/', requireAuth(), controller.list);
+router.get('/unread-count', requireAuth(), controller.getUnreadCount);
+router.patch('/read-all', requireAuth(), controller.markAllAsRead);
+router.patch('/:id/read', requireAuth(), controller.markAsRead);
 
 export default router;

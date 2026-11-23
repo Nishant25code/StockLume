@@ -348,7 +348,7 @@ export function RetailerOrdersView({
 
                     <CardContent className="pb-3 text-xs space-y-2">
                       {isDispatched && (
-                        <div className="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 flex items-center gap-2">
+                        <div className="p-2.5 rounded-lg bg-warning/10 border border-warning/20 text-warning flex items-center gap-2">
                           <Truck className="size-4 shrink-0" />
                           <span>Order has been dispatched! Confirm delivery once received to restock inventory.</span>
                         </div>

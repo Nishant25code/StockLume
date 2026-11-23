@@ -21,6 +21,9 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { LoadingState } from "@/components/states/loading-state";
+import { EmptyState } from "@/components/states/empty-state";
+import { ErrorState } from "@/components/states/error-state";
 import { apiClient } from "@/lib/api-client";
 import type { Notification, NotificationType, UnreadCountResponse } from "@/types";
 
@@ -199,32 +202,21 @@ export function NotificationBell() {
         {/* Notifications Body */}
         <div className="max-h-[380px] overflow-y-auto divide-y divide-border/60">
           {isLoading ? (
-            <div className="flex flex-col items-center justify-center gap-2 py-12 text-sm text-muted-foreground">
-              <div className="size-5 animate-spin rounded-full border-2 border-brand border-t-transparent" />
-              <p>Loading notifications…</p>
-            </div>
+            <LoadingState label="Loading notifications…" className="py-10 min-h-36" />
           ) : isError ? (
-            <div className="flex flex-col items-center justify-center gap-2 py-8 text-center px-4">
-              <p className="text-sm font-medium text-destructive">
-                Failed to load notifications
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={fetchNotifications}
-                className="gap-1.5"
-              >
-                <RotateCcw className="size-3.5" /> Retry
-              </Button>
-            </div>
+            <ErrorState
+              title="Failed to load notifications"
+              message="Check network connection."
+              onRetry={fetchNotifications}
+              className="border-none py-6 min-h-32"
+            />
           ) : notifications.length === 0 ? (
-            <div className="flex flex-col items-center justify-center gap-2 py-12 text-center text-muted-foreground px-4">
-              <div className="flex size-10 items-center justify-center rounded-full bg-muted">
-                <Bell className="size-5 opacity-60" />
-              </div>
-              <p className="text-sm font-medium">No notifications</p>
-              <p className="text-xs">You are all caught up!</p>
-            </div>
+            <EmptyState
+              icon={Bell}
+              title="No notifications"
+              description="You are all caught up!"
+              className="border-none py-10 min-h-36"
+            />
           ) : (
             notifications.map((notification) => (
               <div

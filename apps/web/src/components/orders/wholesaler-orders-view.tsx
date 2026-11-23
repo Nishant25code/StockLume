@@ -94,7 +94,7 @@ export function WholesalerOrdersView({
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-semibold">Wholesaler Fulfillment Queue</h2>
-            <Badge variant="outline" className="bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20 text-xs">
+            <Badge variant="outline" className="bg-info/10 text-info border-info/20 text-xs">
               Wholesaler Portal
             </Badge>
           </div>
@@ -228,7 +228,7 @@ export function WholesalerOrdersView({
                           size="sm"
                           onClick={() => handleAccept(order.id)}
                           disabled={isAccepting}
-                          className="h-8 text-xs bg-indigo-600 hover:bg-indigo-700 text-white gap-1"
+                          className="h-8 text-xs bg-primary text-primary-foreground hover:bg-primary/90 gap-1"
                         >
                           {isAccepting ? (
                             <>
@@ -295,7 +295,7 @@ export function WholesalerOrdersView({
                     </CardHeader>
 
                     <CardContent className="pb-3 text-xs space-y-2">
-                      <div className="p-2.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-700 dark:text-indigo-400 flex items-center gap-2">
+                      <div className="p-2.5 rounded-lg bg-info/10 border border-info/20 text-info flex items-center gap-2">
                         <Clock className="size-4 shrink-0" />
                         <span>Order accepted. Ready for warehouse fulfillment and dispatch.</span>
                       </div>
@@ -328,7 +328,7 @@ export function WholesalerOrdersView({
                         size="sm"
                         onClick={() => handleDispatch(order.id)}
                         disabled={isDispatching}
-                        className="h-8 text-xs bg-amber-600 hover:bg-amber-700 text-white gap-1.5"
+                        className="h-8 text-xs bg-brand text-brand-foreground hover:bg-brand/90 gap-1.5"
                       >
                         {isDispatching ? (
                           <>

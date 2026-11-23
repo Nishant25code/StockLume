@@ -57,12 +57,12 @@ export function OrderStatusBadge({
     ACCEPTED: {
       label: "Accepted",
       icon: <CheckCircle className={iconSizes} />,
-      variantClasses: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20",
+      variantClasses: "bg-info/10 text-info border-info/20",
     },
     DISPATCHED: {
       label: "Dispatched",
       icon: <Truck className={iconSizes} />,
-      variantClasses: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+      variantClasses: "bg-warning/10 text-warning border-warning/20",
     },
     DELIVERED: {
       label: "Delivered",
@@ -100,7 +100,7 @@ export function OrderStatusBadge({
         <Badge
           variant="outline"
           className={cn(
-            "bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20 font-medium",
+            "bg-brand/10 text-brand border-brand/20 font-medium",
             sizeClasses
           )}
         >

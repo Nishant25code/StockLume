@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
+  Bell,
   Boxes,
   CheckCircle2,
   Clock,
@@ -321,9 +322,12 @@ export function WholesalerDashboard() {
           </CardHeader>
           <CardContent className="px-4 pb-4">
             {recentNotifications.length === 0 ? (
-              <p className="py-6 text-center text-xs text-muted-foreground">
-                No recent notifications
-              </p>
+              <EmptyState
+                icon={Bell}
+                title="No recent notifications"
+                description="Order events and buyer alerts will appear here."
+                className="border-none py-6 min-h-36"
+              />
             ) : (
               <div className="divide-y divide-border/60">
                 {recentNotifications.slice(0, 4).map((n) => (

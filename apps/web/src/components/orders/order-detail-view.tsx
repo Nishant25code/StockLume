@@ -417,7 +417,7 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
                 size="sm"
                 onClick={handleAcceptOrder}
                 disabled={actionLoading}
-                className="gap-1.5 text-xs h-8 bg-indigo-600 hover:bg-indigo-700 text-white"
+                className="gap-1.5 text-xs h-8 bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 {actionLoading ? <Loader2 className="size-3.5 animate-spin" /> : <CheckCircle className="size-3.5" />}
                 <span>Accept Order</span>
@@ -430,7 +430,7 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
               size="sm"
               onClick={handleDispatchOrder}
               disabled={actionLoading}
-              className="gap-1.5 text-xs h-8 bg-amber-600 hover:bg-amber-700 text-white"
+              className="gap-1.5 text-xs h-8 bg-brand text-brand-foreground hover:bg-brand/90"
             >
               {actionLoading ? <Loader2 className="size-3.5 animate-spin" /> : <Truck className="size-3.5" />}
               <span>Dispatch Order</span>
@@ -492,7 +492,7 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
-              <Building2 className="size-4 text-indigo-500" />
+              <Building2 className="size-4 text-info" />
               <span>Wholesaler (Supplier)</span>
             </CardTitle>
           </CardHeader>

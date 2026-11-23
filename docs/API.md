@@ -149,20 +149,20 @@ Legend: **R** = retailer, **W** = wholesaler. Status: ✅ done · 🔜 planned.
 
 | Method | Path | Role | Description | Status |
 |---|---|---|---|---|
-| GET | `/notifications` | R, W | My business's notifications (`?unread=true`) | 🔜 |
-| GET | `/notifications/unread-count` | R, W | `{ count }` for the header bell | 🔜 |
-| PATCH | `/notifications/:id/read` | R, W | Mark one read | 🔜 |
-| PATCH | `/notifications/read-all` | R, W | Mark all read | 🔜 |
+| GET | `/notifications` | R, W | My business's notifications (`?unread=true`) | ✅ |
+| GET | `/notifications/unread-count` | R, W | `{ count }` for the header bell | ✅ |
+| PATCH | `/notifications/:id/read` | R, W | Mark one read | ✅ |
+| PATCH | `/notifications/read-all` | R, W | Mark all read | ✅ |
 
 ### Dashboard & analytics — Member 4
 
 | Method | Path | Role | Description | Status |
 |---|---|---|---|---|
-| GET | `/dashboard/retailer` | R | KPIs: stock value, low-stock count, open orders, sales (7d) | 🔜 |
-| GET | `/dashboard/wholesaler` | W | KPIs: pending orders, revenue, connected retailers, top products | 🔜 |
-| GET | `/analytics/sales-trend` | R, W | Daily totals (`?days=30`) | 🔜 |
-| GET | `/analytics/top-products` | R, W | Best sellers (R: by sales · W: by ordered quantity) | 🔜 |
-| GET | `/analytics/orders-summary` | R, W | Count of orders per status | 🔜 |
+| GET | `/dashboard/retailer` | R | KPIs: stock value, low-stock count, open orders, sales (7d) | ✅ |
+| GET | `/dashboard/wholesaler` | W | KPIs: pending orders, revenue, connected retailers, top products | ✅ |
+| GET | `/analytics/sales-trend` | R, W | Daily totals (`?days=30`) | ✅ |
+| GET | `/analytics/top-products` | R, W | Best sellers (R: by sales · W: by ordered quantity) | ✅ |
+| GET | `/analytics/orders-summary` | R, W | Count of orders per status | ✅ |
 
 When you finish an endpoint, change 🔜 to ✅ in your PR.
 

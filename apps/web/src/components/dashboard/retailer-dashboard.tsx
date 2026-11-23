@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   AlertTriangle,
   ArrowRight,
+  Bell,
   Boxes,
   CircleAlert,
   Package,
@@ -269,9 +270,12 @@ export function RetailerDashboard() {
           </CardHeader>
           <CardContent className="px-4 pb-4">
             {recentNotifications.length === 0 ? (
-              <p className="py-6 text-center text-xs text-muted-foreground">
-                No recent notifications
-              </p>
+              <EmptyState
+                icon={Bell}
+                title="No recent notifications"
+                description="You are all caught up with alerts and order events."
+                className="border-none py-6 min-h-36"
+              />
             ) : (
               <div className="divide-y divide-border/60">
                 {recentNotifications.slice(0, 4).map((n) => (

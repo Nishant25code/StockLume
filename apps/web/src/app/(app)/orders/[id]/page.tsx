@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { RoleGuard } from "@/components/auth/role-guard";
+import { PageSkeleton } from "@/components/states/loading-state";
 import { OrderDetailView } from "@/components/orders/order-detail-view";
 
 interface PageProps {
@@ -16,7 +18,9 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <RoleGuard allow={["RETAILER", "WHOLESALER"]}>
-      <OrderDetailView orderId={id} />
+      <Suspense fallback={<PageSkeleton />}>
+        <OrderDetailView orderId={id} />
+      </Suspense>
     </RoleGuard>
   );
 }

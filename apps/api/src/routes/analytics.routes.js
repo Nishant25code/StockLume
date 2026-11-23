@@ -2,20 +2,19 @@
  * analytics routes — mounted at /api/analytics
  * OWNER: Member 4 — Notifications & Analytics
  *
- * Planned endpoints (see docs/API.md — keep both in sync):
+ * Endpoints:
  *   GET    /api/analytics/sales-trend       daily sales totals (chart data)
- *   GET    /api/analytics/top-products
+ *   GET    /api/analytics/top-products      best sellers (R: by sales, W: by ordered quantity)
  *   GET    /api/analytics/orders-summary    order counts by status
- *
- * Pattern:
- *   import { requireAuth, requireRole } from '../middleware/auth.js';
- *   import * as controller from '../controllers/analytics.controller.js';
- *   router.get('/', requireAuth(), controller.list);
  */
 import { Router } from 'express';
+import { requireAuth } from '../middleware/auth.js';
+import * as controller from '../controllers/analytics.controller.js';
 
 const router = Router();
 
-// TODO(Member 4): add analytics endpoints here.
+router.get('/sales-trend', requireAuth(), controller.getSalesTrend);
+router.get('/top-products', requireAuth(), controller.getTopProducts);
+router.get('/orders-summary', requireAuth(), controller.getOrdersSummary);
 
 export default router;

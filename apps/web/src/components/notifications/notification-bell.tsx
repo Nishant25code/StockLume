@@ -7,11 +7,9 @@ import {
   Check,
   CheckCheck,
   Package,
-  RotateCcw,
   ShoppingBag,
   Truck,
   UserCheck,
-  Users,
   XCircle,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -104,14 +102,20 @@ export function NotificationBell() {
   }, []);
 
   useEffect(() => {
-    fetchUnreadCount();
-    const interval = setInterval(fetchUnreadCount, 30_000);
+    void (async () => {
+      await fetchUnreadCount();
+    })();
+    const interval = setInterval(() => {
+      void fetchUnreadCount();
+    }, 30_000);
     return () => clearInterval(interval);
   }, [fetchUnreadCount]);
 
   useEffect(() => {
     if (isOpen) {
-      fetchNotifications();
+      void (async () => {
+        await fetchNotifications();
+      })();
     }
   }, [isOpen, fetchNotifications]);
 

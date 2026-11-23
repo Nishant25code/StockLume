@@ -15,7 +15,6 @@ import {
   TrendingUp,
   Truck,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/states/empty-state";
@@ -61,7 +60,9 @@ export function RetailerDashboard() {
   }, [trendDays]);
 
   useEffect(() => {
-    loadData();
+    void (async () => {
+      await loadData();
+    })();
   }, [loadData]);
 
   if (isLoading && !dashboard) {

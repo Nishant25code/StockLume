@@ -2,9 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
-  AlertTriangle,
   ArrowLeft,
   Ban,
   Building2,
@@ -14,17 +12,14 @@ import {
   Edit3,
   FileText,
   Loader2,
-  Package,
   PackageCheck,
   Send,
-  Sparkles,
   Store,
   Truck,
   XCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ErrorState } from "@/components/states/error-state";
@@ -62,7 +57,6 @@ function formatDate(isoString?: string | null) {
 }
 
 export function OrderDetailView({ orderId }: OrderDetailViewProps) {
-  const router = useRouter();
   const { role: sessionRole } = useSession();
   const [order, setOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -121,7 +115,9 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
   }, [orderId]);
 
   useEffect(() => {
-    fetchOrder();
+    void (async () => {
+      await fetchOrder();
+    })();
   }, [fetchOrder]);
 
   // Actions

@@ -3,16 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  AlertCircle,
   ArrowRight,
   CheckCircle,
   Clock,
-  Eye,
   FileText,
   Inbox,
   Loader2,
-  Package,
-  Send,
   Store,
   Truck,
   XCircle,

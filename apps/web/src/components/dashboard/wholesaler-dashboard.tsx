@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   ArrowRight,
   Bell,
-  Boxes,
   CheckCircle2,
   Clock,
   Coins,
@@ -54,7 +53,9 @@ export function WholesalerDashboard() {
   }, []);
 
   useEffect(() => {
-    loadData();
+    void (async () => {
+      await loadData();
+    })();
   }, [loadData]);
 
   if (isLoading && !dashboard) {

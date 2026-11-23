@@ -78,8 +78,9 @@ export function EditOrderItemsDialog({
         }))
       );
       onClose();
-    } catch (err: any) {
-      setError(err?.message || "Failed to update order items.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to update order items.";
+      setError(message);
     } finally {
       setIsSaving(false);
     }

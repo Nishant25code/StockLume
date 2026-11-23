@@ -37,8 +37,9 @@ export function RejectOrderModal({
       setError(null);
       await onConfirm(reason.trim());
       onClose();
-    } catch (err: any) {
-      setError(err?.message || "Failed to reject order. Please try again.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to reject order. Please try again.";
+      setError(message);
     } finally {
       setIsSubmitting(false);
     }

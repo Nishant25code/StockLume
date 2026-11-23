@@ -67,7 +67,9 @@ export function AnalyticsView() {
   }, [days, topProductsLimit]);
 
   useEffect(() => {
-    loadData();
+    void (async () => {
+      await loadData();
+    })();
   }, [loadData]);
 
   if (isLoading && salesTrend.length === 0 && !ordersSummary) {

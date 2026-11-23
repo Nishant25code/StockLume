@@ -4,10 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import {
   AlertTriangle,
   Boxes,
-  CheckCircle2,
   History,
   Loader2,
-  PlusCircle,
   RefreshCw,
   ShoppingCart,
   Sparkles,
@@ -298,7 +296,9 @@ export function InventoryView() {
   }, []);
 
   useEffect(() => {
-    loadData();
+    void (async () => {
+      await loadData();
+    })();
   }, [loadData]);
 
   // Handler for Simulate Sales Demo Button

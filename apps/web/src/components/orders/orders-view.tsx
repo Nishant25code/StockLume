@@ -2,22 +2,13 @@
 
 import { useCallback, useEffect, useState } from "react";
 import {
-  AlertTriangle,
-  Boxes,
-  CheckCircle2,
-  Inbox,
-  Loader2,
-  Package,
   RefreshCw,
   Sparkles,
-  Store,
-  Truck,
   Users,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ErrorState } from "@/components/states/error-state";
 import { PageSkeleton } from "@/components/states/loading-state";
 import { RetailerOrdersView } from "./retailer-orders-view";
@@ -40,7 +31,9 @@ export function OrdersView() {
   // Sync active role with session
   useEffect(() => {
     if (sessionRole) {
-      setActiveRole(sessionRole);
+      void (async () => {
+        setActiveRole(sessionRole);
+      })();
     }
   }, [sessionRole]);
 
@@ -67,7 +60,9 @@ export function OrdersView() {
   }, []);
 
   useEffect(() => {
-    fetchOrders();
+    void (async () => {
+      await fetchOrders();
+    })();
   }, [fetchOrders]);
 
   // 1. Generate Suggestions (Retailer)

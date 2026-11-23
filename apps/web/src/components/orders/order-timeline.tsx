@@ -219,7 +219,7 @@ export function OrderTimeline({ order, className }: OrderTimelineProps) {
           aria-hidden="true"
         />
 
-        {steps.map((step, idx) => {
+        {steps.map((step) => {
           return (
             <div
               key={step.key}

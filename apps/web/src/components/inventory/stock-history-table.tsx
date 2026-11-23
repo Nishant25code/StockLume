@@ -178,3 +178,4 @@ export function StockHistoryTable({ movements, className }: StockHistoryTablePro
     </Card>
   );
 }
+

@@ -238,3 +238,63 @@ export interface OrdersSummary {
     totalAmount: number;
   }>;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Member 3 & 4 — Orders & Fulfillment Types
+   ───────────────────────────────────────────────────────────── */
+
+export interface OrderItem {
+  id: string;
+  orderId: string;
+  productId: string;
+  productName: string;
+  sku: string;
+  unit?: string;
+  category?: string;
+  quantity: number;
+  suggestedQuantity?: number | null;
+  unitPrice: number;
+  totalPrice?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface Order {
+  id: string;
+  orderNumber: number;
+  retailerId: string;
+  wholesalerId: string;
+  retailerName?: string;
+  retailerCity?: string;
+  wholesalerName?: string;
+  wholesalerCity?: string;
+  status: OrderStatus;
+  isSuggested: boolean;
+  notes?: string | null;
+  rejectionReason?: string | null;
+  totalAmount: number;
+  submittedAt?: string | null;
+  acceptedAt?: string | null;
+  rejectedAt?: string | null;
+  dispatchedAt?: string | null;
+  deliveredAt?: string | null;
+  cancelledAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  items?: OrderItem[];
+}
+
+export interface CreateOrderPayload {
+  wholesalerId: string;
+  notes?: string;
+  items?: Array<{ productId: string; quantity: number }>;
+}
+
+export interface UpdateOrderItemsPayload {
+  items: Array<{ productId: string; quantity: number }>;
+}
+
+export interface RejectOrderPayload {
+  reason: string;
+}
+

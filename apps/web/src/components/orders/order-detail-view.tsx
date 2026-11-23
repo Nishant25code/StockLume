@@ -300,15 +300,19 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
 
   if (error || !order) {
     return (
-      <ErrorState
-        title="Order Not Found"
-        message={error || `Could not find order ${orderId}.`}
-        action={
-          <Button asChild size="sm" variant="outline">
-            <Link href="/orders">Back to Orders</Link>
-          </Button>
-        }
-      />
+      <div className="space-y-4">
+        <Button asChild size="sm" variant="outline">
+          <Link href="/orders" className="gap-1.5">
+            <ArrowLeft className="size-4" />
+            <span>Back to Orders</span>
+          </Link>
+        </Button>
+        <ErrorState
+          title="Order Not Found"
+          message={error || `Could not find order ${orderId}.`}
+          onRetry={fetchOrder}
+        />
+      </div>
     );
   }
 
@@ -571,3 +575,4 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
     </div>
   );
 }
+

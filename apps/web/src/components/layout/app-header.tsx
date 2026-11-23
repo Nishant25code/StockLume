@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Bell, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { NAV_ITEMS } from "@/lib/navigation";
 import { useSession } from "@/providers/session-provider";
@@ -37,12 +38,7 @@ export function AppHeader() {
             {isPreview ? " · preview" : ""}
           </Badge>
         ) : null}
-        {/* TODO(Member 4): unread count from GET /api/notifications/unread-count */}
-        <Button variant="ghost" size="icon" aria-label="Notifications" asChild>
-          <Link href={role === "WHOLESALER" ? "/wholesaler/dashboard" : "/retailer/dashboard"}>
-            <Bell />
-          </Link>
-        </Button>
+        <NotificationBell />
         <ThemeToggle />
         <Button variant="ghost" size="icon" aria-label="Sign out" onClick={signOut}>
           <LogOut />

@@ -43,3 +43,128 @@ export interface CurrentUser {
   businessName: string | null;
   role: Role | null;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Member 4 — Notifications & Analytics Types
+   ───────────────────────────────────────────────────────────── */
+
+export type NotificationType =
+  | "LOW_STOCK"
+  | "CONNECTION_REQUEST"
+  | "CONNECTION_ACCEPTED"
+  | "ORDER_SUBMITTED"
+  | "ORDER_ACCEPTED"
+  | "ORDER_REJECTED"
+  | "ORDER_DISPATCHED"
+  | "ORDER_DELIVERED"
+  | "ORDER_CANCELLED";
+
+export interface Notification {
+  id: string;
+  businessId: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  relatedOrderId: string | null;
+  relatedProductId: string | null;
+  isRead: boolean;
+  createdAt: string;
+}
+
+export interface UnreadCountResponse {
+  count: number;
+}
+
+export interface LowStockAlert {
+  productId: string;
+  productName: string;
+  sku: string;
+  quantity: number;
+  minStock: number;
+  wholesalerName: string;
+}
+
+export interface RetailerDashboardData {
+  stockValue: number;
+  lowStockCount: number;
+  lowStockItems?: number;
+  openOrders: number;
+  sales7d: number;
+  salesThisWeek?: number;
+  recentSales?: number;
+  kpis?: {
+    stockValue: number;
+    lowStockCount: number;
+    openOrders: number;
+    sales7d: number;
+  };
+  lowStockAlerts: LowStockAlert[];
+  recentNotifications: Notification[];
+}
+
+export interface WholesalerTopProduct {
+  productId: string;
+  name: string;
+  sku: string;
+  price: number;
+  availableQuantity: number;
+  totalOrdered: number;
+  totalRevenue: number;
+}
+
+export interface WholesalerPendingOrder {
+  id: string;
+  orderNumber: number;
+  totalAmount: number;
+  submittedAt: string | null;
+  retailerName: string;
+}
+
+export interface WholesalerDashboardData {
+  pendingOrders: number;
+  revenue: number;
+  totalRevenue?: number;
+  connectedRetailers: number;
+  kpis?: {
+    pendingOrders: number;
+    revenue: number;
+    connectedRetailers: number;
+  };
+  topProducts: WholesalerTopProduct[];
+  pendingOrdersList: WholesalerPendingOrder[];
+  recentNotifications: Notification[];
+}
+
+export interface SalesTrendPoint {
+  date: string;
+  totalAmount: number;
+  totalQuantity?: number;
+  orderCount?: number;
+}
+
+export interface TopProduct {
+  productId: string;
+  name: string;
+  sku: string;
+  category?: string;
+  unit?: string;
+  price: number;
+  availableQuantity?: number;
+  wholesalerName?: string;
+  totalSold?: number;
+  totalOrdered?: number;
+  totalQuantity?: number;
+  totalRevenue: number;
+  orderCount?: number;
+}
+
+export interface OrdersSummary {
+  totalOrders: number;
+  totalAmount: number;
+  counts: Record<OrderStatus, number>;
+  byStatus: Array<{
+    status: OrderStatus;
+    count: number;
+    totalAmount: number;
+  }>;
+}

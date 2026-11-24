@@ -81,8 +81,8 @@ Legend: **R** = retailer, **W** = wholesaler. Status: ✅ done · 🔜 planned.
 
 | Method | Path | Role | Description | Status |
 |---|---|---|---|---|
-| POST | `/auth/register` | signed-in, no profile yet | Create business + profile. Body: `{ fullName, businessName, businessType, phone?, city? }` | 🔜 |
-| GET | `/auth/me` | any | Current user, business and role | 🔜 |
+| POST | `/auth/register` | signed-in, no business yet | Create business + profile in one transaction. Body: `{ fullName, businessName, businessType, phone?, city?, address? }` → 201 with the `/auth/me` shape; 409 if already registered | ✅ |
+| GET | `/auth/me` | any signed-in user | `{ id, email, fullName, businessId, businessName, role, business, needsOnboarding }` — `needsOnboarding: true` until `/auth/register` | ✅ |
 
 ### Connections — Member 1
 

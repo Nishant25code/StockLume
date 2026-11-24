@@ -44,7 +44,8 @@ Why plain SQL instead of an ORM? It keeps the database concepts visible (joins, 
 apps/web/src/
 ├── app/
 │   ├── page.tsx                 Landing
-│   ├── (auth)/login/            Login (placeholder + developer role preview)
+│   ├── (auth)/login/            Sign in / create account (Supabase Auth)
+│   ├── (auth)/onboarding/       Create business after email confirmation
 │   └── (app)/                   Signed-in shell: sidebar + header
 │       ├── retailer/dashboard/  wholesaler/dashboard/
 │       ├── products/  inventory/  orders/  analytics/
@@ -98,7 +99,9 @@ sequenceDiagram
 3. **Ownership authorization (is this yours?)** — in the **service**, every query is filtered by `req.user.businessId` (e.g. `where retailer_id = $1`). This is each module owner's job.
 4. The frontend `RoleGuard` and role-based sidebar are **convenience only**; the API is the real gate.
 
-Until Member 1 wires Supabase Auth, the login page offers a **developer preview** that stores a role in `localStorage` so everyone can build UI. API calls will return `401` in preview mode — that's expected.
+In the browser, `SessionProvider` (`useSession()`) listens to Supabase's auth state, loads `GET /api/auth/me`, and exposes `status` (`loading`, `authenticated`, `onboarding`, `signed-out`, `preview`, `error`), `user`, `role`, `signIn`, `signUp`, `signOut`. `AuthGate` (in `app/(app)/layout.tsx`) sends signed-out users to `/login` and users without a business to `/onboarding`.
+
+In development (or when Supabase isn't configured) the login page also offers a **developer preview**: pick a role and see the screens with demo data, no login. It is hidden in production builds once Supabase is configured. API calls will return `401` in preview mode — that's expected.
 
 ## Deployment
 

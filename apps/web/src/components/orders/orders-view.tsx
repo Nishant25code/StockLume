@@ -351,7 +351,7 @@ export function OrdersView() {
         </Alert>
       )}
 
-      {/* Role Switcher in Preview Mode */}
+      {/* Role header (role switcher only in developer preview) */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 rounded-lg border bg-muted/30">
         <div className="flex items-center gap-2">
           <Users className="size-4 text-muted-foreground" />
@@ -361,6 +361,9 @@ export function OrdersView() {
           </span>
         </div>
         <div className="flex items-center gap-1.5 self-end sm:self-auto">
+          {/* Switching roles is only for developer preview — a signed-in user has one role. */}
+          {isPreview ? (
+            <>
           <Button
             variant={activeRole === "RETAILER" ? "default" : "outline"}
             size="sm"
@@ -383,6 +386,8 @@ export function OrdersView() {
           >
             Wholesaler View
           </Button>
+            </>
+          ) : null}
           <Button
             variant="ghost"
             size="sm"

@@ -238,7 +238,7 @@ export function RetailerOrdersView({
                       )}
                     </CardContent>
 
-                    <CardFooter className="pt-3 border-t bg-muted/20 flex items-center justify-between gap-2">
+                    <CardFooter className="pt-3 border-t bg-muted/20 flex flex-wrap items-center justify-between gap-2">
                       <div className="flex items-center gap-1.5">
                         <Button
                           variant="outline"
@@ -368,7 +368,7 @@ export function RetailerOrdersView({
                       )}
                     </CardContent>
 
-                    <CardFooter className="pt-3 border-t bg-muted/20 flex items-center justify-between gap-2">
+                    <CardFooter className="pt-3 border-t bg-muted/20 flex flex-wrap items-center justify-between gap-2">
                       <Button asChild variant="outline" size="sm" className="h-8 text-xs gap-1">
                         <Link href={`/orders/${order.id}`}>
                           <span>View Details & Timeline</span>

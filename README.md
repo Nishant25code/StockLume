@@ -166,9 +166,9 @@ Step-by-step (Supabase, Hyperdrive, Workers): [docs/DEPLOYMENT.md](docs/DEPLOYME
 
 ## Team
 
-| Member | Module | Branch |
+| Name | GitHub | Role |
 |---|---|---|
-| Member 1 | Authentication, Connections & Products | `feature/auth-products` |
-| Member 2 | Inventory & Stock Prediction | `feature/inventory` |
-| Member 3 | Orders & Fulfillment | `feature/orders` |
-| Member 4 | Notifications & Analytics | `feature/analytics` |
+| **Nishant Jain** (lead) | [@Nishant25code](https://github.com/Nishant25code) | Project lead: management, Supabase & Cloudflare setup, authentication, integration |
+| **Noor Hora** | [@noor0021](https://github.com/noor0021) | Backend: orders & fulfilment, sales, stockout prediction; UI redesign |
+| **Celina** | [@cellinaachari505](https://github.com/cellinaachari505) | Database, connections, products, inventory & reorder rules |
+| **Kalpana Beniwal** | [@KalpnaBeniwal868](https://github.com/KalpnaBeniwal868) | Notifications, dashboards, analytics, inventory & orders UI |

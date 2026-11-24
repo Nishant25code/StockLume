@@ -2,22 +2,23 @@
  * products routes — mounted at /api/products
  * OWNER: Member 1 — Authentication, Connections & Products
  *
- * Planned endpoints (see docs/API.md — keep both in sync):
+ * Endpoints:
  *   GET    /api/products                    wholesaler: own catalogue | retailer: products of connected wholesalers
- *   GET    /api/products/:id
- *   POST   /api/products                    wholesaler only
- *   PATCH  /api/products/:id                wholesaler only (price, available_quantity, is_active)
- *   DELETE /api/products/:id                wholesaler only (soft delete: is_active = false)
- *
- * Pattern:
- *   import { requireAuth, requireRole } from '../middleware/auth.js';
- *   import * as controller from '../controllers/products.controller.js';
- *   router.get('/', requireAuth(), controller.list);
+ *   GET    /api/products/:id                product details (if owner or actively connected retailer)
+ *   POST   /api/products                    wholesaler only: create a product
+ *   PATCH  /api/products/:id                wholesaler only: update product fields
+ *   DELETE /api/products/:id                wholesaler only: soft delete (is_active = false)
  */
 import { Router } from 'express';
+import { requireAuth, requireRole } from '../middleware/auth.js';
+import * as controller from '../controllers/products.controller.js';
 
 const router = Router();
 
-// TODO(Member 1): add products endpoints here.
+router.get('/', requireAuth(), controller.list);
+router.get('/:id', requireAuth(), controller.getById);
+router.post('/', requireAuth(), requireRole('WHOLESALER'), controller.create);
+router.patch('/:id', requireAuth(), requireRole('WHOLESALER'), controller.update);
+router.delete('/:id', requireAuth(), requireRole('WHOLESALER'), controller.remove);
 
 export default router;

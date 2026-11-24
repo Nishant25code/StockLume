@@ -137,3 +137,4 @@ Then test by hand:
 - Use shadcn/ui components (`npx shadcn@latest add <name>` from `apps/web`) and design tokens (`bg-card`, `text-brand`, …), not hard-coded colours.
 - Use `LoadingState`, `ErrorState`, `EmptyState` for every data view.
 - Don't edit files in `components/ui/` unless needed; they're generated.
+

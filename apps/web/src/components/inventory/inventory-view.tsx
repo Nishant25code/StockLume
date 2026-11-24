@@ -453,7 +453,7 @@ export function InventoryView() {
 
       {/* Tabs Layout */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="bg-muted/70 p-1">
+        <TabsList className="max-w-full justify-start overflow-x-auto bg-muted/70 p-1">
           <TabsTrigger value="stock" className="text-xs gap-1.5">
             <Boxes className="size-3.5" />
             <span>Current Stock ({items.length})</span>

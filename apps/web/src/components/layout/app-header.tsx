@@ -9,12 +9,19 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { NAV_ITEMS } from "@/lib/navigation";
+import { useHydrated } from "@/hooks/use-hydrated";
 import { useSession } from "@/providers/session-provider";
 
 export function AppHeader() {
   const pathname = usePathname();
   const router = useRouter();
-  const { role, isPreview, user, signOut } = useSession();
+  const session = useSession();
+  // Session lives only in the browser: render it after hydration so the first
+  // client render matches the server HTML.
+  const hydrated = useHydrated();
+  const role = hydrated ? session.role : null;
+  const user = hydrated ? session.user : null;
+  const { isPreview, signOut } = session;
   const current = NAV_ITEMS.find((item) => pathname.startsWith(item.href));
 
   async function handleSignOut() {

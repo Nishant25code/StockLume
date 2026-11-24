@@ -1,11 +1,12 @@
 /**
  * Express application (no app.listen here).
  * - Local development: src/server.js imports this and calls listen().
- * - Vercel: detects this Express app and runs it as a serverless function.
+ * - Cloudflare Workers: src/worker.js serves it (see apps/api/wrangler.jsonc).
  */
 import express from 'express';
 import cors from 'cors';
 import { env } from './config/env.js';
+import { perRequestPool } from './db/pool.js';
 import apiRoutes from './routes/index.js';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.js';
 
@@ -24,6 +25,7 @@ app.use(
   }),
 );
 app.use(express.json({ limit: '1mb' }));
+if (env.dbPoolPerRequest) app.use(perRequestPool());
 
 app.get('/', (_req, res) => {
   res.json({ success: true, data: { name: 'StockLume API', docs: '/api/health' } });

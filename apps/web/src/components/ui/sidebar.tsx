@@ -161,7 +161,11 @@ function Sidebar({
   variant?: "sidebar" | "floating" | "inset"
   collapsible?: "offcanvas" | "icon" | "none"
 }) {
-  const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+  const { state, openMobile, setOpenMobile } = useSidebar()
+  // Read the screen size here (not from context): this component often hydrates
+  // later than SidebarProvider (inside <Suspense>), and must start from the same
+  // "desktop" value the server rendered, or React reports a hydration mismatch.
+  const isMobile = useIsMobile()
 
   if (collapsible === "none") {
     return (
@@ -501,7 +505,8 @@ function SidebarMenuButton({
   tooltip?: string | React.ComponentProps<typeof TooltipContent>
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const Comp = asChild ? Slot.Root : "button"
-  const { isMobile, state } = useSidebar()
+  const { state } = useSidebar()
+  const isMobile = useIsMobile() // see note in <Sidebar>
 
   const button = (
     <Comp

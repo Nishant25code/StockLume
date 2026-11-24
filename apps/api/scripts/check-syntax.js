@@ -7,7 +7,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const srcDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'src');
-const skip = new Set(['server.js']); // server.js would start listening
+const skip = new Set(['server.js', 'worker.js']); // start servers or need the Workers runtime
 
 function walk(dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {

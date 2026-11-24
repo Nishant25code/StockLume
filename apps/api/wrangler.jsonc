@@ -1,0 +1,33 @@
+// Cloudflare Worker for the StockLume Express API.
+//   Local:  npm run cf:dev --workspace @stocklume/api
+//   Deploy: npm run cf:deploy --workspace @stocklume/api
+// Secrets are never stored here. Supabase URL + publishable key are public values.
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "stocklume-api",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-11-20",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  "vars": {
+    "NODE_ENV": "production",
+    // Workers can't share sockets between requests → one small pool per request.
+    "DB_POOL_PER_REQUEST": "true",
+    // Hyperdrive's connection string is local to Cloudflare; Hyperdrive itself does TLS to Supabase.
+    "DATABASE_SSL": "disable",
+    // DATABASE_URL comes from the HYPERDRIVE binding (set per request in src/worker.js).
+    "DATABASE_URL_SOURCE": "hyperdrive",
+    "SUPABASE_URL": "https://pucjdnibsnnlwtdfmmqu.supabase.co",
+    "SUPABASE_ANON_KEY": "sb_publishable_8U24UL8pEehG1kZAJ_rgQg_PauY_dvH",
+    // Comma-separated; the deployed frontend URL is added after the first web deploy.
+    "CORS_ORIGINS": "https://stocklume-web.gamingnishant2507.workers.dev,http://localhost:3000"
+  },
+  // Pooled, cached connection to Supabase Postgres. Create with:
+  //   npx wrangler hyperdrive create stocklume-db --connection-string="<Supabase session pooler URI>"
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      "id": "270a2cf16a1f47299680f7709f0e2fcf"
+    }
+  ]
+}

@@ -70,7 +70,7 @@ Each member owns **their backend APIs, SQL queries and frontend pages** for one 
 2. Notifications endpoints + header bell with unread count.
 3. Dashboard KPI endpoints and cards for both roles.
 4. Analytics endpoints + charts (`npx shadcn@latest add chart` — uses Recharts and the `--chart-*` tokens).
-5. Own the Vercel deployment checklist in [DEPLOYMENT.md](DEPLOYMENT.md).
+5. Own the Cloudflare deployment checklist in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ### Lead — shared files
 

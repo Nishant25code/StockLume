@@ -18,11 +18,14 @@ import {
 } from "@/components/ui/sidebar";
 import { BrandLogo } from "@/components/layout/brand-logo";
 import { navItemsForRole } from "@/lib/navigation";
+import { useHydrated } from "@/hooks/use-hydrated";
 import { useSession } from "@/providers/session-provider";
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const { role } = useSession();
+  const session = useSession();
+  // Role comes from the browser session — apply it after hydration (see useHydrated).
+  const role = useHydrated() ? session.role : null;
   const items = navItemsForRole(role);
 
   return (

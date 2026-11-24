@@ -2,9 +2,9 @@
 
 ```mermaid
 flowchart LR
-    U[Browser] -->|pages| W[Next.js frontend<br/>apps/web · Vercel]
+    U[Browser] -->|pages| W[Next.js frontend<br/>apps/web · Cloudflare Worker]
     W -->|sign in / sign up| SA[Supabase Auth]
-    W -->|REST + Bearer token| A[Express API<br/>apps/api · Vercel]
+    W -->|REST + Bearer token| A[Express API<br/>apps/api · Cloudflare Worker]
     A -->|verify token| SA
     A -->|SQL via pg| DB[(Supabase PostgreSQL)]
 ```
@@ -21,7 +21,8 @@ flowchart LR
 ```
 apps/api/src/
 ├── app.js            Express app: CORS, JSON, routes, error handler
-├── server.js         Local entry (listen). Vercel serves app.js as a function.
+├── server.js         Local entry (listen)
+├── worker.js         Cloudflare Workers entry (same app; DB via Hyperdrive)
 ├── config/env.js     Reads + validates environment variables
 ├── db/pool.js        query() and withTransaction() helpers  ← all SQL goes through here
 ├── db/supabase.js    Supabase client — ONLY for verifying tokens
@@ -105,4 +106,4 @@ In development (or when Supabase isn't configured) the login page also offers a 
 
 ## Deployment
 
-Two Vercel projects from the same GitHub repository — see [DEPLOYMENT.md](DEPLOYMENT.md).
+Two Cloudflare Workers from the same repository (frontend via OpenNext, API via Workers Node.js compatibility), with Hyperdrive pooling the connection to Supabase — see [DEPLOYMENT.md](DEPLOYMENT.md).

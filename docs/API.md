@@ -1,6 +1,6 @@
 # REST API
 
-Base URL: `http://localhost:4000/api` locally, `https://<api-project>.vercel.app/api` in production.
+Base URL: `http://localhost:4000/api` locally, `https://stocklume-api.gamingnishant2507.workers.dev/api` in production (Cloudflare Worker).
 All request and response bodies are JSON. Field names in JSON are **camelCase**; database columns are **snake_case** — convert in the service layer.
 
 ## Standard response format

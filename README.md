@@ -34,7 +34,7 @@ Retailers track stock and sales; StockLume predicts which products are likely to
 | Backend | Node.js 20+, Express 5 (JavaScript ES modules), `pg` (parameterized SQL) |
 | Database | PostgreSQL on Supabase |
 | Auth | Supabase Auth (JWT verified by the API) |
-| Deployment | Vercel — two projects (web + API) from this repo |
+| Deployment | Cloudflare Workers — Next.js via OpenNext, Express API, Hyperdrive to Supabase |
 
 ## Repository structure
 
@@ -139,9 +139,17 @@ Without a `.env`, the API still starts in development and reports `"not_configur
 
 ## Deployment
 
-Two Vercel projects from this repository: **`apps/web`** (Next.js) and **`apps/api`** (Express). Step-by-step: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+Live on Cloudflare Workers:
 
-> Supabase and Vercel are not connected yet — the project is prepared for them.
+- **App:** https://stocklume-web.gamingnishant2507.workers.dev
+- **API:** https://stocklume-api.gamingnishant2507.workers.dev/api/health
+
+```bash
+npm run cf:deploy --workspace @stocklume/api   # deploy the API Worker
+npm run cf:deploy --workspace @stocklume/web   # build with OpenNext + deploy the frontend
+```
+
+Step-by-step (Supabase, Hyperdrive, Workers): [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Documentation
 
@@ -153,7 +161,7 @@ Two Vercel projects from this repository: **`apps/web`** (Next.js) and **`apps/a
 | [docs/BUSINESS_RULES.md](docs/BUSINESS_RULES.md) | **Order status lifecycle**, **inventory update rules**, notifications |
 | [docs/STOCKOUT_MODEL.md](docs/STOCKOUT_MODEL.md) | Probability-based stockout prediction + threshold fallback |
 | [docs/MODULES.md](docs/MODULES.md) | **Module ownership**, file map, first tasks per member |
-| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Supabase + Vercel setup and checklist |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Supabase + Cloudflare Workers setup and checklist |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | **Branch naming**, running apps, migrations, PRs, avoiding conflicts |
 
 ## Team

@@ -1,6 +1,6 @@
 # Deployment
 
-> Status: login, sign-up and every module are built and tested locally (against a Supabase Auth stand-in and a real Postgres). Connecting your real Supabase project and Vercel still has to be done once — follow these steps, then tick the checklist at the bottom.
+> Status: **live on Cloudflare Workers** with Supabase (Postgres via Hyperdrive + Auth). See the checklist at the bottom for what remains.
 
 ## 1. Supabase (database + auth)
 
@@ -15,7 +15,7 @@
 3. **Auth** (Authentication → Sign In / Providers → Email: enabled):
    - **"Confirm email" OFF (easiest for the demo):** sign-up logs the user in immediately and creates their business.
    - **"Confirm email" ON:** sign-up shows "Check your email"; after clicking the link and signing in, the app shows a prefilled **Set up your business** page (`/onboarding`).
-   - Authentication → URL Configuration: **Site URL** = `http://localhost:3000` locally (your Vercel web URL in production), and add `http://localhost:3000/login` and `https://<web-project>.vercel.app/login` to **Redirect URLs** (used by the confirmation email).
+   - Authentication → URL Configuration: **Site URL** = `http://localhost:3000` locally (https://stocklume-web.gamingnishant2507.workers.dev in production), and add `http://localhost:3000/login` and `https://stocklume-web.gamingnishant2507.workers.dev/login` to **Redirect URLs** (used by the confirmation email).
 4. **Use the demo data with a real login (optional)** — new sign-ups get their own empty business. To log in *as* a seeded demo business instead:
    - Sign up in the app (any email), copy the user's UUID from Supabase → Authentication → Users.
    - If you already completed sign-up, you own a new empty business; the SQL below moves your login to the demo business instead.
@@ -40,49 +40,63 @@
    | `DATABASE_URL` | Connect → **Transaction pooler** (port `6543`) URI, with your DB password |
    | `DATABASE_CA_CERT` | Project Settings → Database → **SSL Configuration → Download certificate** — paste the file's contents |
 
-   **Why the CA certificate?** It lets the API check that it is really talking to Supabase (TLS certificate verification), not just that the connection is encrypted. Without it, someone between Vercel and Supabase could impersonate the database. In production the API **refuses to start** without `DATABASE_CA_CERT`. (Escape hatch, not recommended: `DATABASE_SSL_ALLOW_UNVERIFIED=true`.) In local development it only prints a warning.
+   **Why the CA certificate?** It lets the API check that it is really talking to Supabase (TLS certificate verification), not just that the connection is encrypted. Without it, someone between the API and Supabase could impersonate the database. When the API runs on Node in production it **refuses to start** without `DATABASE_CA_CERT`. On Cloudflare, Hyperdrive makes the TLS connection to Supabase instead (encrypted; for full certificate verification, upload the Supabase CA with `npx wrangler cert upload certificate-authority --ca-cert prod-ca-2021.crt --name supabase-ca` and recreate Hyperdrive with `--origin-ca-certificate-id <id> --sslmode verify-full`). (Escape hatch, not recommended: `DATABASE_SSL_ALLOW_UNVERIFIED=true`.) In local development it only prints a warning.
 
    Share these with the team privately (not in Git, not in a public chat).
 
-## 2. Vercel — two projects, one repository
+## 2. Cloudflare Workers — two Workers + Hyperdrive
 
-Import the GitHub repository into Vercel **twice**.
+Live URLs (Cloudflare account of the lead):
 
-### API project (`stocklume-api`)
-
-| Setting | Value |
+| | URL |
 |---|---|
-| Root Directory | `apps/api` |
-| Framework Preset | Express (auto-detected from `src/app.js`) — "Other" also works |
-| Install Command | default (`npm install` — Vercel uses the root workspace lockfile) |
-| Build Command | none |
-| Environment variables | `DATABASE_URL`, `DATABASE_CA_CERT`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `CORS_ORIGINS=https://<web-project>.vercel.app` |
+| Frontend | https://stocklume-web.gamingnishant2507.workers.dev |
+| API | https://stocklume-api.gamingnishant2507.workers.dev/api/health |
 
-`src/app.js` default-exports the Express app, which Vercel runs as a serverless function. `server.js` skips `listen()` when the `VERCEL` env var is present. In production, missing env variables make the function fail fast with a clear message in the Vercel logs.
+```mermaid
+flowchart LR
+    B[Browser] --> W[stocklume-web Worker<br/>Next.js via OpenNext]
+    B -->|REST + Bearer token| A[stocklume-api Worker<br/>Express]
+    B -->|sign in / sign up| SA[Supabase Auth]
+    A -->|verify token| SA
+    A -->|HYPERDRIVE binding| H[Cloudflare Hyperdrive] -->|pooled TLS| DB[(Supabase Postgres)]
+```
 
-Verify: `https://<api-project>.vercel.app/api/health` → `"database": "connected"`.
+Deploy from your machine (logged in with `npx wrangler login` to the right Cloudflare account):
 
-### Web project (`stocklume-web`)
+```bash
+npm run cf:deploy --workspace @stocklume/api   # API Worker
+npm run cf:deploy --workspace @stocklume/web   # builds with OpenNext, then deploys
+```
 
-| Setting | Value |
-|---|---|
-| Root Directory | `apps/web` |
-| Framework Preset | Next.js |
-| Environment variables | `NEXT_PUBLIC_API_URL=https://<api-project>.vercel.app/api`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` |
+### API Worker (`apps/api/wrangler.jsonc`)
 
-After the web project gets its URL, add it to the API's `CORS_ORIGINS` and redeploy the API. In Supabase → Authentication → URL Configuration, set **Site URL** to the web URL.
+- Entry `src/worker.js` runs the same Express app through Workers' Node.js compatibility (`httpServerHandler`).
+- **Hyperdrive** (`stocklume-db`, binding `HYPERDRIVE`) holds the Supabase connection string (session pooler, port 5432) **as an encrypted Cloudflare secret** — the database password is never in the repo. Query caching is **disabled** so stock levels are never stale. To recreate it:
+  ```bash
+  npx wrangler hyperdrive create stocklume-db --connection-string="postgresql://postgres.<ref>:<password>@aws-0-<region>.pooler.supabase.com:5432/postgres" --caching-disabled
+  ```
+  then put the printed id in `wrangler.jsonc`.
+- Vars in `wrangler.jsonc` are public values only: `SUPABASE_URL`, the publishable key, `CORS_ORIGINS` (add every frontend URL, comma-separated).
+- Workers can't reuse a database socket across requests, so `DB_POOL_PER_REQUEST=true` gives each request its own small pool (max 10 connections; keep `Promise.all` batches of queries ≤ 10 per request).
+- Logs: `npx wrangler tail stocklume-api` or the Cloudflare dashboard (observability is on).
+- Local test of the Worker runtime: `CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE=<local postgres url> npm run cf:dev --workspace @stocklume/api`.
 
-### Preview deployments
+### Frontend Worker (`apps/web/wrangler.jsonc`)
 
-Every PR gets preview URLs for both projects. Preview web builds call the production API unless you set `NEXT_PUBLIC_API_URL` per-environment. Keep it simple: test PRs locally, use previews for UI review.
+- Built with [OpenNext for Cloudflare](https://opennext.js.org/cloudflare) (`open-next.config.ts`); `next dev` / `next build` are unchanged for daily work.
+- `NEXT_PUBLIC_*` values are baked in at build time — `cf:build` in `apps/web/package.json` sets the production API URL and Supabase values explicitly (so `.env.local`'s `localhost` values are never shipped). Change them there if a URL changes.
+- `cacheComponents` is **off** in `next.config.ts`: the Workers runtime doesn't support it yet (pages hang). Don't turn it back on without testing `npm run cf:preview --workspace @stocklume/web`.
+- `keep_names: false` in `wrangler.jsonc` avoids a `__name is not defined` error from next-themes' inline script.
+- Test the production build locally before deploying: `npm run cf:preview --workspace @stocklume/web`.
 
 ## 3. Checklist (Member 4 owns this)
 
 - [ ] Supabase project created, `npm run db:migrate` + `npm run db:seed` run against it
 - [ ] Email auth enabled; "Confirm email" choice made; Site URL + Redirect URLs set
-- [ ] API project deployed, `/api/health` shows `database: connected`
-- [ ] Web project deployed, env vars set
-- [ ] `CORS_ORIGINS` includes the web URL
-- [ ] Supabase Site URL set to the web URL
+- [x] Hyperdrive created; API Worker deployed, `/api/health` shows `database: connected`
+- [x] Frontend Worker deployed with production `NEXT_PUBLIC_*` values
+- [x] `CORS_ORIGINS` includes the web URL
+- [ ] Supabase Site URL + Redirect URLs set to the web URL
 - [ ] Sign-up → register → dashboard works on production
 - [ ] Demo walkthrough of all 14 flow steps on production

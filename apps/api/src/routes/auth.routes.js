@@ -2,19 +2,20 @@
  * auth routes — mounted at /api/auth
  * OWNER: Member 1 — Authentication, Connections & Products
  *
- * Planned endpoints (see docs/API.md — keep both in sync):
- *   POST   /api/auth/register   create business + profile for the signed-in Supabase user
- *   GET    /api/auth/me         current user, business and role
+ *   GET  /api/auth/me        current user, business and role (needsOnboarding if no business yet)
+ *   POST /api/auth/register  create business + profile for the signed-in Supabase user
  *
- * Pattern:
- *   import { requireAuth, requireRole } from '../middleware/auth.js';
- *   import * as controller from '../controllers/auth.controller.js';
- *   router.get('/', requireAuth(), controller.list);
+ * Both accept a signed-in Supabase user who has not registered a business yet.
  */
 import { Router } from 'express';
+import { requireAuth } from '../middleware/auth.js';
+import * as controller from '../controllers/auth.controller.js';
 
 const router = Router();
 
-// TODO(Member 1): add auth endpoints here.
+router.use(requireAuth({ allowMissingProfile: true }));
+
+router.get('/me', controller.me);
+router.post('/register', controller.register);
 
 export default router;

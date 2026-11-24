@@ -1,16 +1,16 @@
 /**
  * auth controller — OWNER: Member 1 — Authentication, Connections & Products
- *
- * Controllers are thin: read req (params, query, body, req.user), validate
- * input, call the service, and respond with sendSuccess(). No SQL here.
- *
- *   import { sendSuccess } from '../utils/response.js';
- *   import * as authService from '../services/auth.service.js';
- *
- *   export async function list(req, res) {
- *     const items = await authService.list(req.user.businessId);
- *     return sendSuccess(res, items);
- *   }
  */
+import { sendSuccess } from '../utils/response.js';
+import * as authService from '../services/auth.service.js';
 
-export {};
+// requireAuth({ allowMissingProfile: true }) puts the Supabase user on req.user.
+const authUserOf = (req) => ({ id: req.user.id, email: req.user.email });
+
+export async function me(req, res) {
+  return sendSuccess(res, await authService.getMe(authUserOf(req)));
+}
+
+export async function register(req, res) {
+  return sendSuccess(res, await authService.register(authUserOf(req), req.body ?? {}), 201);
+}

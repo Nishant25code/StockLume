@@ -61,7 +61,8 @@ async function findOrderToChange(client, orderId, user) {
 // The products inside an order, with their names, for responses and stock updates.
 async function getItems(db, orderId) {
   const { rows } = await db.query(
-    `select oi.product_id, p.name as product_name, p.unit, oi.quantity, oi.suggested_quantity, oi.unit_price
+    `select oi.id, oi.order_id, oi.product_id, p.name as product_name, p.sku, p.category, p.unit,
+            oi.quantity, oi.suggested_quantity, oi.unit_price
        from order_items oi
        join products p on p.id = oi.product_id
       where oi.order_id = $1
@@ -71,9 +72,21 @@ async function getItems(db, orderId) {
   return rows.map(toCamel);
 }
 
-// Converts an order row to camelCase and attaches its items.
+// Names and cities of the order's retailer and wholesaler (shown on the order page).
+async function getParties(db, order) {
+  const { rows } = await db.query(
+    `select r.name as retailer_name, r.city as retailer_city, w.name as wholesaler_name, w.city as wholesaler_city
+       from businesses r, businesses w
+      where r.id = $1 and w.id = $2`,
+    [order.retailer_id, order.wholesaler_id],
+  );
+  return rows[0] ? toCamel(rows[0]) : {};
+}
+
+// Converts an order row to camelCase and attaches its items and business names.
 async function getOrderWithItems(db, order) {
-  return { ...toCamel(order), items: await getItems(db, order.id) };
+  const [items, parties] = await Promise.all([getItems(db, order.id), getParties(db, order)]);
+  return { ...toCamel(order), ...parties, items };
 }
 
 // Re-adds quantity x price of all items and saves it as the order total.

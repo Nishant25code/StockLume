@@ -1,0 +1,29 @@
+=== W1 run 1 ===
+-- EXECUTE s('New Shop', 'RETAILER', 'new@shop.test', '9999999999', 'Delhi')
+Insert on businesses  (cost=0.00..0.02 rows=1 width=196) (actual time=0.431..0.432 rows=1 loops=1)
+  Buffers: shared hit=45 read=2
+  ->  Result  (cost=0.00..0.02 rows=1 width=196) (actual time=0.004..0.004 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=13
+Planning Time: 0.064 ms
+Execution Time: 0.444 ms
+
+=== W1 run 2 ===
+-- EXECUTE s('New Shop', 'RETAILER', 'new@shop.test', '9999999999', 'Delhi')
+Insert on businesses  (cost=0.00..0.02 rows=1 width=196) (actual time=0.501..0.503 rows=1 loops=1)
+  Buffers: shared hit=46
+  ->  Result  (cost=0.00..0.02 rows=1 width=196) (actual time=0.016..0.016 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=13
+Planning Time: 0.139 ms
+Execution Time: 0.538 ms
+
+=== W1 run 3 ===
+-- EXECUTE s('New Shop', 'RETAILER', 'new@shop.test', '9999999999', 'Delhi')
+Insert on businesses  (cost=0.00..0.02 rows=1 width=196) (actual time=0.318..0.319 rows=1 loops=1)
+  Buffers: shared hit=46
+  ->  Result  (cost=0.00..0.02 rows=1 width=196) (actual time=0.016..0.017 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=13
+Planning Time: 0.153 ms
+Execution Time: 0.349 ms

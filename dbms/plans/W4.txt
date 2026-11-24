@@ -1,0 +1,41 @@
+=== W4 run 1 ===
+-- EXECUTE s('9e53bbd7-37fa-4e10-9644-58fef34c1043', 'aef21b4b-83ce-452d-88de-a5367af15521', 'INACTIVE')
+Update on business_connections  (cost=0.28..8.30 rows=1 width=10) (actual time=0.827..0.828 rows=1 loops=1)
+  Buffers: shared hit=67 dirtied=1
+  ->  Index Scan using business_connections_pkey on business_connections  (cost=0.28..8.30 rows=1 width=10) (actual time=0.006..0.007 rows=1 loops=1)
+        Index Cond: (id = '9e53bbd7-37fa-4e10-9644-58fef34c1043'::uuid)
+        Filter: (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid)
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=131
+Planning Time: 0.239 ms
+Trigger business_connections_set_updated_at: time=0.070 calls=1
+Execution Time: 0.866 ms
+
+=== W4 run 2 ===
+-- EXECUTE s('9e53bbd7-37fa-4e10-9644-58fef34c1043', 'aef21b4b-83ce-452d-88de-a5367af15521', 'INACTIVE')
+Update on business_connections  (cost=0.28..8.30 rows=1 width=10) (actual time=0.709..0.710 rows=1 loops=1)
+  Buffers: shared hit=67
+  ->  Index Scan using business_connections_pkey on business_connections  (cost=0.28..8.30 rows=1 width=10) (actual time=0.009..0.010 rows=1 loops=1)
+        Index Cond: (id = '9e53bbd7-37fa-4e10-9644-58fef34c1043'::uuid)
+        Filter: (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid)
+        Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=131
+Planning Time: 0.250 ms
+Trigger business_connections_set_updated_at: time=0.067 calls=1
+Execution Time: 0.750 ms
+
+=== W4 run 3 ===
+-- EXECUTE s('9e53bbd7-37fa-4e10-9644-58fef34c1043', 'aef21b4b-83ce-452d-88de-a5367af15521', 'INACTIVE')
+Update on business_connections  (cost=0.28..8.30 rows=1 width=10) (actual time=0.799..0.800 rows=1 loops=1)
+  Buffers: shared hit=67
+  ->  Index Scan using business_connections_pkey on business_connections  (cost=0.28..8.30 rows=1 width=10) (actual time=0.009..0.010 rows=1 loops=1)
+        Index Cond: (id = '9e53bbd7-37fa-4e10-9644-58fef34c1043'::uuid)
+        Filter: (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid)
+        Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=131
+Planning Time: 0.242 ms
+Trigger business_connections_set_updated_at: time=0.080 calls=1
+Execution Time: 0.836 ms

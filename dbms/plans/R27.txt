@@ -1,0 +1,86 @@
+=== R27 run 1 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', 30)
+Sort  (cost=10181.66..10182.16 rows=200 width=52) (actual time=0.835..0.837 rows=30 loops=1)
+  Sort Key: d.day
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=19
+  ->  HashAggregate  (cost=10171.02..10174.02 rows=200 width=52) (actual time=0.806..0.819 rows=30 loops=1)
+        Group Key: d.day
+        Batches: 1  Memory Usage: 48kB
+        Buffers: shared hit=16
+        ->  Nested Loop Left Join  (cost=9.05..9785.19 rows=51444 width=32) (actual time=0.080..0.790 rows=87 loops=1)
+              Join Filter: ((o.delivered_at >= d.day) AND (o.delivered_at < (d.day + '1 day'::interval)))
+              Rows Removed by Join Filter: 14313
+              Buffers: shared hit=16
+              ->  Function Scan on generate_series d  (cost=0.02..10.02 rows=1000 width=8) (actual time=0.010..0.012 rows=30 loops=1)
+              ->  Materialize  (cost=9.03..516.33 rows=463 width=32) (actual time=0.000..0.011 rows=480 loops=30)
+                    Buffers: shared hit=16
+                    ->  Bitmap Heap Scan on orders o  (cost=9.03..514.02 rows=463 width=32) (actual time=0.013..0.052 rows=480 loops=1)
+                          Recheck Cond: ((wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (status = 'DELIVERED'::order_status))
+                          Heap Blocks: exact=14
+                          Buffers: shared hit=16
+                          ->  Bitmap Index Scan on orders_wholesaler_status_idx  (cost=0.00..8.92 rows=463 width=0) (actual time=0.009..0.009 rows=480 loops=1)
+                                Index Cond: ((wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (status = 'DELIVERED'::order_status))
+                                Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=237
+Planning Time: 0.348 ms
+Execution Time: 0.872 ms
+
+=== R27 run 2 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', 30)
+Sort  (cost=10181.66..10182.16 rows=200 width=52) (actual time=0.908..0.909 rows=30 loops=1)
+  Sort Key: d.day
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=19
+  ->  HashAggregate  (cost=10171.02..10174.02 rows=200 width=52) (actual time=0.889..0.894 rows=30 loops=1)
+        Group Key: d.day
+        Batches: 1  Memory Usage: 48kB
+        Buffers: shared hit=16
+        ->  Nested Loop Left Join  (cost=9.05..9785.19 rows=51444 width=32) (actual time=0.092..0.871 rows=87 loops=1)
+              Join Filter: ((o.delivered_at >= d.day) AND (o.delivered_at < (d.day + '1 day'::interval)))
+              Rows Removed by Join Filter: 14313
+              Buffers: shared hit=16
+              ->  Function Scan on generate_series d  (cost=0.02..10.02 rows=1000 width=8) (actual time=0.014..0.015 rows=30 loops=1)
+              ->  Materialize  (cost=9.03..516.33 rows=463 width=32) (actual time=0.001..0.013 rows=480 loops=30)
+                    Buffers: shared hit=16
+                    ->  Bitmap Heap Scan on orders o  (cost=9.03..514.02 rows=463 width=32) (actual time=0.016..0.062 rows=480 loops=1)
+                          Recheck Cond: ((wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (status = 'DELIVERED'::order_status))
+                          Heap Blocks: exact=14
+                          Buffers: shared hit=16
+                          ->  Bitmap Index Scan on orders_wholesaler_status_idx  (cost=0.00..8.92 rows=463 width=0) (actual time=0.010..0.010 rows=480 loops=1)
+                                Index Cond: ((wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (status = 'DELIVERED'::order_status))
+                                Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=237
+Planning Time: 0.763 ms
+Execution Time: 0.947 ms
+
+=== R27 run 3 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', 30)
+Sort  (cost=10181.66..10182.16 rows=200 width=52) (actual time=2.155..2.157 rows=30 loops=1)
+  Sort Key: d.day
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=19
+  ->  HashAggregate  (cost=10171.02..10174.02 rows=200 width=52) (actual time=2.127..2.139 rows=30 loops=1)
+        Group Key: d.day
+        Batches: 1  Memory Usage: 48kB
+        Buffers: shared hit=16
+        ->  Nested Loop Left Join  (cost=9.05..9785.19 rows=51444 width=32) (actual time=0.161..2.090 rows=87 loops=1)
+              Join Filter: ((o.delivered_at >= d.day) AND (o.delivered_at < (d.day + '1 day'::interval)))
+              Rows Removed by Join Filter: 14313
+              Buffers: shared hit=16
+              ->  Function Scan on generate_series d  (cost=0.02..10.02 rows=1000 width=8) (actual time=0.010..0.013 rows=30 loops=1)
+              ->  Materialize  (cost=9.03..516.33 rows=463 width=32) (actual time=0.001..0.030 rows=480 loops=30)
+                    Buffers: shared hit=16
+                    ->  Bitmap Heap Scan on orders o  (cost=9.03..514.02 rows=463 width=32) (actual time=0.013..0.102 rows=480 loops=1)
+                          Recheck Cond: ((wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (status = 'DELIVERED'::order_status))
+                          Heap Blocks: exact=14
+                          Buffers: shared hit=16
+                          ->  Bitmap Index Scan on orders_wholesaler_status_idx  (cost=0.00..8.92 rows=463 width=0) (actual time=0.009..0.009 rows=480 loops=1)
+                                Index Cond: ((wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (status = 'DELIVERED'::order_status))
+                                Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=237
+Planning Time: 0.348 ms
+Execution Time: 2.192 ms

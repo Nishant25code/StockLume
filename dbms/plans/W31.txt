@@ -1,0 +1,47 @@
+=== W31 run 1 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521')
+Update on notifications  (cost=4.74..134.71 rows=0 width=0) (actual time=0.642..0.643 rows=0 loops=1)
+  Buffers: shared hit=193
+  ->  Bitmap Heap Scan on notifications  (cost=4.74..134.71 rows=44 width=7) (actual time=0.051..0.112 rows=18 loops=1)
+        Recheck Cond: ((business_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (NOT is_read))
+        Heap Blocks: exact=10
+        Buffers: shared hit=12
+        ->  Bitmap Index Scan on notifications_business_unread_idx  (cost=0.00..4.73 rows=44 width=0) (actual time=0.032..0.033 rows=21 loops=1)
+              Index Cond: ((business_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (is_read = false))
+              Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=131
+Planning Time: 0.816 ms
+Execution Time: 0.811 ms
+
+=== W31 run 2 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521')
+Update on notifications  (cost=4.74..134.71 rows=0 width=0) (actual time=0.407..0.407 rows=0 loops=1)
+  Buffers: shared hit=211 dirtied=1 written=1
+  ->  Bitmap Heap Scan on notifications  (cost=4.74..134.71 rows=44 width=7) (actual time=0.033..0.070 rows=18 loops=1)
+        Recheck Cond: ((business_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (NOT is_read))
+        Heap Blocks: exact=10
+        Buffers: shared hit=12
+        ->  Bitmap Index Scan on notifications_business_unread_idx  (cost=0.00..4.73 rows=44 width=0) (actual time=0.016..0.016 rows=21 loops=1)
+              Index Cond: ((business_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (is_read = false))
+              Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=131
+Planning Time: 0.579 ms
+Execution Time: 0.505 ms
+
+=== W31 run 3 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521')
+Update on notifications  (cost=4.74..134.75 rows=0 width=0) (actual time=0.363..0.364 rows=0 loops=1)
+  Buffers: shared hit=200
+  ->  Bitmap Heap Scan on notifications  (cost=4.74..134.75 rows=44 width=7) (actual time=0.034..0.068 rows=18 loops=1)
+        Recheck Cond: ((business_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (NOT is_read))
+        Heap Blocks: exact=10
+        Buffers: shared hit=12
+        ->  Bitmap Index Scan on notifications_business_unread_idx  (cost=0.00..4.73 rows=44 width=0) (actual time=0.016..0.016 rows=21 loops=1)
+              Index Cond: ((business_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid) AND (is_read = false))
+              Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=131
+Planning Time: 0.896 ms
+Execution Time: 0.474 ms

@@ -1,0 +1,65 @@
+=== R6 run 1 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', 50, 0)
+Limit  (cost=43.87..44.00 rows=50 width=79) (actual time=0.476..0.482 rows=50 loops=1)
+  Buffers: shared hit=8
+  ->  Sort  (cost=43.87..44.12 rows=100 width=79) (actual time=0.475..0.478 rows=50 loops=1)
+        Sort Key: name
+        Sort Method: quicksort  Memory: 38kB
+        Buffers: shared hit=8
+        ->  WindowAgg  (cost=40.20..40.55 rows=100 width=79) (actual time=0.091..0.113 rows=100 loops=1)
+              Buffers: shared hit=5
+              ->  Bitmap Heap Scan on products p  (cost=5.05..39.30 rows=100 width=71) (actual time=0.028..0.051 rows=100 loops=1)
+                    Recheck Cond: (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid)
+                    Heap Blocks: exact=3
+                    Buffers: shared hit=5
+                    ->  Bitmap Index Scan on products_wholesaler_id_idx  (cost=0.00..5.03 rows=100 width=0) (actual time=0.016..0.016 rows=100 loops=1)
+                          Index Cond: (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid)
+                          Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=141
+Planning Time: 0.708 ms
+Execution Time: 0.528 ms
+
+=== R6 run 2 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', 50, 0)
+Limit  (cost=43.87..44.00 rows=50 width=79) (actual time=0.419..0.425 rows=50 loops=1)
+  Buffers: shared hit=8
+  ->  Sort  (cost=43.87..44.12 rows=100 width=79) (actual time=0.418..0.421 rows=50 loops=1)
+        Sort Key: name
+        Sort Method: quicksort  Memory: 38kB
+        Buffers: shared hit=8
+        ->  WindowAgg  (cost=40.20..40.55 rows=100 width=79) (actual time=0.090..0.108 rows=100 loops=1)
+              Buffers: shared hit=5
+              ->  Bitmap Heap Scan on products p  (cost=5.05..39.30 rows=100 width=71) (actual time=0.036..0.056 rows=100 loops=1)
+                    Recheck Cond: (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid)
+                    Heap Blocks: exact=3
+                    Buffers: shared hit=5
+                    ->  Bitmap Index Scan on products_wholesaler_id_idx  (cost=0.00..5.03 rows=100 width=0) (actual time=0.013..0.013 rows=100 loops=1)
+                          Index Cond: (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid)
+                          Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=141
+Planning Time: 0.699 ms
+Execution Time: 0.468 ms
+
+=== R6 run 3 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', 50, 0)
+Limit  (cost=43.87..44.00 rows=50 width=79) (actual time=0.467..0.474 rows=50 loops=1)
+  Buffers: shared hit=8
+  ->  Sort  (cost=43.87..44.12 rows=100 width=79) (actual time=0.465..0.469 rows=50 loops=1)
+        Sort Key: name
+        Sort Method: quicksort  Memory: 38kB
+        Buffers: shared hit=8
+        ->  WindowAgg  (cost=40.20..40.55 rows=100 width=79) (actual time=0.092..0.114 rows=100 loops=1)
+              Buffers: shared hit=5
+              ->  Bitmap Heap Scan on products p  (cost=5.05..39.30 rows=100 width=71) (actual time=0.027..0.052 rows=100 loops=1)
+                    Recheck Cond: (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid)
+                    Heap Blocks: exact=3
+                    Buffers: shared hit=5
+                    ->  Bitmap Index Scan on products_wholesaler_id_idx  (cost=0.00..5.03 rows=100 width=0) (actual time=0.014..0.014 rows=100 loops=1)
+                          Index Cond: (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid)
+                          Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=141
+Planning Time: 0.568 ms
+Execution Time: 0.525 ms

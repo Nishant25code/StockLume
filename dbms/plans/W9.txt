@@ -1,0 +1,41 @@
+=== W9 run 1 ===
+-- EXECUTE s('52582222-667d-4a05-9343-31d043bb1460', '312727fe-1c8a-40af-8c7b-a10e9db80ad7', -1)
+Update on inventory  (cost=0.29..8.31 rows=1 width=10) (actual time=2.262..2.266 rows=1 loops=1)
+  Buffers: shared hit=58 read=2 dirtied=3
+  ->  Index Scan using inventory_pkey on inventory  (cost=0.29..8.31 rows=1 width=10) (actual time=0.329..0.332 rows=1 loops=1)
+        Index Cond: (id = '52582222-667d-4a05-9343-31d043bb1460'::uuid)
+        Filter: ((business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND ((quantity + '-1'::integer) >= 0))
+        Buffers: shared hit=2 read=1
+Planning:
+  Buffers: shared hit=128
+Planning Time: 0.883 ms
+Trigger inventory_set_updated_at: time=0.181 calls=1
+Execution Time: 2.402 ms
+
+=== W9 run 2 ===
+-- EXECUTE s('52582222-667d-4a05-9343-31d043bb1460', '312727fe-1c8a-40af-8c7b-a10e9db80ad7', -1)
+Update on inventory  (cost=0.29..8.31 rows=1 width=10) (actual time=1.611..1.613 rows=1 loops=1)
+  Buffers: shared hit=62
+  ->  Index Scan using inventory_pkey on inventory  (cost=0.29..8.31 rows=1 width=10) (actual time=0.020..0.022 rows=1 loops=1)
+        Index Cond: (id = '52582222-667d-4a05-9343-31d043bb1460'::uuid)
+        Filter: ((business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND ((quantity + '-1'::integer) >= 0))
+        Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=128
+Planning Time: 0.617 ms
+Trigger inventory_set_updated_at: time=0.170 calls=1
+Execution Time: 1.716 ms
+
+=== W9 run 3 ===
+-- EXECUTE s('52582222-667d-4a05-9343-31d043bb1460', '312727fe-1c8a-40af-8c7b-a10e9db80ad7', -1)
+Update on inventory  (cost=0.29..8.31 rows=1 width=10) (actual time=2.428..2.433 rows=1 loops=1)
+  Buffers: shared hit=62
+  ->  Index Scan using inventory_pkey on inventory  (cost=0.29..8.31 rows=1 width=10) (actual time=0.021..0.025 rows=1 loops=1)
+        Index Cond: (id = '52582222-667d-4a05-9343-31d043bb1460'::uuid)
+        Filter: ((business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND ((quantity + '-1'::integer) >= 0))
+        Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=128
+Planning Time: 0.762 ms
+Trigger inventory_set_updated_at: time=0.403 calls=1
+Execution Time: 2.577 ms

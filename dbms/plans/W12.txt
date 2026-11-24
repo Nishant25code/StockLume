@@ -1,0 +1,41 @@
+=== W12 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601', 1)
+Update on inventory  (cost=0.29..8.31 rows=1 width=10) (actual time=1.865..1.870 rows=1 loops=1)
+  Buffers: shared hit=62
+  ->  Index Scan using inventory_unique_product_per_business on inventory  (cost=0.29..8.31 rows=1 width=10) (actual time=0.023..0.026 rows=1 loops=1)
+        Index Cond: ((business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (product_id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid))
+        Filter: (quantity >= 1)
+        Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=137
+Planning Time: 0.785 ms
+Trigger inventory_set_updated_at: time=0.210 calls=1
+Execution Time: 1.987 ms
+
+=== W12 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601', 1)
+Update on inventory  (cost=0.29..8.31 rows=1 width=10) (actual time=1.734..1.736 rows=1 loops=1)
+  Buffers: shared hit=62
+  ->  Index Scan using inventory_unique_product_per_business on inventory  (cost=0.29..8.31 rows=1 width=10) (actual time=0.025..0.026 rows=1 loops=1)
+        Index Cond: ((business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (product_id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid))
+        Filter: (quantity >= 1)
+        Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=137
+Planning Time: 0.673 ms
+Trigger inventory_set_updated_at: time=0.114 calls=1
+Execution Time: 1.845 ms
+
+=== W12 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601', 1)
+Update on inventory  (cost=0.29..8.31 rows=1 width=10) (actual time=1.075..1.077 rows=1 loops=1)
+  Buffers: shared hit=62
+  ->  Index Scan using inventory_unique_product_per_business on inventory  (cost=0.29..8.31 rows=1 width=10) (actual time=0.009..0.010 rows=1 loops=1)
+        Index Cond: ((business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (product_id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid))
+        Filter: (quantity >= 1)
+        Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=137
+Planning Time: 0.238 ms
+Trigger inventory_set_updated_at: time=0.120 calls=1
+Execution Time: 1.115 ms

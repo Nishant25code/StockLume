@@ -1,0 +1,47 @@
+=== R16 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', 'aef21b4b-83ce-452d-88de-a5367af15521')
+Bitmap Heap Scan on orders o  (cost=4.31..11.95 rows=1 width=16) (actual time=0.035..0.038 rows=2 loops=1)
+  Recheck Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+  Filter: (is_suggested AND (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid))
+  Rows Removed by Filter: 1
+  Heap Blocks: exact=3
+  Buffers: shared hit=5
+  ->  Bitmap Index Scan on orders_retailer_status_idx  (cost=0.00..4.30 rows=2 width=0) (actual time=0.022..0.022 rows=3 loops=1)
+        Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+        Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=161
+Planning Time: 0.667 ms
+Execution Time: 0.060 ms
+
+=== R16 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', 'aef21b4b-83ce-452d-88de-a5367af15521')
+Bitmap Heap Scan on orders o  (cost=4.31..11.95 rows=1 width=16) (actual time=0.045..0.047 rows=2 loops=1)
+  Recheck Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+  Filter: (is_suggested AND (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid))
+  Rows Removed by Filter: 1
+  Heap Blocks: exact=3
+  Buffers: shared hit=5
+  ->  Bitmap Index Scan on orders_retailer_status_idx  (cost=0.00..4.30 rows=2 width=0) (actual time=0.031..0.031 rows=3 loops=1)
+        Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+        Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=161
+Planning Time: 0.690 ms
+Execution Time: 0.068 ms
+
+=== R16 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', 'aef21b4b-83ce-452d-88de-a5367af15521')
+Bitmap Heap Scan on orders o  (cost=4.31..11.95 rows=1 width=16) (actual time=0.044..0.047 rows=2 loops=1)
+  Recheck Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+  Filter: (is_suggested AND (wholesaler_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid))
+  Rows Removed by Filter: 1
+  Heap Blocks: exact=3
+  Buffers: shared hit=5
+  ->  Bitmap Index Scan on orders_retailer_status_idx  (cost=0.00..4.30 rows=2 width=0) (actual time=0.021..0.021 rows=3 loops=1)
+        Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+        Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=161
+Planning Time: 0.735 ms
+Execution Time: 0.072 ms

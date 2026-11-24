@@ -1,0 +1,32 @@
+=== W5 run 1 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', 'New Product', 'SKU-NEW-1', 'Grocery', NULL, 99.50, 100)
+Insert on products  (cost=0.00..0.02 rows=1 width=197) (actual time=0.417..0.417 rows=1 loops=1)
+  Buffers: shared hit=90 read=3 dirtied=2
+  ->  Result  (cost=0.00..0.02 rows=1 width=197) (actual time=0.005..0.005 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=6
+Planning Time: 0.057 ms
+Trigger for constraint products_wholesaler_id_fkey: time=0.194 calls=1
+Execution Time: 0.624 ms
+
+=== W5 run 2 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', 'New Product', 'SKU-NEW-1', 'Grocery', NULL, 99.50, 100)
+Insert on products  (cost=0.00..0.02 rows=1 width=197) (actual time=0.152..0.152 rows=1 loops=1)
+  Buffers: shared hit=94
+  ->  Result  (cost=0.00..0.02 rows=1 width=197) (actual time=0.004..0.004 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=6
+Planning Time: 0.053 ms
+Trigger for constraint products_wholesaler_id_fkey: time=0.198 calls=1
+Execution Time: 0.362 ms
+
+=== W5 run 3 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', 'New Product', 'SKU-NEW-1', 'Grocery', NULL, 99.50, 100)
+Insert on products  (cost=0.00..0.02 rows=1 width=197) (actual time=0.133..0.133 rows=1 loops=1)
+  Buffers: shared hit=94
+  ->  Result  (cost=0.00..0.02 rows=1 width=197) (actual time=0.003..0.004 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=6
+Planning Time: 0.073 ms
+Trigger for constraint products_wholesaler_id_fkey: time=0.182 calls=1
+Execution Time: 0.327 ms

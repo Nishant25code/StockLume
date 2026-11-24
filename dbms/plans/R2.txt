@@ -1,0 +1,44 @@
+=== R2 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Nested Loop  (cost=0.55..16.63 rows=1 width=91) (actual time=0.034..0.036 rows=1 loops=1)
+  Buffers: shared hit=6
+  ->  Index Scan using profiles_pkey on profiles p  (cost=0.27..8.29 rows=1 width=64) (actual time=0.016..0.017 rows=1 loops=1)
+        Index Cond: (id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+        Buffers: shared hit=3
+  ->  Index Scan using businesses_pkey on businesses b  (cost=0.27..8.29 rows=1 width=43) (actual time=0.012..0.012 rows=1 loops=1)
+        Index Cond: (id = p.business_id)
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=228 read=3
+Planning Time: 1.257 ms
+Execution Time: 0.089 ms
+
+=== R2 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Nested Loop  (cost=0.55..16.63 rows=1 width=91) (actual time=0.028..0.030 rows=1 loops=1)
+  Buffers: shared hit=6
+  ->  Index Scan using profiles_pkey on profiles p  (cost=0.27..8.29 rows=1 width=64) (actual time=0.014..0.015 rows=1 loops=1)
+        Index Cond: (id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+        Buffers: shared hit=3
+  ->  Index Scan using businesses_pkey on businesses b  (cost=0.27..8.29 rows=1 width=43) (actual time=0.009..0.009 rows=1 loops=1)
+        Index Cond: (id = p.business_id)
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=231
+Planning Time: 1.504 ms
+Execution Time: 0.080 ms
+
+=== R2 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Nested Loop  (cost=0.55..16.63 rows=1 width=91) (actual time=0.017..0.017 rows=1 loops=1)
+  Buffers: shared hit=6
+  ->  Index Scan using profiles_pkey on profiles p  (cost=0.27..8.29 rows=1 width=64) (actual time=0.008..0.009 rows=1 loops=1)
+        Index Cond: (id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+        Buffers: shared hit=3
+  ->  Index Scan using businesses_pkey on businesses b  (cost=0.27..8.29 rows=1 width=43) (actual time=0.005..0.005 rows=1 loops=1)
+        Index Cond: (id = p.business_id)
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=231
+Planning Time: 1.319 ms
+Execution Time: 0.057 ms

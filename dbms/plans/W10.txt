@@ -1,0 +1,44 @@
+=== W10 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601', -1, 10, 'MANUAL_ADJUSTMENT', NULL, NULL, 'count correction', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on stock_movements  (cost=0.00..0.01 rows=1 width=148) (actual time=0.315..0.316 rows=1 loops=1)
+  Buffers: shared hit=68
+  ->  Result  (cost=0.00..0.01 rows=1 width=148) (actual time=0.011..0.012 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=10
+Planning Time: 0.146 ms
+Trigger for constraint stock_movements_business_id_fkey: time=0.773 calls=1
+Trigger for constraint stock_movements_product_id_fkey: time=0.187 calls=1
+Trigger for constraint stock_movements_sale_id_fkey: time=0.011 calls=1
+Trigger for constraint stock_movements_order_id_fkey: time=0.015 calls=1
+Trigger for constraint stock_movements_created_by_fkey: time=0.092 calls=1
+Execution Time: 1.419 ms
+
+=== W10 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601', -1, 10, 'MANUAL_ADJUSTMENT', NULL, NULL, 'count correction', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on stock_movements  (cost=0.00..0.01 rows=1 width=148) (actual time=0.286..0.287 rows=1 loops=1)
+  Buffers: shared hit=68
+  ->  Result  (cost=0.00..0.01 rows=1 width=148) (actual time=0.012..0.012 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=10
+Planning Time: 0.141 ms
+Trigger for constraint stock_movements_business_id_fkey: time=0.505 calls=1
+Trigger for constraint stock_movements_product_id_fkey: time=0.326 calls=1
+Trigger for constraint stock_movements_sale_id_fkey: time=0.023 calls=1
+Trigger for constraint stock_movements_order_id_fkey: time=0.020 calls=1
+Trigger for constraint stock_movements_created_by_fkey: time=0.145 calls=1
+Execution Time: 1.331 ms
+
+=== W10 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601', -1, 10, 'MANUAL_ADJUSTMENT', NULL, NULL, 'count correction', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on stock_movements  (cost=0.00..0.01 rows=1 width=148) (actual time=0.323..0.324 rows=1 loops=1)
+  Buffers: shared hit=68
+  ->  Result  (cost=0.00..0.01 rows=1 width=148) (actual time=0.013..0.014 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=10
+Planning Time: 0.138 ms
+Trigger for constraint stock_movements_business_id_fkey: time=0.642 calls=1
+Trigger for constraint stock_movements_product_id_fkey: time=0.420 calls=1
+Trigger for constraint stock_movements_sale_id_fkey: time=0.033 calls=1
+Trigger for constraint stock_movements_order_id_fkey: time=0.050 calls=1
+Trigger for constraint stock_movements_created_by_fkey: time=0.267 calls=1
+Execution Time: 1.766 ms

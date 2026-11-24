@@ -1,0 +1,47 @@
+=== R14 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601')
+Aggregate  (cost=8.47..8.49 rows=1 width=40) (actual time=0.081..0.082 rows=1 loops=1)
+  Buffers: shared hit=7
+  ->  Sort  (cost=8.46..8.46 rows=1 width=12) (actual time=0.061..0.061 rows=3 loops=1)
+        Sort Key: (date_trunc('day'::text, sold_at))
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=7
+        ->  Index Scan using sales_retailer_product_sold_at_idx on sales s  (cost=0.42..8.45 rows=1 width=12) (actual time=0.034..0.036 rows=3 loops=1)
+              Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (product_id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid) AND (sold_at >= (now() - '28 days'::interval)))
+              Buffers: shared hit=4
+Planning:
+  Buffers: shared hit=148
+Planning Time: 0.837 ms
+Execution Time: 0.138 ms
+
+=== R14 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601')
+Aggregate  (cost=8.47..8.49 rows=1 width=40) (actual time=0.046..0.047 rows=1 loops=1)
+  Buffers: shared hit=7
+  ->  Sort  (cost=8.46..8.46 rows=1 width=12) (actual time=0.034..0.034 rows=3 loops=1)
+        Sort Key: (date_trunc('day'::text, sold_at))
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=7
+        ->  Index Scan using sales_retailer_product_sold_at_idx on sales s  (cost=0.42..8.45 rows=1 width=12) (actual time=0.018..0.020 rows=3 loops=1)
+              Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (product_id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid) AND (sold_at >= (now() - '28 days'::interval)))
+              Buffers: shared hit=4
+Planning:
+  Buffers: shared hit=148
+Planning Time: 0.543 ms
+Execution Time: 0.084 ms
+
+=== R14 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601')
+Aggregate  (cost=8.47..8.49 rows=1 width=40) (actual time=0.057..0.058 rows=1 loops=1)
+  Buffers: shared hit=7
+  ->  Sort  (cost=8.46..8.46 rows=1 width=12) (actual time=0.037..0.038 rows=3 loops=1)
+        Sort Key: (date_trunc('day'::text, sold_at))
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=7
+        ->  Index Scan using sales_retailer_product_sold_at_idx on sales s  (cost=0.42..8.45 rows=1 width=12) (actual time=0.020..0.021 rows=3 loops=1)
+              Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (product_id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid) AND (sold_at >= (now() - '28 days'::interval)))
+              Buffers: shared hit=4
+Planning:
+  Buffers: shared hit=148
+Planning Time: 0.637 ms
+Execution Time: 0.098 ms

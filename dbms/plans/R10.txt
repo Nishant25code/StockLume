@@ -1,0 +1,131 @@
+=== R10 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', NULL, 50, 0)
+Limit  (cost=3105.97..3106.10 rows=50 width=101) (actual time=5.251..5.260 rows=50 loops=1)
+  Buffers: shared hit=596
+  ->  Sort  (cost=3105.97..3108.14 rows=866 width=101) (actual time=5.249..5.254 rows=50 loops=1)
+        Sort Key: m.created_at DESC
+        Sort Method: top-N heapsort  Memory: 36kB
+        Buffers: shared hit=596
+        ->  Hash Left Join  (cost=888.33..3077.20 rows=866 width=101) (actual time=4.280..5.041 rows=851 loops=1)
+              Hash Cond: (m.created_by = pr.id)
+              Buffers: shared hit=593
+              ->  Hash Left Join  (cost=876.13..3062.70 rows=866 width=108) (actual time=4.155..4.746 rows=851 loops=1)
+                    Hash Cond: (m.order_id = o.id)
+                    Buffers: shared hit=588
+                    ->  Hash Join  (cost=121.13..2305.42 rows=866 width=116) (actual time=0.755..1.218 rows=851 loops=1)
+                          Hash Cond: (m.product_id = p.id)
+                          Buffers: shared hit=103
+                          ->  Bitmap Heap Scan on stock_movements m  (cost=43.13..2225.15 rows=866 width=116) (actual time=0.129..0.355 rows=851 loops=1)
+                                Recheck Cond: (business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                                Heap Blocks: exact=59
+                                Buffers: shared hit=70
+                                ->  Bitmap Index Scan on stock_movements_business_product_idx  (cost=0.00..42.91 rows=866 width=0) (actual time=0.109..0.109 rows=851 loops=1)
+                                      Index Cond: (business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                                      Buffers: shared hit=11
+                          ->  Hash  (cost=53.00..53.00 rows=2000 width=32) (actual time=0.611..0.611 rows=2000 loops=1)
+                                Buckets: 2048  Batches: 1  Memory Usage: 142kB
+                                Buffers: shared hit=33
+                                ->  Seq Scan on products p  (cost=0.00..53.00 rows=2000 width=32) (actual time=0.010..0.304 rows=2000 loops=1)
+                                      Buffers: shared hit=33
+                    ->  Hash  (cost=605.00..605.00 rows=12000 width=24) (actual time=3.377..3.377 rows=12000 loops=1)
+                          Buckets: 16384  Batches: 1  Memory Usage: 785kB
+                          Buffers: shared hit=485
+                          ->  Seq Scan on orders o  (cost=0.00..605.00 rows=12000 width=24) (actual time=0.127..1.886 rows=12000 loops=1)
+                                Buffers: shared hit=485
+              ->  Hash  (cost=8.20..8.20 rows=320 width=25) (actual time=0.102..0.102 rows=320 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 27kB
+                    Buffers: shared hit=5
+                    ->  Seq Scan on profiles pr  (cost=0.00..8.20 rows=320 width=25) (actual time=0.012..0.058 rows=320 loops=1)
+                          Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=461
+Planning Time: 2.827 ms
+Execution Time: 5.366 ms
+
+=== R10 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', NULL, 50, 0)
+Limit  (cost=3105.97..3106.10 rows=50 width=101) (actual time=4.606..4.615 rows=50 loops=1)
+  Buffers: shared hit=596
+  ->  Sort  (cost=3105.97..3108.14 rows=866 width=101) (actual time=4.604..4.610 rows=50 loops=1)
+        Sort Key: m.created_at DESC
+        Sort Method: top-N heapsort  Memory: 36kB
+        Buffers: shared hit=596
+        ->  Hash Left Join  (cost=888.33..3077.20 rows=866 width=101) (actual time=3.821..4.450 rows=851 loops=1)
+              Hash Cond: (m.created_by = pr.id)
+              Buffers: shared hit=593
+              ->  Hash Left Join  (cost=876.13..3062.70 rows=866 width=108) (actual time=3.729..4.228 rows=851 loops=1)
+                    Hash Cond: (m.order_id = o.id)
+                    Buffers: shared hit=588
+                    ->  Hash Join  (cost=121.13..2305.42 rows=866 width=116) (actual time=0.527..0.920 rows=851 loops=1)
+                          Hash Cond: (m.product_id = p.id)
+                          Buffers: shared hit=103
+                          ->  Bitmap Heap Scan on stock_movements m  (cost=43.13..2225.15 rows=866 width=116) (actual time=0.076..0.282 rows=851 loops=1)
+                                Recheck Cond: (business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                                Heap Blocks: exact=59
+                                Buffers: shared hit=70
+                                ->  Bitmap Index Scan on stock_movements_business_product_idx  (cost=0.00..42.91 rows=866 width=0) (actual time=0.062..0.062 rows=851 loops=1)
+                                      Index Cond: (business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                                      Buffers: shared hit=11
+                          ->  Hash  (cost=53.00..53.00 rows=2000 width=32) (actual time=0.441..0.442 rows=2000 loops=1)
+                                Buckets: 2048  Batches: 1  Memory Usage: 142kB
+                                Buffers: shared hit=33
+                                ->  Seq Scan on products p  (cost=0.00..53.00 rows=2000 width=32) (actual time=0.006..0.205 rows=2000 loops=1)
+                                      Buffers: shared hit=33
+                    ->  Hash  (cost=605.00..605.00 rows=12000 width=24) (actual time=3.182..3.182 rows=12000 loops=1)
+                          Buckets: 16384  Batches: 1  Memory Usage: 785kB
+                          Buffers: shared hit=485
+                          ->  Seq Scan on orders o  (cost=0.00..605.00 rows=12000 width=24) (actual time=0.117..1.735 rows=12000 loops=1)
+                                Buffers: shared hit=485
+              ->  Hash  (cost=8.20..8.20 rows=320 width=25) (actual time=0.074..0.075 rows=320 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 27kB
+                    Buffers: shared hit=5
+                    ->  Seq Scan on profiles pr  (cost=0.00..8.20 rows=320 width=25) (actual time=0.013..0.040 rows=320 loops=1)
+                          Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=461
+Planning Time: 1.979 ms
+Execution Time: 4.690 ms
+
+=== R10 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', NULL, 50, 0)
+Limit  (cost=3105.97..3106.10 rows=50 width=101) (actual time=5.859..5.864 rows=50 loops=1)
+  Buffers: shared hit=596
+  ->  Sort  (cost=3105.97..3108.14 rows=866 width=101) (actual time=5.858..5.860 rows=50 loops=1)
+        Sort Key: m.created_at DESC
+        Sort Method: top-N heapsort  Memory: 36kB
+        Buffers: shared hit=596
+        ->  Hash Left Join  (cost=888.33..3077.20 rows=866 width=101) (actual time=4.984..5.654 rows=851 loops=1)
+              Hash Cond: (m.created_by = pr.id)
+              Buffers: shared hit=593
+              ->  Hash Left Join  (cost=876.13..3062.70 rows=866 width=108) (actual time=4.886..5.414 rows=851 loops=1)
+                    Hash Cond: (m.order_id = o.id)
+                    Buffers: shared hit=588
+                    ->  Hash Join  (cost=121.13..2305.42 rows=866 width=116) (actual time=0.729..1.132 rows=851 loops=1)
+                          Hash Cond: (m.product_id = p.id)
+                          Buffers: shared hit=103
+                          ->  Bitmap Heap Scan on stock_movements m  (cost=43.13..2225.15 rows=866 width=116) (actual time=0.131..0.326 rows=851 loops=1)
+                                Recheck Cond: (business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                                Heap Blocks: exact=59
+                                Buffers: shared hit=70
+                                ->  Bitmap Index Scan on stock_movements_business_product_idx  (cost=0.00..42.91 rows=866 width=0) (actual time=0.108..0.109 rows=851 loops=1)
+                                      Index Cond: (business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                                      Buffers: shared hit=11
+                          ->  Hash  (cost=53.00..53.00 rows=2000 width=32) (actual time=0.576..0.576 rows=2000 loops=1)
+                                Buckets: 2048  Batches: 1  Memory Usage: 142kB
+                                Buffers: shared hit=33
+                                ->  Seq Scan on products p  (cost=0.00..53.00 rows=2000 width=32) (actual time=0.013..0.295 rows=2000 loops=1)
+                                      Buffers: shared hit=33
+                    ->  Hash  (cost=605.00..605.00 rows=12000 width=24) (actual time=4.126..4.126 rows=12000 loops=1)
+                          Buckets: 16384  Batches: 1  Memory Usage: 785kB
+                          Buffers: shared hit=485
+                          ->  Seq Scan on orders o  (cost=0.00..605.00 rows=12000 width=24) (actual time=0.190..2.440 rows=12000 loops=1)
+                                Buffers: shared hit=485
+              ->  Hash  (cost=8.20..8.20 rows=320 width=25) (actual time=0.081..0.081 rows=320 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 27kB
+                    Buffers: shared hit=5
+                    ->  Seq Scan on profiles pr  (cost=0.00..8.20 rows=320 width=25) (actual time=0.010..0.044 rows=320 loops=1)
+                          Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=461
+Planning Time: 2.497 ms
+Execution Time: 5.948 ms

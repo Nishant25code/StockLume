@@ -1,0 +1,44 @@
+=== W3 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '127a0540-f159-47ea-8483-580605741801')
+Insert on business_connections  (cost=0.27..8.30 rows=1 width=68) (actual time=0.703..0.703 rows=1 loops=1)
+  Buffers: shared hit=53 read=5 dirtied=5
+  ->  Index Scan using businesses_pkey on businesses b  (cost=0.27..8.30 rows=1 width=68) (actual time=0.006..0.006 rows=1 loops=1)
+        Index Cond: (id = '127a0540-f159-47ea-8483-580605741801'::uuid)
+        Filter: (type = 'WHOLESALER'::business_type)
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=76
+Planning Time: 0.158 ms
+Trigger for constraint business_connections_retailer_id_fkey: time=0.097 calls=1
+Trigger for constraint business_connections_wholesaler_id_fkey: time=0.016 calls=1
+Execution Time: 0.829 ms
+
+=== W3 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '127a0540-f159-47ea-8483-580605741801')
+Insert on business_connections  (cost=0.27..8.30 rows=1 width=68) (actual time=0.105..0.106 rows=1 loops=1)
+  Buffers: shared hit=57 read=1 dirtied=1
+  ->  Index Scan using businesses_pkey on businesses b  (cost=0.27..8.30 rows=1 width=68) (actual time=0.006..0.007 rows=1 loops=1)
+        Index Cond: (id = '127a0540-f159-47ea-8483-580605741801'::uuid)
+        Filter: (type = 'WHOLESALER'::business_type)
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=76
+Planning Time: 0.152 ms
+Trigger for constraint business_connections_retailer_id_fkey: time=0.073 calls=1
+Trigger for constraint business_connections_wholesaler_id_fkey: time=0.018 calls=1
+Execution Time: 0.211 ms
+
+=== W3 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '127a0540-f159-47ea-8483-580605741801')
+Insert on business_connections  (cost=0.27..8.30 rows=1 width=68) (actual time=0.127..0.128 rows=1 loops=1)
+  Buffers: shared hit=57 read=1 dirtied=1
+  ->  Index Scan using businesses_pkey on businesses b  (cost=0.27..8.30 rows=1 width=68) (actual time=0.009..0.009 rows=1 loops=1)
+        Index Cond: (id = '127a0540-f159-47ea-8483-580605741801'::uuid)
+        Filter: (type = 'WHOLESALER'::business_type)
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=76
+Planning Time: 0.181 ms
+Trigger for constraint business_connections_retailer_id_fkey: time=0.082 calls=1
+Trigger for constraint business_connections_wholesaler_id_fkey: time=0.018 calls=1
+Execution Time: 0.243 ms

@@ -1,0 +1,152 @@
+erDiagram
+    businesses ||--o{ profiles : "business_id"
+    auth_users ||--|| profiles : "is"
+    businesses ||--o{ business_connections : "retailer_id"
+    businesses ||--o{ business_connections : "wholesaler_id"
+    businesses ||--o{ products : "wholesaler_id"
+    businesses ||--o{ inventory : "business_id"
+    products ||--o{ inventory : "product_id"
+    businesses ||--o{ sales : "retailer_id"
+    products ||--o{ sales : "product_id"
+    profiles |o--o{ sales : "created_by"
+    products ||--o{ reorder_rules : "product_id"
+    businesses ||--o{ reorder_rules : "retailer_id"
+    businesses ||--o{ orders : "retailer_id"
+    businesses ||--o{ orders : "wholesaler_id"
+    profiles |o--o{ orders : "created_by"
+    orders ||--o{ order_items : "order_id"
+    products ||--o{ order_items : "product_id"
+    businesses ||--o{ notifications : "business_id"
+    orders |o--o{ notifications : "related_order_id"
+    products |o--o{ notifications : "related_product_id"
+    businesses ||--o{ stock_movements : "business_id"
+    products ||--o{ stock_movements : "product_id"
+    sales |o--o{ stock_movements : "sale_id"
+    orders |o--o{ stock_movements : "order_id"
+    profiles |o--o{ stock_movements : "created_by"
+    auth_users {
+        uuid id PK
+    }
+    businesses {
+        uuid id PK
+        text name
+        business_type type
+        text email
+        text phone
+        text address
+        text city
+        timestamptz created_at
+        timestamptz updated_at
+    }
+    profiles {
+        uuid id FK,PK
+        uuid business_id FK
+        text full_name
+        text email
+        timestamptz created_at
+        timestamptz updated_at
+    }
+    business_connections {
+        uuid id PK
+        uuid retailer_id FK,UK
+        uuid wholesaler_id FK,UK
+        connection_status status
+        timestamptz created_at
+        timestamptz updated_at
+    }
+    products {
+        uuid id PK
+        uuid wholesaler_id FK,UK
+        text name
+        text sku UK
+        text category
+        text unit
+        numeric price
+        int4 available_quantity
+        bool is_active
+        timestamptz created_at
+        timestamptz updated_at
+    }
+    inventory {
+        uuid id PK
+        uuid business_id FK,UK
+        uuid product_id FK,UK
+        int4 quantity
+        timestamptz created_at
+        timestamptz updated_at
+    }
+    reorder_rules {
+        uuid id PK
+        uuid retailer_id FK,UK
+        uuid product_id FK,UK
+        int4 min_stock
+        int4 reorder_quantity
+        int4 lead_time_days
+        bool is_active
+        timestamptz created_at
+        timestamptz updated_at
+    }
+    sales {
+        uuid id PK
+        uuid retailer_id FK
+        uuid product_id FK
+        int4 quantity
+        numeric unit_price
+        timestamptz sold_at
+        uuid created_by FK
+        timestamptz created_at
+    }
+    orders {
+        uuid id PK
+        int8 order_number UK
+        uuid retailer_id FK
+        uuid wholesaler_id FK
+        order_status status
+        bool is_suggested
+        text notes
+        text rejection_reason
+        numeric total_amount
+        uuid created_by FK
+        timestamptz submitted_at
+        timestamptz accepted_at
+        timestamptz rejected_at
+        timestamptz dispatched_at
+        timestamptz delivered_at
+        timestamptz cancelled_at
+        timestamptz created_at
+        timestamptz updated_at
+    }
+    order_items {
+        uuid id PK
+        uuid order_id FK,UK
+        uuid product_id FK,UK
+        int4 quantity
+        int4 suggested_quantity
+        numeric unit_price
+        timestamptz created_at
+        timestamptz updated_at
+    }
+    notifications {
+        uuid id PK
+        uuid business_id FK
+        notification_type type
+        text title
+        text message
+        uuid related_order_id FK
+        uuid related_product_id FK
+        bool is_read
+        timestamptz created_at
+    }
+    stock_movements {
+        uuid id PK
+        uuid business_id FK
+        uuid product_id FK
+        int4 quantity_change
+        int4 quantity_after
+        stock_movement_reason reason
+        uuid sale_id FK
+        uuid order_id FK
+        text note
+        uuid created_by FK
+        timestamptz created_at
+    }

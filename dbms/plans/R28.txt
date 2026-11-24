@@ -1,0 +1,104 @@
+=== R28 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', 5)
+Limit  (cost=530.97..530.98 rows=5 width=72) (actual time=0.902..0.903 rows=5 loops=1)
+  Buffers: shared hit=89
+  ->  Sort  (cost=530.97..531.27 rows=120 width=72) (actual time=0.901..0.902 rows=5 loops=1)
+        Sort Key: (sum(s.quantity)) DESC
+        Sort Method: top-N heapsort  Memory: 25kB
+        Buffers: shared hit=89
+        ->  GroupAggregate  (cost=525.68..528.98 rows=120 width=72) (actual time=0.823..0.879 rows=40 loops=1)
+              Group Key: p.id
+              Buffers: shared hit=86
+              ->  Sort  (cost=525.68..525.98 rows=120 width=42) (actual time=0.806..0.813 rows=124 loops=1)
+                    Sort Key: p.id
+                    Sort Method: quicksort  Memory: 32kB
+                    Buffers: shared hit=86
+                    ->  Hash Join  (cost=113.56..521.53 rows=120 width=42) (actual time=0.625..0.756 rows=124 loops=1)
+                          Hash Cond: (s.product_id = p.id)
+                          Buffers: shared hit=83
+                          ->  Bitmap Heap Scan on sales s  (cost=35.57..443.22 rows=120 width=26) (actual time=0.061..0.162 rows=124 loops=1)
+                                Recheck Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (sold_at >= (now() - '30 days'::interval)))
+                                Heap Blocks: exact=42
+                                Buffers: shared hit=50
+                                ->  Bitmap Index Scan on sales_retailer_product_sold_at_idx  (cost=0.00..35.54 rows=120 width=0) (actual time=0.048..0.048 rows=124 loops=1)
+                                      Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (sold_at >= (now() - '30 days'::interval)))
+                                      Buffers: shared hit=8
+                          ->  Hash  (cost=53.00..53.00 rows=2000 width=32) (actual time=0.553..0.553 rows=2000 loops=1)
+                                Buckets: 2048  Batches: 1  Memory Usage: 142kB
+                                Buffers: shared hit=33
+                                ->  Seq Scan on products p  (cost=0.00..53.00 rows=2000 width=32) (actual time=0.009..0.259 rows=2000 loops=1)
+                                      Buffers: shared hit=33
+Planning:
+  Buffers: shared hit=284
+Planning Time: 1.169 ms
+Execution Time: 0.964 ms
+
+=== R28 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', 5)
+Limit  (cost=530.97..530.98 rows=5 width=72) (actual time=0.905..0.908 rows=5 loops=1)
+  Buffers: shared hit=89
+  ->  Sort  (cost=530.97..531.27 rows=120 width=72) (actual time=0.903..0.906 rows=5 loops=1)
+        Sort Key: (sum(s.quantity)) DESC
+        Sort Method: top-N heapsort  Memory: 25kB
+        Buffers: shared hit=89
+        ->  GroupAggregate  (cost=525.68..528.98 rows=120 width=72) (actual time=0.839..0.885 rows=40 loops=1)
+              Group Key: p.id
+              Buffers: shared hit=86
+              ->  Sort  (cost=525.68..525.98 rows=120 width=42) (actual time=0.815..0.822 rows=124 loops=1)
+                    Sort Key: p.id
+                    Sort Method: quicksort  Memory: 32kB
+                    Buffers: shared hit=86
+                    ->  Hash Join  (cost=113.56..521.53 rows=120 width=42) (actual time=0.593..0.770 rows=124 loops=1)
+                          Hash Cond: (s.product_id = p.id)
+                          Buffers: shared hit=83
+                          ->  Bitmap Heap Scan on sales s  (cost=35.57..443.22 rows=120 width=26) (actual time=0.057..0.199 rows=124 loops=1)
+                                Recheck Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (sold_at >= (now() - '30 days'::interval)))
+                                Heap Blocks: exact=42
+                                Buffers: shared hit=50
+                                ->  Bitmap Index Scan on sales_retailer_product_sold_at_idx  (cost=0.00..35.54 rows=120 width=0) (actual time=0.045..0.046 rows=124 loops=1)
+                                      Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (sold_at >= (now() - '30 days'::interval)))
+                                      Buffers: shared hit=8
+                          ->  Hash  (cost=53.00..53.00 rows=2000 width=32) (actual time=0.523..0.523 rows=2000 loops=1)
+                                Buckets: 2048  Batches: 1  Memory Usage: 142kB
+                                Buffers: shared hit=33
+                                ->  Seq Scan on products p  (cost=0.00..53.00 rows=2000 width=32) (actual time=0.009..0.261 rows=2000 loops=1)
+                                      Buffers: shared hit=33
+Planning:
+  Buffers: shared hit=284
+Planning Time: 1.350 ms
+Execution Time: 0.971 ms
+
+=== R28 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', 5)
+Limit  (cost=530.97..530.98 rows=5 width=72) (actual time=0.817..0.819 rows=5 loops=1)
+  Buffers: shared hit=89
+  ->  Sort  (cost=530.97..531.27 rows=120 width=72) (actual time=0.816..0.817 rows=5 loops=1)
+        Sort Key: (sum(s.quantity)) DESC
+        Sort Method: top-N heapsort  Memory: 25kB
+        Buffers: shared hit=89
+        ->  GroupAggregate  (cost=525.68..528.98 rows=120 width=72) (actual time=0.748..0.798 rows=40 loops=1)
+              Group Key: p.id
+              Buffers: shared hit=86
+              ->  Sort  (cost=525.68..525.98 rows=120 width=42) (actual time=0.733..0.739 rows=124 loops=1)
+                    Sort Key: p.id
+                    Sort Method: quicksort  Memory: 32kB
+                    Buffers: shared hit=86
+                    ->  Hash Join  (cost=113.56..521.53 rows=120 width=42) (actual time=0.561..0.693 rows=124 loops=1)
+                          Hash Cond: (s.product_id = p.id)
+                          Buffers: shared hit=83
+                          ->  Bitmap Heap Scan on sales s  (cost=35.57..443.22 rows=120 width=26) (actual time=0.054..0.157 rows=124 loops=1)
+                                Recheck Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (sold_at >= (now() - '30 days'::interval)))
+                                Heap Blocks: exact=42
+                                Buffers: shared hit=50
+                                ->  Bitmap Index Scan on sales_retailer_product_sold_at_idx  (cost=0.00..35.54 rows=120 width=0) (actual time=0.043..0.043 rows=124 loops=1)
+                                      Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (sold_at >= (now() - '30 days'::interval)))
+                                      Buffers: shared hit=8
+                          ->  Hash  (cost=53.00..53.00 rows=2000 width=32) (actual time=0.497..0.497 rows=2000 loops=1)
+                                Buckets: 2048  Batches: 1  Memory Usage: 142kB
+                                Buffers: shared hit=33
+                                ->  Seq Scan on products p  (cost=0.00..53.00 rows=2000 width=32) (actual time=0.007..0.230 rows=2000 loops=1)
+                                      Buffers: shared hit=33
+Planning:
+  Buffers: shared hit=284
+Planning Time: 1.059 ms
+Execution Time: 0.871 ms

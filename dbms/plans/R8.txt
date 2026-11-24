@@ -1,0 +1,59 @@
+=== R8 run 1 ===
+-- EXECUTE s('73731027-e653-4f12-b079-5d4d5b8ad601', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Index Scan using products_pkey on products p  (cost=0.28..16.60 rows=1 width=95) (actual time=0.024..0.025 rows=1 loops=1)
+  Index Cond: (id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid)
+  Filter: ((wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) OR (ANY (wholesaler_id = (hashed SubPlan 2).col1)))
+  Buffers: shared hit=9
+  SubPlan 2
+    ->  Bitmap Heap Scan on business_connections c  (cost=4.31..14.17 rows=4 width=16) (actual time=0.009..0.014 rows=4 loops=1)
+          Recheck Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+          Filter: (status = 'ACTIVE'::connection_status)
+          Heap Blocks: exact=4
+          Buffers: shared hit=6
+          ->  Bitmap Index Scan on business_connections_unique_pair  (cost=0.00..4.31 rows=4 width=0) (actual time=0.005..0.005 rows=4 loops=1)
+                Index Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=210
+Planning Time: 0.400 ms
+Execution Time: 0.047 ms
+
+=== R8 run 2 ===
+-- EXECUTE s('73731027-e653-4f12-b079-5d4d5b8ad601', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Index Scan using products_pkey on products p  (cost=0.28..16.60 rows=1 width=95) (actual time=0.083..0.084 rows=1 loops=1)
+  Index Cond: (id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid)
+  Filter: ((wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) OR (ANY (wholesaler_id = (hashed SubPlan 2).col1)))
+  Buffers: shared hit=9
+  SubPlan 2
+    ->  Bitmap Heap Scan on business_connections c  (cost=4.31..14.17 rows=4 width=16) (actual time=0.030..0.045 rows=4 loops=1)
+          Recheck Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+          Filter: (status = 'ACTIVE'::connection_status)
+          Heap Blocks: exact=4
+          Buffers: shared hit=6
+          ->  Bitmap Index Scan on business_connections_unique_pair  (cost=0.00..4.31 rows=4 width=0) (actual time=0.017..0.017 rows=4 loops=1)
+                Index Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=210
+Planning Time: 1.786 ms
+Execution Time: 0.271 ms
+
+=== R8 run 3 ===
+-- EXECUTE s('73731027-e653-4f12-b079-5d4d5b8ad601', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Index Scan using products_pkey on products p  (cost=0.28..16.60 rows=1 width=95) (actual time=0.054..0.055 rows=1 loops=1)
+  Index Cond: (id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid)
+  Filter: ((wholesaler_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) OR (ANY (wholesaler_id = (hashed SubPlan 2).col1)))
+  Buffers: shared hit=9
+  SubPlan 2
+    ->  Bitmap Heap Scan on business_connections c  (cost=4.31..14.17 rows=4 width=16) (actual time=0.020..0.030 rows=4 loops=1)
+          Recheck Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+          Filter: (status = 'ACTIVE'::connection_status)
+          Heap Blocks: exact=4
+          Buffers: shared hit=6
+          ->  Bitmap Index Scan on business_connections_unique_pair  (cost=0.00..4.31 rows=4 width=0) (actual time=0.011..0.011 rows=4 loops=1)
+                Index Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=210
+Planning Time: 1.266 ms
+Execution Time: 0.112 ms

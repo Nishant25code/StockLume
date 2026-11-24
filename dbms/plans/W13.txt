@@ -1,0 +1,44 @@
+=== W13 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601', 1, NULL, '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on sales  (cost=0.28..8.30 rows=1 width=100) (actual time=0.334..0.343 rows=1 loops=1)
+  Buffers: shared hit=60
+  ->  Index Scan using products_pkey on products p  (cost=0.28..8.30 rows=1 width=100) (actual time=0.043..0.051 rows=1 loops=1)
+        Index Cond: (id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid)
+        Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=108
+Planning Time: 0.599 ms
+Trigger for constraint sales_retailer_id_fkey: time=0.465 calls=1
+Trigger for constraint sales_product_id_fkey: time=0.081 calls=1
+Trigger for constraint sales_created_by_fkey: time=0.262 calls=1
+Execution Time: 1.191 ms
+
+=== W13 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601', 1, NULL, '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on sales  (cost=0.28..8.30 rows=1 width=100) (actual time=0.409..0.412 rows=1 loops=1)
+  Buffers: shared hit=58
+  ->  Index Scan using products_pkey on products p  (cost=0.28..8.30 rows=1 width=100) (actual time=0.042..0.044 rows=1 loops=1)
+        Index Cond: (id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid)
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=108
+Planning Time: 0.847 ms
+Trigger for constraint sales_retailer_id_fkey: time=0.583 calls=1
+Trigger for constraint sales_product_id_fkey: time=0.082 calls=1
+Trigger for constraint sales_created_by_fkey: time=0.320 calls=1
+Execution Time: 1.437 ms
+
+=== W13 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601', 1, NULL, '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Insert on sales  (cost=0.28..8.30 rows=1 width=100) (actual time=0.464..0.468 rows=1 loops=1)
+  Buffers: shared hit=58
+  ->  Index Scan using products_pkey on products p  (cost=0.28..8.30 rows=1 width=100) (actual time=0.061..0.064 rows=1 loops=1)
+        Index Cond: (id = '73731027-e653-4f12-b079-5d4d5b8ad601'::uuid)
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=108
+Planning Time: 0.805 ms
+Trigger for constraint sales_retailer_id_fkey: time=0.708 calls=1
+Trigger for constraint sales_product_id_fkey: time=0.145 calls=1
+Trigger for constraint sales_created_by_fkey: time=0.367 calls=1
+Execution Time: 1.745 ms

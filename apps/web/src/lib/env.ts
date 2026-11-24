@@ -10,3 +10,9 @@ export const publicEnv = {
 };
 
 export const isSupabaseConfigured = Boolean(publicEnv.supabaseUrl && publicEnv.supabaseAnonKey);
+
+/**
+ * The "developer preview" (pick a role without logging in) is for building UI
+ * before Supabase is set up. It is hidden in production once Supabase is configured.
+ */
+export const isPreviewAllowed = process.env.NODE_ENV !== "production" || !isSupabaseConfigured;

@@ -14,13 +14,12 @@ import { useSession } from "@/providers/session-provider";
 export function AppHeader() {
   const pathname = usePathname();
   const router = useRouter();
-  const { role, isPreview, setPreviewRole } = useSession();
+  const { role, isPreview, user, signOut } = useSession();
   const current = NAV_ITEMS.find((item) => pathname.startsWith(item.href));
 
-  function signOut() {
-    // TODO(Member 1): also call supabase.auth.signOut() once auth is wired.
-    setPreviewRole(null);
-    router.push("/login");
+  async function handleSignOut() {
+    await signOut();
+    router.replace("/login");
   }
 
   return (
@@ -30,6 +29,12 @@ export function AppHeader() {
       <p className="truncate text-sm font-medium">{current?.title ?? "StockLume"}</p>
 
       <div className="ml-auto flex items-center gap-1.5">
+        {user?.businessName ? (
+          <div className="hidden min-w-0 text-right leading-tight md:block">
+            <p className="truncate text-xs font-medium">{user.businessName}</p>
+            <p className="truncate text-[11px] text-muted-foreground">{user.email}</p>
+          </div>
+        ) : null}
         {role ? (
           <Badge variant="outline" className="hidden gap-1.5 sm:inline-flex">
             <span className="size-1.5 rounded-full bg-brand" />
@@ -39,7 +44,7 @@ export function AppHeader() {
         ) : null}
         <NotificationBell />
         <ThemeToggle />
-        <Button variant="ghost" size="icon" aria-label="Sign out" onClick={signOut}>
+        <Button variant="ghost" size="icon" aria-label="Sign out" onClick={() => void handleSignOut()}>
           <LogOut />
         </Button>
       </div>

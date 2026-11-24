@@ -31,7 +31,19 @@ function formatCurrency(amount: number) {
   });
 }
 
-function getRiskBadge(risk?: StockoutRisk, daysLeft?: number) {
+function getRiskBadge(risk?: StockoutRisk, daysLeft?: number, belowMin = false) {
+  // Stock at/below the reorder threshold is never "Healthy", even if sales-based prediction says LOW.
+  if (belowMin && risk !== "HIGH" && risk !== "MEDIUM") {
+    return (
+      <Badge
+        variant="outline"
+        className="gap-1 bg-warning/15 text-warning border-warning/30 text-[10px] font-semibold"
+      >
+        <AlertTriangle className="size-3" />
+        <span>Below minimum</span>
+      </Badge>
+    );
+  }
   switch (risk) {
     case "HIGH":
       return (
@@ -76,6 +88,24 @@ function getRiskBadge(risk?: StockoutRisk, daysLeft?: number) {
         </Badge>
       );
   }
+}
+
+/** Stock level against the reorder minimum: the tick marks the minimum, the fill turns amber/red below it. */
+function StockLevel({ quantity, min }: { quantity: number; min: number }) {
+  const scale = Math.max(min * 2, quantity, 1);
+  const fill = Math.min(100, (quantity / scale) * 100);
+  const tick = Math.min(100, (min / scale) * 100);
+  const tone = quantity === 0 ? "bg-destructive" : quantity <= min ? "bg-warning" : "bg-success";
+  return (
+    <div
+      className="relative mt-1.5 ml-auto h-1.5 w-24 rounded-full bg-muted"
+      role="img"
+      aria-label={`${quantity} in stock, minimum ${min}`}
+    >
+      <div className={`h-full rounded-full ${tone}`} style={{ width: `${fill}%` }} />
+      <span className="absolute -top-0.5 h-2.5 w-0.5 rounded-full bg-foreground/60" style={{ left: `${tick}%` }} />
+    </div>
+  );
 }
 
 export function InventoryTable({
@@ -171,15 +201,15 @@ export function InventoryTable({
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b bg-muted/30 text-muted-foreground uppercase text-[10px] tracking-wider">
+              <thead className="border-b text-muted-foreground text-xs font-medium">
                 <tr>
                   <th className="py-2.5 px-3">Product</th>
                   <th className="py-2.5 px-3">Supplier</th>
-                  <th className="py-2.5 px-3 text-right">Available Stock</th>
-                  <th className="py-2.5 px-3 text-right">Min Threshold</th>
+                  <th className="py-2.5 px-3 text-right">In stock vs minimum</th>
+                  <th className="py-2.5 px-3 text-right">Minimum</th>
                   <th className="py-2.5 px-3 text-right">Price</th>
-                  <th className="py-2.5 px-3">Stockout Risk</th>
-                  <th className="py-2.5 px-3 text-right">Action</th>
+                  <th className="py-2.5 px-3">Stockout risk</th>
+                  <th className="py-2.5 px-3 text-right"><span className="sr-only">Actions</span></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50 font-normal">
@@ -210,11 +240,11 @@ export function InventoryTable({
 
                       {/* Wholesaler Supplier */}
                       <td className="py-3 px-3 text-muted-foreground whitespace-nowrap">
-                        {item.wholesalerName || "Metro Wholesale Co"}
+                        {item.wholesalerName || "—"}
                       </td>
 
                       {/* Available Stock */}
-                      <td className="py-3 px-3 text-right whitespace-nowrap font-mono">
+                      <td className="py-3 px-3 text-right whitespace-nowrap">
                         <span
                           className={`font-bold ${
                             item.quantity === 0
@@ -227,26 +257,42 @@ export function InventoryTable({
                           {item.quantity}
                         </span>{" "}
                         <span className="text-[11px] text-muted-foreground">{item.unit}</span>
+                        <StockLevel quantity={item.quantity} min={min} />
                       </td>
 
                       {/* Min Threshold */}
-                      <td className="py-3 px-3 text-right text-muted-foreground whitespace-nowrap font-mono">
+                      <td className="py-3 px-3 text-right text-muted-foreground whitespace-nowrap">
                         {min} {item.unit}
                       </td>
 
                       {/* Price */}
-                      <td className="py-3 px-3 text-right font-medium text-foreground whitespace-nowrap font-mono">
+                      <td className="py-3 px-3 text-right font-medium text-foreground whitespace-nowrap">
                         {formatCurrency(item.price)}
                       </td>
 
                       {/* Risk Badge */}
                       <td className="py-3 px-3 whitespace-nowrap">
-                        {getRiskBadge(item.risk, item.daysOfStockLeft)}
+                        {getRiskBadge(item.risk, item.daysOfStockLeft, isBelowMin)}
                       </td>
 
                       {/* Quick Action */}
                       <td className="py-3 px-3 text-right whitespace-nowrap">
                         <div className="flex items-center justify-end gap-1.5">
+                          <span className="w-[4.75rem]">
+                            {isBelowMin ? (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                asChild
+                                className="h-7 px-2 text-[11px] gap-1 text-warning hover:text-warning"
+                              >
+                                <Link href="/orders">
+                                  <span>Reorder</span>
+                                  <ArrowRight className="size-3" />
+                                </Link>
+                              </Button>
+                            ) : null}
+                          </span>
                           <Button
                             variant="outline"
                             size="sm"
@@ -257,19 +303,6 @@ export function InventoryTable({
                             <span>Sell</span>
                           </Button>
 
-                          {isBelowMin ? (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              asChild
-                              className="h-7 px-2 text-[11px] gap-1 text-warning hover:text-warning"
-                            >
-                              <Link href="/orders">
-                                <span>Reorder</span>
-                                <ArrowRight className="size-3" />
-                              </Link>
-                            </Button>
-                          ) : null}
                         </div>
                       </td>
                     </tr>

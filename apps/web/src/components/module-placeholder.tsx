@@ -35,7 +35,7 @@ export function ModulePlaceholder({ module, features, endpoints }: ModulePlaceho
       </CardHeader>
       <CardContent className="relative grid gap-6 md:grid-cols-2">
         <div>
-          <p className="mb-2 text-xs font-medium tracking-wide text-muted-foreground uppercase">Planned features</p>
+          <p className="mb-2 text-xs font-medium text-muted-foreground">Planned features</p>
           <ul className="space-y-1.5 text-sm">
             {features.map((feature) => (
               <li key={feature} className="flex gap-2">
@@ -46,7 +46,7 @@ export function ModulePlaceholder({ module, features, endpoints }: ModulePlaceho
           </ul>
         </div>
         <div>
-          <p className="mb-2 flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+          <p className="mb-2 flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
             <PlugZap className="size-3.5" /> API endpoints
           </p>
           <ul className="space-y-1 font-mono text-xs">

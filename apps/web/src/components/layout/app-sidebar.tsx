@@ -63,11 +63,13 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
-        <div className="rounded-lg border bg-lume p-3 text-xs group-data-[collapsible=icon]:hidden">
-          <p className="flex items-center gap-1.5 font-medium">
+        <div className="rounded-md border border-sidebar-border bg-sidebar-accent/50 p-3 text-xs group-data-[collapsible=icon]:hidden">
+          <p className="flex items-center gap-1.5 font-medium text-sidebar-accent-foreground">
             <Sparkles className="size-3.5 text-brand" /> Smart replenishment
           </p>
-          <p className="mt-1 text-muted-foreground">Stockout predictions turn into suggested orders you approve.</p>
+          <p className="mt-1 text-sidebar-foreground/80">
+            Predicted stockouts become suggested orders. Nothing is sent until you approve it.
+          </p>
         </div>
       </SidebarFooter>
       <SidebarRail />

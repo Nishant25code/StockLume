@@ -109,7 +109,7 @@ export function StockHistoryTable({ movements, className }: StockHistoryTablePro
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b bg-muted/30 text-muted-foreground uppercase text-[10px] tracking-wider">
+              <thead className="border-b bg-muted/30 text-muted-foreground text-xs font-medium">
                 <tr>
                   <th className="py-2.5 px-3">Date & Time</th>
                   <th className="py-2.5 px-3">Product</th>

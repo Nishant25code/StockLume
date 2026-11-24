@@ -16,7 +16,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-display);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -56,102 +56,100 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
-   StockLume design tokens
-   Palette: cool "ink" neutrals + an amber "lume" glow as the brand.
-   Change colours HERE only — components read these variables.
+   StockLume design tokens — "stockroom" palette
+   Aisle teal-black frame, concrete canvas, price-tag yellow as the
+   brand, stamp red for risk. Change colours HERE only.
    ───────────────────────────────────────────────────────────── */
 :root {
-  --radius: 0.75rem;
+  --radius: 0.5rem;
 
-  --background: oklch(0.988 0.003 260);
-  --foreground: oklch(0.2 0.02 265);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0.02 265);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.02 265);
+  --background: #ECEFEC;                       /* concrete */
+  --foreground: #12211F;
+  --card: #FFFFFF;
+  --card-foreground: #12211F;
+  --popover: #FFFFFF;
+  --popover-foreground: #12211F;
 
-  --primary: oklch(0.24 0.03 265);            /* ink — primary buttons */
-  --primary-foreground: oklch(0.985 0.002 260);
-  --secondary: oklch(0.96 0.006 260);
-  --secondary-foreground: oklch(0.26 0.03 265);
-  --muted: oklch(0.962 0.005 260);
-  --muted-foreground: oklch(0.52 0.02 265);
-  --accent: oklch(0.955 0.03 80);              /* soft amber wash */
-  --accent-foreground: oklch(0.35 0.08 60);
-  --destructive: oklch(0.58 0.22 27);
-  --border: oklch(0.915 0.006 260);
-  --input: oklch(0.905 0.008 260);
-  --ring: oklch(0.75 0.15 70);
+  --primary: #0E2A2B;                          /* aisle teal-black */
+  --primary-foreground: #F4F7F5;
+  --secondary: #E1E7E3;
+  --secondary-foreground: #12211F;
+  --muted: #E4E9E6;
+  --muted-foreground: #55675F;
+  --accent: #FFF0BD;                           /* price-tag wash */
+  --accent-foreground: #4F3A00;
+  --destructive: #C93428;
+  --border: #D3DBD6;
+  --input: #C3CEC8;
+  --ring: #D9A400;
 
-  /* Brand + semantic status colours */
-  --brand: oklch(0.78 0.16 72);                /* lume amber */
-  --brand-foreground: oklch(0.22 0.04 60);
-  --brand-glow: oklch(0.85 0.14 80 / 35%);
-  --success: oklch(0.64 0.15 155);
-  --warning: oklch(0.76 0.16 70);
-  --info: oklch(0.6 0.15 250);
-  --danger: oklch(0.6 0.21 25);
+  --brand: #FFC629;                            /* price-tag yellow */
+  --brand-foreground: #2B2000;
+  --brand-glow: #FFC62933;
+  --success: #1A7F54;
+  --warning: #A86B00;
+  --info: #2A6AAE;
+  --danger: #C93428;
 
-  /* Charts (Member 4) */
-  --chart-1: oklch(0.76 0.16 70);
-  --chart-2: oklch(0.6 0.13 190);
-  --chart-3: oklch(0.55 0.18 270);
-  --chart-4: oklch(0.65 0.18 15);
-  --chart-5: oklch(0.55 0.03 265);
+  --chart-1: #E0A800;
+  --chart-2: #1A7F54;
+  --chart-3: #2A6AAE;
+  --chart-4: #C93428;
+  --chart-5: #66786F;
 
-  --sidebar: oklch(0.975 0.004 260);
-  --sidebar-foreground: oklch(0.24 0.02 265);
-  --sidebar-primary: oklch(0.24 0.03 265);
-  --sidebar-primary-foreground: oklch(0.985 0.002 260);
-  --sidebar-accent: oklch(0.935 0.008 260);
-  --sidebar-accent-foreground: oklch(0.2 0.02 265);
-  --sidebar-border: oklch(0.915 0.006 260);
-  --sidebar-ring: oklch(0.75 0.15 70);
+  --sidebar: #0E2A2B;
+  --sidebar-foreground: #C9DAD5;
+  --sidebar-primary: #FFC629;
+  --sidebar-primary-foreground: #2B2000;
+  --sidebar-accent: #17403F;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #1F4A49;
+  --sidebar-ring: #FFC629;
 }
 
 .dark {
-  --background: oklch(0.145 0.012 265);
-  --foreground: oklch(0.96 0.004 260);
-  --card: oklch(0.185 0.014 265);
-  --card-foreground: oklch(0.96 0.004 260);
-  --popover: oklch(0.2 0.014 265);
-  --popover-foreground: oklch(0.96 0.004 260);
+  --background: #0A1413;
+  --foreground: #E7F0EC;
+  --card: #111E1D;
+  --card-foreground: #E7F0EC;
+  --popover: #152624;
+  --popover-foreground: #E7F0EC;
 
-  --primary: oklch(0.8 0.15 75);               /* amber primary in dark mode */
-  --primary-foreground: oklch(0.2 0.04 60);
-  --secondary: oklch(0.24 0.014 265);
-  --secondary-foreground: oklch(0.94 0.004 260);
-  --muted: oklch(0.23 0.012 265);
-  --muted-foreground: oklch(0.68 0.015 265);
-  --accent: oklch(0.27 0.03 70);
-  --accent-foreground: oklch(0.9 0.08 80);
-  --destructive: oklch(0.68 0.19 25);
-  --border: oklch(1 0 0 / 9%);
-  --input: oklch(1 0 0 / 13%);
-  --ring: oklch(0.75 0.14 72);
+  --primary: #FFC629;
+  --primary-foreground: #2B2000;
+  --secondary: #172A28;
+  --secondary-foreground: #E7F0EC;
+  --muted: #162624;
+  --muted-foreground: #8FA7A0;
+  --accent: #2E2A14;
+  --accent-foreground: #FFE08A;
+  --destructive: #F0675B;
+  --border: #FFFFFF1A;
+  --input: #FFFFFF26;
+  --ring: #FFC629;
 
-  --brand: oklch(0.8 0.15 75);
-  --brand-foreground: oklch(0.2 0.04 60);
-  --brand-glow: oklch(0.8 0.15 75 / 22%);
-  --success: oklch(0.72 0.15 155);
-  --warning: oklch(0.8 0.15 75);
-  --info: oklch(0.7 0.13 250);
-  --danger: oklch(0.68 0.19 25);
+  --brand: #FFC629;
+  --brand-foreground: #2B2000;
+  --brand-glow: #FFC62922;
+  --success: #3DBA82;
+  --warning: #F2B93B;
+  --info: #5CA3E6;
+  --danger: #F0675B;
 
-  --chart-1: oklch(0.8 0.15 75);
-  --chart-2: oklch(0.7 0.12 190);
-  --chart-3: oklch(0.66 0.16 275);
-  --chart-4: oklch(0.7 0.17 15);
-  --chart-5: oklch(0.62 0.02 265);
+  --chart-1: #FFC629;
+  --chart-2: #3DBA82;
+  --chart-3: #5CA3E6;
+  --chart-4: #F0675B;
+  --chart-5: #8FA7A0;
 
-  --sidebar: oklch(0.165 0.013 265);
-  --sidebar-foreground: oklch(0.92 0.004 260);
-  --sidebar-primary: oklch(0.8 0.15 75);
-  --sidebar-primary-foreground: oklch(0.2 0.04 60);
-  --sidebar-accent: oklch(0.23 0.014 265);
-  --sidebar-accent-foreground: oklch(0.96 0.004 260);
-  --sidebar-border: oklch(1 0 0 / 8%);
-  --sidebar-ring: oklch(0.75 0.14 72);
+  --sidebar: #060E0D;
+  --sidebar-foreground: #B9CEC8;
+  --sidebar-primary: #FFC629;
+  --sidebar-primary-foreground: #2B2000;
+  --sidebar-accent: #122523;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #FFFFFF14;
+  --sidebar-ring: #FFC629;
 }
 
 @layer base {
@@ -167,6 +165,13 @@
   html {
     @apply font-sans;
   }
+  h1, h2, h3 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+  }
+  body {
+    font-variant-numeric: tabular-nums;
+  }
 }
 
 @layer utilities {
@@ -174,7 +179,7 @@
   .bg-lume {
     background-image:
       radial-gradient(60rem 30rem at 15% -10%, var(--brand-glow), transparent 60%),
-      radial-gradient(40rem 24rem at 100% 0%, oklch(0.7 0.12 250 / 10%), transparent 60%);
+      radial-gradient(40rem 24rem at 100% 0%, #2A6AAE1A, transparent 60%);
   }
   .bg-grid {
     background-image:

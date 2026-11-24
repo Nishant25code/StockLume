@@ -88,31 +88,31 @@ Legend: **R** = retailer, **W** = wholesaler. Status: ✅ done · 🔜 planned.
 
 | Method | Path | Role | Description | Status |
 |---|---|---|---|---|
-| GET | `/connections` | R, W | R: my wholesalers · W: my retailers | 🔜 |
-| GET | `/connections/discover` | R | Wholesalers I'm not connected to yet | 🔜 |
-| POST | `/connections` | R | Connect to a wholesaler. Body: `{ wholesalerId }` | 🔜 |
-| PATCH | `/connections/:id` | W | Change status. Body: `{ status }` | 🔜 |
+| GET | `/connections` | R, W | R: my wholesalers · W: my retailers (`?status=`, `?limit=`, `?offset=`) | ✅ |
+| GET | `/connections/discover` | R, W | Discover opposite-role partners not connected to yet (`?search=`) | ✅ |
+| POST | `/connections` | R | Request connection with wholesaler (creates PENDING). Body: `{ partnerId }` | ✅ |
+| PATCH | `/connections/:id` | R, W | Update status (W: accept PENDING->ACTIVE, reject PENDING->INACTIVE; R/W: deactivate ACTIVE->INACTIVE). Body: `{ status }` | ✅ |
 
 ### Products — Member 1
 
 | Method | Path | Role | Description | Status |
 |---|---|---|---|---|
-| GET | `/products` | R, W | W: own catalogue · R: active products of connected wholesalers (`?wholesalerId=`, `?search=`) | 🔜 |
-| GET | `/products/:id` | R, W | One product | 🔜 |
-| POST | `/products` | W | Body: `{ name, sku, category?, unit?, price, availableQuantity }` | 🔜 |
-| PATCH | `/products/:id` | W | Update price, quantity, details, `isActive` | 🔜 |
-| DELETE | `/products/:id` | W | Soft delete (`is_active = false`) | 🔜 |
+| GET | `/products` | R, W | W: own catalogue · R: active products of connected wholesalers (`?wholesalerId=`, `?search=`) | ✅ |
+| GET | `/products/:id` | R, W | One product (accessible by owner or actively connected retailer) | ✅ |
+| POST | `/products` | W | Wholesaler adds product. Body: `{ name, sku, category?, unit?, price, availableQuantity? }` | ✅ |
+| PATCH | `/products/:id` | W | Update price, quantity, details, `isActive` | ✅ |
+| DELETE | `/products/:id` | W | Soft delete / deactivation (`is_active = false`) | ✅ |
 
 ### Inventory — Member 2
 
 | Method | Path | Role | Description | Status |
 |---|---|---|---|---|
-| GET | `/inventory` | R | Stock list joined with product + wholesaler + risk | 🔜 |
-| POST | `/inventory` | R | Add product to inventory. Body: `{ productId, quantity }` | 🔜 |
-| PATCH | `/inventory/:id/adjust` | R | Body: `{ change, note }` (± quantity) | 🔜 |
-| GET | `/inventory/movements` | R | Stock movement history (`?productId=`) | 🔜 |
-| GET | `/inventory/reorder-rules` | R | All rules | 🔜 |
-| PUT | `/inventory/reorder-rules/:productId` | R | Upsert. Body: `{ minStock, reorderQuantity, leadTimeDays }` | 🔜 |
+| GET | `/inventory` | R | Stock list joined with product + wholesaler + risk (`?search=`, `?lowStockOnly=`) | ✅ |
+| POST | `/inventory` | R | Add connected product to inventory (INITIAL_STOCK). Body: `{ productId, quantity }` | ✅ |
+| PATCH | `/inventory/:id/adjust` | R | Manual stock recount/correction. Body: `{ change, note }` (± quantity) | ✅ |
+| GET | `/inventory/movements` | R, W | Stock movement history (`?productId=`, `?reason=`) | ✅ |
+| GET | `/inventory/reorder-rules` | R | All configured reorder rules for stocked items | ✅ |
+| PUT | `/inventory/reorder-rules/:productId` | R | Upsert rule. Body: `{ minStock, reorderQuantity, leadTimeDays }` | ✅ |
 
 ### Sales — Member 2
 

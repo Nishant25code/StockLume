@@ -5,11 +5,25 @@
 ## 1. Supabase (database + auth)
 
 1. Create a project at [supabase.com](https://supabase.com) (free tier is fine). Pick the region closest to your users (e.g. Mumbai `ap-south-1`).
-2. **Apply the schema** — either:
-   - **Dashboard:** SQL Editor → paste `supabase/migrations/20261116000000_initial_schema.sql` → Run. Then paste `supabase/seed.sql` → Run.
+2. **Apply the schema and migrations** — either:
+   - **Dashboard:** SQL Editor → paste `supabase/migrations/20261116000000_initial_schema.sql` → Run. Then paste `supabase/migrations/20261124000000_add_performance_indexes.sql` → Run. Then paste `supabase/seed.sql` → Run.
    - **CLI:** `npx supabase login` → `npx supabase link --project-ref <ref>` → `npx supabase db push`, then run `seed.sql` in the SQL Editor.
 3. **Auth:** Authentication → Providers → Email: enabled. For the demo you can turn off "Confirm email" so sign-up works instantly.
-4. **Collect values:**
+4. **Link Supabase Auth user to a demo business (Required for local/demo API testing)**:
+   - After signing up an email in Supabase (or running sign up in the app), copy the user's UUID from Supabase Dashboard -> Authentication -> Users.
+   - Run this SQL query to link the test user to one of the seeded businesses:
+     ```sql
+     -- To test as Retailer (FreshMart Kirana):
+     insert into profiles (id, business_id, full_name, email)
+     values ('<your-auth-user-uuid>', '11111111-0000-0000-0000-000000000001', 'FreshMart Owner', 'retailer@example.com')
+     on conflict (id) do update set business_id = excluded.business_id;
+
+     -- Or to test as Wholesaler (Metro Wholesale Co):
+     insert into profiles (id, business_id, full_name, email)
+     values ('<your-auth-user-uuid>', '22222222-0000-0000-0000-000000000001', 'Metro Manager', 'metro@example.com')
+     on conflict (id) do update set business_id = excluded.business_id;
+     ```
+5. **Collect values:**
 
    | Variable | Where in Supabase |
    |---|---|

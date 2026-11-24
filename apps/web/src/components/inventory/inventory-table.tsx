@@ -16,10 +16,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { EmptyState } from "@/components/states/empty-state";
-import type { InventoryItem, StockoutRisk } from "@/types";
+import type { InventoryRow, StockoutRisk } from "@/types";
 
 interface InventoryTableProps {
-  items: InventoryItem[];
+  items: InventoryRow[];
   onSelectProductForSale?: (productId: string) => void;
   className?: string;
 }

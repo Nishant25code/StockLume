@@ -55,7 +55,86 @@ export type StockMovementReason =
   | "ORDER_DELIVERED"
   | "MANUAL_ADJUSTMENT";
 
+/* ─────────────────────────────────────────────────────────────
+   Member 1/3 — Products, Connections, Inventory & Reorder (API shapes)
+   ───────────────────────────────────────────────────────────── */
+
+export interface Product {
+  id: string;
+  wholesalerId: string;
+  name: string;
+  sku: string;
+  category: string | null;
+  unit: string;
+  price: number;
+  availableQuantity: number;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  wholesalerName?: string;
+}
+
+export type ConnectionStatus = "PENDING" | "ACTIVE" | "INACTIVE";
+
+export interface BusinessPartner {
+  id: string;
+  name: string;
+  type: Role;
+  city: string | null;
+  phone: string | null;
+  email: string | null;
+  address?: string | null;
+}
+
+export interface Connection {
+  id: string;
+  status: ConnectionStatus;
+  createdAt: string;
+  updatedAt: string;
+  retailerId: string;
+  wholesalerId: string;
+  partner: BusinessPartner;
+}
+
+/** Returned by GET /api/inventory (the API contract). */
 export interface InventoryItem {
+  id: string;
+  businessId: string;
+  productId: string;
+  quantity: number;
+  minStock: number;
+  reorderQuantity: number;
+  leadTimeDays: number;
+  stockoutRisk: StockoutRisk;
+  updatedAt: string;
+  product: {
+    id: string;
+    name: string;
+    sku: string;
+    unit: string;
+    price: number;
+    wholesalerId: string;
+    wholesalerName: string;
+  };
+}
+
+export interface ReorderRule {
+  id: string;
+  productId: string;
+  productName: string;
+  productSku: string;
+  minStock: number;
+  reorderQuantity: number;
+  leadTimeDays: number;
+  isActive: boolean;
+  updatedAt: string;
+}
+
+/**
+ * Flat row used by the inventory UI (table, record-sale form).
+ * Built from the API's InventoryItem, enriched with /predictions/stockout data.
+ */
+export interface InventoryRow {
   id: string;
   businessId: string;
   productId: string;
@@ -76,17 +155,21 @@ export interface InventoryItem {
   updatedAt?: string;
 }
 
+/** Returned by GET /api/inventory/movements. */
 export interface StockMovement {
   id: string;
-  businessId: string;
+  businessId?: string;
   productId: string;
   productName?: string;
+  productSku?: string;
   quantityChange: number;
   quantityAfter: number;
   reason: StockMovementReason;
   saleId?: string | null;
   orderId?: string | null;
+  orderNumber?: number | null;
   note?: string | null;
+  doneBy?: string | null;
   createdAt: string;
 }
 

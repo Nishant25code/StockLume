@@ -199,12 +199,31 @@ RLS is **enabled with no policies** on every table. The Express API connects as 
 |---|---|
 | `11111111-…-000000000001` | FreshMart Kirana (retailer, has inventory + 30 days of sales) |
 | `11111111-…-000000000002` | Daily Needs Store (retailer) |
+| `11111111-…-000000000003` | QuickStop Grocery (retailer, pending connections) |
 | `22222222-…-000000000001` | Metro Wholesale Co (wholesaler) |
 | `22222222-…-000000000002` | GreenLeaf Traders (wholesaler) |
-| `33333333-…-00000000000N` | 8 products |
+| `22222222-…-000000000003` | Apex Agro Supplies (wholesaler, available for discovery) |
+| `33333333-…-00000000000N` | 12 products across Grains, Pulses, Oils, Beverages, Spices |
+| `44444444-…-00000000000N` | 4 sample orders (DELIVERED, DISPATCHED, SUBMITTED, DRAFT) |
+| `55555555-…-00000000000N` | Order line items with price snapshots |
+| `66666666-…-00000000000N` | Realistic alerts (LOW_STOCK, CONNECTION_REQUEST, ORDER_SUBMITTED) |
+| `77777777-…-00000000000N` | Business connections across ACTIVE and PENDING states |
 
 Profiles are not seeded because they must reference real Supabase Auth users. See the comment at the top of `seed.sql` to link your test user to a demo business.
 
+## Migrations & Performance Indexes
+
+### Migration history
+
+1. `20261116000000_initial_schema.sql` — Initial schema: 11 tables, core constraints, foreign keys, triggers, and baseline indexes.
+2. `20261124000000_add_performance_indexes.sql` — Query optimization indexes for Section 3 workflows:
+   - `business_connections_retailer_status_idx (retailer_id, status)`: Accelerates active partner lookups in catalogue queries (R7).
+   - `products_wholesaler_active_idx (wholesaler_id, is_active)`: Speeds up active catalogue filtering.
+   - `products_active_name_idx (is_active, name)`: Enables index scans for catalogue search and sorting.
+   - `stock_movements_business_created_at_idx (business_id, created_at desc)`: Eliminates in-memory sorts for store movement timelines (R10).
+   - `reorder_rules_retailer_active_idx (retailer_id, is_active)`: Accelerates reorder rule joins during inventory listing.
+   - `orders_retailer_created_at_idx` & `orders_wholesaler_created_at_idx`: Optimizes order timeline queries (R13, R14).
+
 ## Changing the schema
 
-**Never edit the initial migration.** Add a new file instead — see [CONTRIBUTING.md → SQL migrations](../CONTRIBUTING.md#adding-a-sql-migration).
+**Never edit an applied migration.** Add a new timestamped file under `supabase/migrations/` instead — see [CONTRIBUTING.md → SQL migrations](../CONTRIBUTING.md#adding-a-sql-migration).

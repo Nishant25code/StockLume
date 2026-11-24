@@ -8,10 +8,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { apiClient } from "@/lib/api-client";
-import type { InventoryItem } from "@/types";
+import type { InventoryRow } from "@/types";
 
 interface RecordSaleFormProps {
-  items: InventoryItem[];
+  items: InventoryRow[];
   preselectedProductId?: string;
   onSuccess?: () => void;
   onCancel?: () => void;

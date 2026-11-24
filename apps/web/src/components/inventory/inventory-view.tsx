@@ -366,14 +366,7 @@ export function InventoryView() {
       ) : null}
 
       {/* Header Actions Toolbar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b pb-4">
-        <div>
-          <h2 className="text-sm font-semibold text-foreground">Retail Inventory Telemetry</h2>
-          <p className="text-xs text-muted-foreground">
-            Track stock, simulate customer demand, and record sales
-          </p>
-        </div>
-
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end border-b pb-4">
         <div className="flex flex-wrap items-center gap-2">
           {/* Simulate Sales Button */}
           <Button
@@ -411,9 +404,11 @@ export function InventoryView() {
             size="sm"
             onClick={loadData}
             title="Refresh inventory"
+            aria-label="Refresh inventory"
+            disabled={isLoading}
             className="h-8 px-2 text-xs"
           >
-            <RefreshCw className="size-3.5" />
+            <RefreshCw className={`size-3.5 ${isLoading ? "animate-spin" : ""}`} />
           </Button>
         </div>
       </div>

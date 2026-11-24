@@ -61,7 +61,7 @@ export function OrderItemsTable({
       <CardContent className="p-0">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="border-y bg-muted/40 text-xs text-muted-foreground uppercase tracking-wider">
+            <thead className="border-y bg-muted/40 text-xs text-muted-foreground">
               <tr>
                 <th className="py-2.5 px-4 text-left font-medium">Product / SKU</th>
                 <th className="py-2.5 px-4 text-left font-medium">Category</th>
@@ -111,7 +111,7 @@ export function OrderItemsTable({
             </tbody>
             <tfoot className="border-t bg-muted/20 font-medium">
               <tr>
-                <td colSpan={4} className="py-3 px-4 text-right text-xs uppercase tracking-wider text-muted-foreground">
+                <td colSpan={4} className="py-3 px-4 text-right text-xs text-muted-foreground">
                   Order Total
                 </td>
                 <td className="py-3 px-4 text-right text-base font-bold font-mono text-brand">

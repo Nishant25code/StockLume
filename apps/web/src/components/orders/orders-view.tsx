@@ -356,7 +356,7 @@ export function OrdersView() {
         <div className="flex items-center gap-2">
           <Users className="size-4 text-muted-foreground" />
           <span className="text-xs font-medium text-muted-foreground">Viewing Orders as:</span>
-          <span className="text-xs font-semibold text-foreground uppercase tracking-wide">
+          <span className="text-xs font-semibold text-foreground">
             {activeRole}
           </span>
         </div>

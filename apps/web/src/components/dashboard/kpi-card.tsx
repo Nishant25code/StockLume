@@ -1,6 +1,5 @@
 import type { LucideIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 interface KpiCardProps {
@@ -14,6 +13,7 @@ interface KpiCardProps {
   className?: string;
 }
 
+/** Shelf-tag style stat: a coloured edge carries the status, the number does the talking. */
 export function KpiCard({
   title,
   value,
@@ -24,45 +24,40 @@ export function KpiCard({
   variant = "default",
   className,
 }: KpiCardProps) {
-  const iconVariants = {
-    default: "bg-muted text-muted-foreground",
-    brand: "bg-brand/10 text-brand",
-    warning: "bg-warning/10 text-warning",
-    success: "bg-success/10 text-success",
-    info: "bg-info/10 text-info",
+  const edge = {
+    default: "before:bg-border",
+    brand: "before:bg-brand",
+    warning: "before:bg-warning",
+    success: "before:bg-success",
+    info: "before:bg-info",
   };
 
   return (
-    <Card className={cn("relative overflow-hidden transition-all hover:shadow-sm", className)}>
-      <CardContent className="p-5">
-        <div className="flex items-center justify-between gap-2">
-          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            {title}
-          </p>
-          <div
-            className={cn(
-              "flex size-9 shrink-0 items-center justify-center rounded-lg",
-              iconVariants[variant],
-            )}
-          >
-            <Icon className="size-4" aria-hidden />
-          </div>
-        </div>
+    <div
+      className={cn(
+        "relative flex flex-col gap-1 overflow-hidden rounded-lg border bg-card py-4 pr-4 pl-5",
+        "before:absolute before:inset-y-0 before:left-0 before:w-1.5",
+        edge[variant],
+        className,
+      )}
+    >
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-sm font-medium text-muted-foreground">{title}</p>
+        <Icon className="size-4 shrink-0 text-muted-foreground/70" aria-hidden />
+      </div>
 
-        <div className="mt-3 flex items-baseline gap-2">
-          <p className="text-2xl font-bold tracking-tight text-foreground">{value}</p>
-          {badge ? (
-            <Badge variant={badgeVariant} className="text-[10px] font-medium px-1.5 py-0">
-              {badge}
-            </Badge>
-          ) : null}
-        </div>
-
-        {description ? (
-          <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+        <p className="font-heading text-[1.9rem] leading-tight font-semibold tracking-tight text-foreground">
+          {value}
+        </p>
+        {badge ? (
+          <Badge variant={badgeVariant} className="px-1.5 py-0 text-[11px] font-medium">
+            {badge}
+          </Badge>
         ) : null}
-      </CardContent>
-    </Card>
+      </div>
+
+      {description ? <p className="text-xs text-muted-foreground">{description}</p> : null}
+    </div>
   );
 }
-

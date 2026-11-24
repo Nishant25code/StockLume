@@ -357,7 +357,7 @@ export function WholesalerOrdersView({
           ) : (
             <div className="overflow-x-auto rounded-xl border bg-card">
               <table className="w-full text-sm">
-                <thead className="border-b bg-muted/40 text-xs text-muted-foreground uppercase tracking-wider">
+                <thead className="border-b bg-muted/40 text-xs text-muted-foreground">
                   <tr>
                     <th className="py-3 px-4 text-left font-medium">Order</th>
                     <th className="py-3 px-4 text-left font-medium">Retailer</th>

@@ -2,6 +2,7 @@
 
 import { useId, useState } from "react";
 import { BarChart3, TrendingUp } from "lucide-react";
+import { formatShortDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/states/empty-state";
@@ -146,7 +147,7 @@ export function SalesAnalyticsChart({
         {/* KPI Strip */}
         <div className="mb-4 grid grid-cols-2 gap-4 border-b pb-3 sm:grid-cols-4">
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+            <p className="text-xs font-medium text-muted-foreground">
               Period Total
             </p>
             <p className="text-lg font-bold text-foreground">
@@ -154,7 +155,7 @@ export function SalesAnalyticsChart({
             </p>
           </div>
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+            <p className="text-xs font-medium text-muted-foreground">
               Daily Average
             </p>
             <p className="text-lg font-bold text-foreground">
@@ -162,7 +163,7 @@ export function SalesAnalyticsChart({
             </p>
           </div>
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+            <p className="text-xs font-medium text-muted-foreground">
               Units Handled
             </p>
             <p className="text-lg font-bold text-foreground">
@@ -170,7 +171,7 @@ export function SalesAnalyticsChart({
             </p>
           </div>
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+            <p className="text-xs font-medium text-muted-foreground">
               Transactions
             </p>
             <p className="text-lg font-bold text-foreground">
@@ -293,7 +294,7 @@ export function SalesAnalyticsChart({
                   left: `${(hoveredPoint.x / width) * 100}%`,
                 }}
               >
-                <p className="font-semibold">{hoveredPoint.point.date}</p>
+                <p className="font-semibold">{formatShortDate(hoveredPoint.point.date, true)}</p>
                 <p className="text-brand font-bold text-sm">
                   {formatCurrency(hoveredPoint.point.totalAmount)}
                 </p>
@@ -313,9 +314,9 @@ export function SalesAnalyticsChart({
             {/* Dates along the bottom */}
             {data.length > 0 ? (
               <div className="mt-2 flex items-center justify-between text-[11px] text-muted-foreground px-2">
-                <span>{data[0].date}</span>
-                {data.length > 2 ? <span>{data[Math.floor(data.length / 2)].date}</span> : null}
-                <span>{data[data.length - 1].date}</span>
+                <span>{formatShortDate(data[0].date)}</span>
+                {data.length > 2 ? <span>{formatShortDate(data[Math.floor(data.length / 2)].date)}</span> : null}
+                <span>{formatShortDate(data[data.length - 1].date)}</span>
               </div>
             ) : null}
           </div>

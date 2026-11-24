@@ -279,7 +279,7 @@ export default function ProductsPage() {
           <div className="rounded-xl border bg-card shadow-xs overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="border-b bg-muted/50 text-xs font-medium text-muted-foreground uppercase">
+                <thead className="border-b bg-muted/50 text-xs font-medium text-muted-foreground">
                   <tr>
                     <th className="px-4 py-3">Product</th>
                     <th className="px-4 py-3">SKU</th>

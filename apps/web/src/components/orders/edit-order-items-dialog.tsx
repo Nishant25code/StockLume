@@ -187,7 +187,7 @@ export function EditOrderItemsDialog({
         </CardContent>
         <CardFooter className="flex items-center justify-between border-t pt-4 bg-muted/20">
           <div>
-            <span className="text-xs text-muted-foreground uppercase tracking-wider">New Total: </span>
+            <span className="text-xs text-muted-foreground">New Total: </span>
             <span className="text-base font-bold font-mono text-brand">
               {formatCurrency(updatedTotal)}
             </span>

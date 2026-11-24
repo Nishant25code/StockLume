@@ -82,7 +82,7 @@ export function OrdersStatusCard({ summary, role, className }: OrdersStatusCardP
             {/* Value Highlights */}
             <div className="flex items-center justify-between border-b pb-3">
               <div>
-                <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                <p className="text-xs font-medium text-muted-foreground">
                   Total Order Value
                 </p>
                 <p className="text-xl font-bold text-foreground">
@@ -90,7 +90,7 @@ export function OrdersStatusCard({ summary, role, className }: OrdersStatusCardP
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                <p className="text-xs font-medium text-muted-foreground">
                   Statuses Active
                 </p>
                 <p className="text-xl font-bold text-foreground">

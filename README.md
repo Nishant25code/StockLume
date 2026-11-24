@@ -172,3 +172,6 @@ Step-by-step (Supabase, Hyperdrive, Workers): [docs/DEPLOYMENT.md](docs/DEPLOYME
 | **Noor Hora** | [@noor0021](https://github.com/noor0021) | Backend: orders & fulfilment, sales, stockout prediction; UI redesign |
 | **Celina** | [@cellinaachari505](https://github.com/cellinaachari505) | Database, connections, products, inventory & reorder rules |
 | **Kalpana Beniwal** | [@KalpnaBeniwal868](https://github.com/KalpnaBeniwal868) | Notifications, dashboards, analytics, inventory & orders UI |
+
+
+

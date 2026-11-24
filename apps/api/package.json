@@ -8,7 +8,9 @@
     "dev": "node --watch --env-file-if-exists=.env src/server.js",
     "start": "node --env-file-if-exists=.env src/server.js",
     "lint": "node scripts/check-syntax.js",
-    "test": "node --test test/**/*.test.js"
+    "test": "node --test test/**/*.test.js",
+    "db:migrate": "node --env-file-if-exists=.env scripts/db-migrate.js",
+    "db:seed": "node --env-file-if-exists=.env scripts/db-seed.js"
   },
   "engines": {
     "node": ">=20.9.0"

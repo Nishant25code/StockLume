@@ -1,17 +1,25 @@
 # Deployment
 
-> Status: the repository is **prepared** for Supabase and Vercel, but neither has been connected or tested yet. Follow these steps once, then tick the checklist at the bottom.
+> Status: login, sign-up and every module are built and tested locally (against a Supabase Auth stand-in and a real Postgres). Connecting your real Supabase project and Vercel still has to be done once — follow these steps, then tick the checklist at the bottom.
 
 ## 1. Supabase (database + auth)
 
 1. Create a project at [supabase.com](https://supabase.com) (free tier is fine). Pick the region closest to your users (e.g. Mumbai `ap-south-1`).
-2. **Apply the schema and migrations** — either:
-   - **Dashboard:** SQL Editor → paste `supabase/migrations/20261116000000_initial_schema.sql` → Run. Then paste `supabase/migrations/20261124000000_add_performance_indexes.sql` → Run. Then paste `supabase/seed.sql` → Run.
-   - **CLI:** `npx supabase login` → `npx supabase link --project-ref <ref>` → `npx supabase db push`, then run `seed.sql` in the SQL Editor.
-3. **Auth:** Authentication → Providers → Email: enabled. For the demo you can turn off "Confirm email" so sign-up works instantly.
-4. **Link Supabase Auth user to a demo business (Required for local/demo API testing)**:
-   - After signing up an email in Supabase (or running sign up in the app), copy the user's UUID from Supabase Dashboard -> Authentication -> Users.
-   - Run this SQL query to link the test user to one of the seeded businesses:
+2. **Put the connection values in `apps/api/.env`** (see step 5 for where each one is), then **apply the schema and demo data** from the repo root:
+   ```bash
+   npm run db:migrate     # runs every file in supabase/migrations not applied yet (tracked in stocklume_migrations)
+   npm run db:seed        # loads supabase/seed.sql once (refuses to run twice)
+   npm run db:migrate -- --status   # see what is applied / pending
+   ```
+   Already pasted the SQL into the Supabase **SQL Editor** by hand? Run `npm run db:migrate -- --baseline` once so future migrations are tracked from there. Use one method per database — don't mix in `supabase db push`.
+3. **Auth** (Authentication → Sign In / Providers → Email: enabled):
+   - **"Confirm email" OFF (easiest for the demo):** sign-up logs the user in immediately and creates their business.
+   - **"Confirm email" ON:** sign-up shows "Check your email"; after clicking the link and signing in, the app shows a prefilled **Set up your business** page (`/onboarding`).
+   - Authentication → URL Configuration: **Site URL** = `http://localhost:3000` locally (your Vercel web URL in production), and add `http://localhost:3000/login` and `https://<web-project>.vercel.app/login` to **Redirect URLs** (used by the confirmation email).
+4. **Use the demo data with a real login (optional)** — new sign-ups get their own empty business. To log in *as* a seeded demo business instead:
+   - Sign up in the app (any email), copy the user's UUID from Supabase → Authentication → Users.
+   - If you already completed sign-up, you own a new empty business; the SQL below moves your login to the demo business instead.
+   - Run this SQL in the SQL Editor:
      ```sql
      -- To test as Retailer (FreshMart Kirana):
      insert into profiles (id, business_id, full_name, email)
@@ -70,8 +78,8 @@ Every PR gets preview URLs for both projects. Preview web builds call the produc
 
 ## 3. Checklist (Member 4 owns this)
 
-- [ ] Supabase project created, migration + seed applied
-- [ ] Email auth enabled
+- [ ] Supabase project created, `npm run db:migrate` + `npm run db:seed` run against it
+- [ ] Email auth enabled; "Confirm email" choice made; Site URL + Redirect URLs set
 - [ ] API project deployed, `/api/health` shows `database: connected`
 - [ ] Web project deployed, env vars set
 - [ ] `CORS_ORIGINS` includes the web URL

@@ -84,11 +84,14 @@ cp apps/web/.env.example apps/web/.env.local
 
 ### Database (first time, done once by the lead for the shared project)
 
-In the Supabase dashboard → **SQL Editor**, run:
-1. `supabase/migrations/20261116000000_initial_schema.sql`
-2. `supabase/seed.sql` (demo businesses, products, inventory and 30 days of sales)
+With `DATABASE_URL` set in `apps/api/.env`:
 
-Details and the CLI alternative: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md#1-supabase-database--auth).
+```bash
+npm run db:migrate   # create all tables (applies supabase/migrations, safe to rerun)
+npm run db:seed      # demo businesses, products, inventory, 30 days of sales, sample orders
+```
+
+Supabase Auth settings (email sign-in, "Confirm email", redirect URLs) and how to log in as a demo business: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md#1-supabase-database--auth).
 
 ### Run
 
@@ -104,6 +107,9 @@ npm run dev          # API → http://localhost:4000  ·  Web → http://localho
 | `npm run typecheck` | TypeScript check (web) |
 | `npm run build:web` | Production build of the frontend |
 | `npm run check` | lint + build — run before every PR |
+| `npm run db:migrate` | Apply pending SQL migrations to `DATABASE_URL` (`-- --status` to list) |
+| `npm run db:seed` | Load the demo data once |
+| `npm test --workspace @stocklume/api` | API unit tests |
 
 Health check: `curl http://localhost:4000/api/health`
 
@@ -113,7 +119,7 @@ Health check: `curl http://localhost:4000/api/health`
 
 Without a `.env`, the API still starts in development and reports `"not_configured"`.
 
-Until login is implemented, the login page has **Retailer UI / Wholesaler UI** preview buttons so you can work on pages for either role.
+**Logging in:** create an account on `/login` (choose Retailer or Wholesaler) — Supabase Auth stores the password, and the API creates your business. In development the login page also has **Retailer UI / Wholesaler UI** preview buttons that show the screens with demo data and no login; they are hidden in production.
 
 ## Environment variables
 

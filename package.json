@@ -16,7 +16,9 @@
     "start:api": "npm run start --workspace @stocklume/api",
     "lint": "npm run lint --workspaces --if-present",
     "typecheck": "npm run typecheck --workspace @stocklume/web",
-    "check": "npm run lint && npm run build:web"
+    "check": "npm run lint && npm run build:web",
+    "db:migrate": "npm run db:migrate --workspace @stocklume/api --",
+    "db:seed": "npm run db:seed --workspace @stocklume/api"
   },
   "devDependencies": {
     "npm-run-all2": "^7.0.2"

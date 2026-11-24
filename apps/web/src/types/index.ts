@@ -34,7 +34,7 @@ export interface ApiFailure {
 
 export type ApiResponse<T> = ApiSuccess<T> | ApiFailure;
 
-/** Returned by GET /api/auth/me (Member 1). */
+/** Returned by GET /api/auth/me and POST /api/auth/register. */
 export interface CurrentUser {
   id: string;
   email: string;
@@ -42,6 +42,26 @@ export interface CurrentUser {
   businessId: string | null;
   businessName: string | null;
   role: Role | null;
+  business?: {
+    id: string;
+    name: string;
+    type: Role;
+    city: string | null;
+    phone: string | null;
+    address: string | null;
+  } | null;
+  /** true when the Supabase account exists but no business has been registered yet */
+  needsOnboarding?: boolean;
+}
+
+/** Body of POST /api/auth/register. */
+export interface RegisterPayload {
+  fullName: string;
+  businessName: string;
+  businessType: Role;
+  city?: string;
+  phone?: string;
+  address?: string;
 }
 
 /* ─────────────────────────────────────────────────────────────

@@ -23,6 +23,7 @@ import { LoadingState } from "@/components/states/loading-state";
 import { EmptyState } from "@/components/states/empty-state";
 import { ErrorState } from "@/components/states/error-state";
 import { apiClient } from "@/lib/api-client";
+import { useSession } from "@/providers/session-provider";
 import type { Notification, NotificationType, UnreadCountResponse } from "@/types";
 
 function getNotificationIcon(type: NotificationType) {
@@ -67,7 +68,12 @@ function formatRelativeTime(dateString: string) {
 }
 
 export function NotificationBell() {
+  // Only a signed-in, registered user has notifications (preview/signed-out would just get 401s).
+  const { status, user } = useSession();
+  const canFetch = status === "authenticated";
+  const userId = user?.id;
   const [unreadCount, setUnreadCount] = useState<number>(0);
+  const visibleUnread = canFetch ? unreadCount : 0;
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -102,6 +108,7 @@ export function NotificationBell() {
   }, []);
 
   useEffect(() => {
+    if (!canFetch) return;
     void (async () => {
       await fetchUnreadCount();
     })();
@@ -109,15 +116,16 @@ export function NotificationBell() {
       void fetchUnreadCount();
     }, 30_000);
     return () => clearInterval(interval);
-  }, [fetchUnreadCount]);
+    // userId: refetch when a different account signs in
+  }, [canFetch, userId, fetchUnreadCount]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && canFetch) {
       void (async () => {
         await fetchNotifications();
       })();
     }
-  }, [isOpen, fetchNotifications]);
+  }, [isOpen, canFetch, fetchNotifications]);
 
   // Mark single notification as read
   async function markAsRead(id: string, e?: React.MouseEvent) {
@@ -159,16 +167,16 @@ export function NotificationBell() {
           variant="ghost"
           size="icon"
           aria-label={
-            unreadCount > 0
-              ? `${unreadCount} unread notifications`
+            visibleUnread > 0
+              ? `${visibleUnread} unread notifications`
               : "Notifications"
           }
           className="relative"
         >
           <Bell className="size-5" />
-          {unreadCount > 0 ? (
+          {visibleUnread > 0 ? (
             <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand px-1 text-[10px] font-bold text-brand-foreground shadow-sm animate-in zoom-in">
-              {unreadCount > 99 ? "99+" : unreadCount}
+              {visibleUnread > 99 ? "99+" : visibleUnread}
             </span>
           ) : null}
         </Button>
@@ -183,13 +191,13 @@ export function NotificationBell() {
         <div className="flex items-center justify-between border-b px-4 py-3">
           <div className="flex items-center gap-2">
             <h3 className="text-sm font-semibold">Notifications</h3>
-            {unreadCount > 0 ? (
+            {visibleUnread > 0 ? (
               <Badge variant="secondary" className="px-1.5 py-0 text-[11px]">
-                {unreadCount} new
+                {visibleUnread} new
               </Badge>
             ) : null}
           </div>
-          {unreadCount > 0 ? (
+          {visibleUnread > 0 ? (
             <Button
               variant="ghost"
               size="sm"

@@ -32,6 +32,7 @@ import { RejectOrderModal } from "./reject-order-modal";
 import { SEED_ORDERS } from "./mock-data";
 import { apiClient } from "@/lib/api-client";
 import { useSession } from "@/providers/session-provider";
+import { apiErrorMessage } from "./api-error-message";
 import type { Order } from "@/types";
 
 interface OrderDetailViewProps {
@@ -57,7 +58,7 @@ function formatDate(isoString?: string | null) {
 }
 
 export function OrderDetailView({ orderId }: OrderDetailViewProps) {
-  const { role: sessionRole } = useSession();
+  const { role: sessionRole, isPreview } = useSession();
   const [order, setOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -79,7 +80,12 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
         setOrder(data);
         return;
       }
-    } catch {
+    } catch (err) {
+      // With a real login, show the real error (e.g. 404 when a wholesaler opens a draft).
+      if (!isPreview) {
+        setError(apiErrorMessage(err));
+        return;
+      }
       // Backend not yet ready or order not found in real DB:
       // Search in SEED_ORDERS
       const match = SEED_ORDERS.find(
@@ -112,7 +118,7 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
     } finally {
       setIsLoading(false);
     }
-  }, [orderId]);
+  }, [orderId, isPreview]);
 
   useEffect(() => {
     void (async () => {
@@ -127,7 +133,12 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
       setActionLoading(true);
       await apiClient.post(`/orders/${order.id}/submit`);
       await fetchOrder();
-    } catch {
+    } catch (err) {
+      // Local demo behaviour is only for developer preview (no login → API returns 401).
+      if (!isPreview) {
+        toast.error(apiErrorMessage(err));
+        return;
+      }
       setOrder((prev) =>
         prev
           ? {
@@ -150,7 +161,12 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
       setActionLoading(true);
       await apiClient.post(`/orders/${order.id}/cancel`);
       await fetchOrder();
-    } catch {
+    } catch (err) {
+      // Local demo behaviour is only for developer preview (no login → API returns 401).
+      if (!isPreview) {
+        toast.error(apiErrorMessage(err));
+        return;
+      }
       setOrder((prev) =>
         prev
           ? {
@@ -173,7 +189,12 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
       setActionLoading(true);
       await apiClient.post(`/orders/${order.id}/deliver`);
       await fetchOrder();
-    } catch {
+    } catch (err) {
+      // Local demo behaviour is only for developer preview (no login → API returns 401).
+      if (!isPreview) {
+        toast.error(apiErrorMessage(err));
+        return;
+      }
       setOrder((prev) =>
         prev
           ? {
@@ -196,7 +217,12 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
       setActionLoading(true);
       await apiClient.post(`/orders/${order.id}/accept`);
       await fetchOrder();
-    } catch {
+    } catch (err) {
+      // Local demo behaviour is only for developer preview (no login → API returns 401).
+      if (!isPreview) {
+        toast.error(apiErrorMessage(err));
+        return;
+      }
       setOrder((prev) =>
         prev
           ? {
@@ -219,7 +245,12 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
       setActionLoading(true);
       await apiClient.post(`/orders/${order.id}/reject`, { reason });
       await fetchOrder();
-    } catch {
+    } catch (err) {
+      // Local demo behaviour is only for developer preview (no login → API returns 401).
+      if (!isPreview) {
+        toast.error(apiErrorMessage(err));
+        return;
+      }
       setOrder((prev) =>
         prev
           ? {
@@ -243,7 +274,12 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
       setActionLoading(true);
       await apiClient.post(`/orders/${order.id}/dispatch`);
       await fetchOrder();
-    } catch {
+    } catch (err) {
+      // Local demo behaviour is only for developer preview (no login → API returns 401).
+      if (!isPreview) {
+        toast.error(apiErrorMessage(err));
+        return;
+      }
       setOrder((prev) =>
         prev
           ? {
@@ -265,7 +301,12 @@ export function OrderDetailView({ orderId }: OrderDetailViewProps) {
     try {
       await apiClient.put(`/orders/${order.id}/items`, { items });
       await fetchOrder();
-    } catch {
+    } catch (err) {
+      // Local demo behaviour is only for developer preview (no login → API returns 401).
+      if (!isPreview) {
+        toast.error(apiErrorMessage(err));
+        return;
+      }
       setOrder((prev) => {
         if (!prev) return null;
         const updated = (prev.items || []).map((it) => {

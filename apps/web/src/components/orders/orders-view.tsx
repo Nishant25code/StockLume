@@ -16,6 +16,7 @@ import { WholesalerOrdersView } from "./wholesaler-orders-view";
 import { SEED_ORDERS } from "./mock-data";
 import { apiClient } from "@/lib/api-client";
 import { useSession } from "@/providers/session-provider";
+import { apiErrorMessage } from "./api-error-message";
 import type { Order, Role } from "@/types";
 
 export function OrdersView() {
@@ -38,26 +39,25 @@ export function OrdersView() {
   }, [sessionRole]);
 
   const fetchOrders = useCallback(async () => {
+    // Developer preview has no login, so the API would answer 401 — show the seeded demo orders.
+    if (isPreview) {
+      setOrders(SEED_ORDERS);
+      setIsUsingFallback(true);
+      setIsLoading(false);
+      return;
+    }
     try {
       setIsLoading(true);
       setError(null);
       const data = await apiClient.get<Order[]>("/orders");
-      if (Array.isArray(data) && data.length > 0) {
-        setOrders(data);
-        setIsUsingFallback(false);
-      } else {
-        // Fallback to seed orders if backend returns empty or not yet seeded
-        setOrders(SEED_ORDERS);
-        setIsUsingFallback(true);
-      }
-    } catch {
-      // Backend route /api/orders might not be implemented yet by Member 3
-      setOrders(SEED_ORDERS);
-      setIsUsingFallback(true);
+      setOrders(data);
+      setIsUsingFallback(false);
+    } catch (err) {
+      setError(apiErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [isPreview]);
 
   useEffect(() => {
     void (async () => {
@@ -72,7 +72,12 @@ export function OrdersView() {
       try {
         await apiClient.post("/orders/suggestions");
         await fetchOrders();
-      } catch {
+      } catch (err) {
+        // Local demo behaviour is only for developer preview (no login → API returns 401).
+        if (!isPreview) {
+          toast.error(apiErrorMessage(err));
+          return;
+        }
         // Demo fallback simulation
         const newDraft: Order = {
           id: `ord-gen-${Date.now()}`,
@@ -118,7 +123,12 @@ export function OrdersView() {
     try {
       await apiClient.post(`/orders/${orderId}/submit`);
       await fetchOrders();
-    } catch {
+    } catch (err) {
+      // Local demo behaviour is only for developer preview (no login → API returns 401).
+      if (!isPreview) {
+        toast.error(apiErrorMessage(err));
+        return;
+      }
       // Local optimistic update
       setOrders((prev) =>
         prev.map((o) =>
@@ -141,7 +151,12 @@ export function OrdersView() {
     try {
       await apiClient.post(`/orders/${orderId}/cancel`);
       await fetchOrders();
-    } catch {
+    } catch (err) {
+      // Local demo behaviour is only for developer preview (no login → API returns 401).
+      if (!isPreview) {
+        toast.error(apiErrorMessage(err));
+        return;
+      }
       setOrders((prev) =>
         prev.map((o) =>
           o.id === orderId
@@ -163,7 +178,12 @@ export function OrdersView() {
     try {
       await apiClient.post(`/orders/${orderId}/deliver`);
       await fetchOrders();
-    } catch {
+    } catch (err) {
+      // Local demo behaviour is only for developer preview (no login → API returns 401).
+      if (!isPreview) {
+        toast.error(apiErrorMessage(err));
+        return;
+      }
       setOrders((prev) =>
         prev.map((o) =>
           o.id === orderId
@@ -188,7 +208,12 @@ export function OrdersView() {
     try {
       await apiClient.put(`/orders/${orderId}/items`, { items });
       await fetchOrders();
-    } catch {
+    } catch (err) {
+      // Local demo behaviour is only for developer preview (no login → API returns 401).
+      if (!isPreview) {
+        toast.error(apiErrorMessage(err));
+        return;
+      }
       setOrders((prev) =>
         prev.map((o) => {
           if (o.id !== orderId) return o;
@@ -222,7 +247,12 @@ export function OrdersView() {
     try {
       await apiClient.post(`/orders/${orderId}/accept`);
       await fetchOrders();
-    } catch {
+    } catch (err) {
+      // Local demo behaviour is only for developer preview (no login → API returns 401).
+      if (!isPreview) {
+        toast.error(apiErrorMessage(err));
+        return;
+      }
       setOrders((prev) =>
         prev.map((o) =>
           o.id === orderId
@@ -244,7 +274,12 @@ export function OrdersView() {
     try {
       await apiClient.post(`/orders/${orderId}/reject`, { reason });
       await fetchOrders();
-    } catch {
+    } catch (err) {
+      // Local demo behaviour is only for developer preview (no login → API returns 401).
+      if (!isPreview) {
+        toast.error(apiErrorMessage(err));
+        return;
+      }
       setOrders((prev) =>
         prev.map((o) =>
           o.id === orderId
@@ -267,7 +302,12 @@ export function OrdersView() {
     try {
       await apiClient.post(`/orders/${orderId}/dispatch`);
       await fetchOrders();
-    } catch {
+    } catch (err) {
+      // Local demo behaviour is only for developer preview (no login → API returns 401).
+      if (!isPreview) {
+        toast.error(apiErrorMessage(err));
+        return;
+      }
       setOrders((prev) =>
         prev.map((o) =>
           o.id === orderId

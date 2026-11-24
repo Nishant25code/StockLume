@@ -13,6 +13,7 @@
  *     await client.query('update inventory ...', [...]);
  *   });
  */
+import { AsyncLocalStorage } from 'node:async_hooks';
 import pg from 'pg';
 import { env } from '../config/env.js';
 import { ApiError } from '../utils/ApiError.js';
@@ -40,6 +41,7 @@ function isLocalDatabase(url) {
  */
 export function buildSslConfig() {
   if (isLocalDatabase(env.databaseUrl)) return false;
+  if (env.databaseSsl === 'disable') return false; // Hyperdrive: TLS to Supabase is handled by Cloudflare
 
   if (env.databaseCaCert) {
     return { ca: env.databaseCaCert, rejectUnauthorized: true };
@@ -59,22 +61,55 @@ export function buildSslConfig() {
   return { rejectUnauthorized: false };
 }
 
+// Per-request pools (Cloudflare Workers) live in AsyncLocalStorage for the
+// duration of one request; everywhere else a single shared pool is used.
+const requestPools = new AsyncLocalStorage();
+
+function createPool({ max = 5 } = {}) {
+  return new Pool({
+    connectionString: env.databaseUrl,
+    ssl: buildSslConfig(),
+    // Keep this small: serverless functions open many short-lived pools.
+    max,
+    idleTimeoutMillis: 10_000,
+    connectionTimeoutMillis: 10_000,
+  });
+}
+
 export function getPool() {
   if (!env.databaseUrl) {
     throw ApiError.serviceNotConfigured('Database');
   }
+  const scoped = requestPools.getStore();
+  if (scoped) return scoped;
   if (!pool) {
-    pool = new Pool({
-      connectionString: env.databaseUrl,
-      ssl: buildSslConfig(),
-      // Keep this small: serverless functions open many short-lived pools.
-      max: 5,
-      idleTimeoutMillis: 10_000,
-      connectionTimeoutMillis: 10_000,
-    });
+    pool = createPool();
     pool.on('error', (err) => console.error('[db] idle client error', err.message));
   }
   return pool;
+}
+
+/**
+ * Express middleware for Cloudflare Workers: gives each request its own pool
+ * (Workers forbid reusing a socket opened by another request) and closes it
+ * when the response is done. Hyperdrive keeps the real Supabase connections
+ * warm, so opening these is cheap.
+ */
+export function perRequestPool() {
+  return (_req, res, next) => {
+    if (!env.databaseUrl) return next();
+    const requestPool = createPool({ max: 10 });
+    requestPool.on('error', (err) => console.error('[db] request pool error', err.message));
+    let closed = false;
+    const close = () => {
+      if (closed) return;
+      closed = true;
+      requestPool.end().catch(() => {});
+    };
+    res.once('finish', close);
+    res.once('close', close);
+    requestPools.run(requestPool, next);
+  };
 }
 
 /** Run one parameterized query. Returns the pg result ({ rows, rowCount }). */

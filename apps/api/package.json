@@ -10,7 +10,9 @@
     "lint": "node scripts/check-syntax.js",
     "test": "node --test test/**/*.test.js",
     "db:migrate": "node --env-file-if-exists=.env scripts/db-migrate.js",
-    "db:seed": "node --env-file-if-exists=.env scripts/db-seed.js"
+    "db:seed": "node --env-file-if-exists=.env scripts/db-seed.js",
+    "cf:dev": "wrangler dev",
+    "cf:deploy": "wrangler deploy"
   },
   "engines": {
     "node": ">=20.9.0"
@@ -20,5 +22,8 @@
     "cors": "^2.8.6",
     "express": "^5.3.0",
     "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "wrangler": "^4.167.0"
   }
 }

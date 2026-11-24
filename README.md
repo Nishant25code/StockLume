@@ -164,3 +164,4 @@ Two Vercel projects from this repository: **`apps/web`** (Next.js) and **`apps/a
 | Member 2 | Inventory & Stock Prediction | `feature/inventory` |
 | Member 3 | Orders & Fulfillment | `feature/orders` |
 | Member 4 | Notifications & Analytics | `feature/analytics` |
+| Noor Hora | Frontend UI redesign | `noor` |

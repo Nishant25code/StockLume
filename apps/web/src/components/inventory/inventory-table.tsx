@@ -199,7 +199,7 @@ export function InventoryTable({
             className="min-h-56 border-none bg-muted/20"
           />
         ) : (
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="border-b text-muted-foreground text-xs font-medium">
                 <tr>

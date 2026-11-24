@@ -124,7 +124,24 @@ export async function list(user, status) {
       order by o.created_at desc`,
     [user.businessId, status ?? null],
   );
-  return rows.map(toCamel);
+  if (rows.length === 0) return [];
+
+  // Items of all listed orders in ONE query (not one query per order), then grouped.
+  const { rows: itemRows } = await query(
+    `select oi.id, oi.order_id, oi.product_id, p.name as product_name, p.sku, p.category, p.unit,
+            oi.quantity, oi.suggested_quantity, oi.unit_price
+       from order_items oi
+       join products p on p.id = oi.product_id
+      where oi.order_id = any($1::uuid[])
+      order by p.name`,
+    [rows.map((row) => row.id)],
+  );
+  const itemsByOrder = new Map();
+  for (const item of itemRows.map(toCamel)) {
+    if (!itemsByOrder.has(item.orderId)) itemsByOrder.set(item.orderId, []);
+    itemsByOrder.get(item.orderId).push(item);
+  }
+  return rows.map((row) => ({ ...toCamel(row), items: itemsByOrder.get(row.id) ?? [] }));
 }
 
 // One order with its items.

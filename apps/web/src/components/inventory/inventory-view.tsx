@@ -20,10 +20,31 @@ import { InventoryTable } from "@/components/inventory/inventory-table";
 import { RecordSaleForm } from "@/components/inventory/record-sale-form";
 import { StockHistoryTable } from "@/components/inventory/stock-history-table";
 import { apiClient } from "@/lib/api-client";
-import type { InventoryItem, StockMovement, StockoutPrediction } from "@/types";
+import { useSession } from "@/providers/session-provider";
+import type { InventoryItem, InventoryRow, StockMovement, StockoutPrediction } from "@/types";
 
-// Seed fallback data matching supabase/seed.sql when API endpoints are not yet deployed
-const SEED_INVENTORY: InventoryItem[] = [
+/** Convert the API's InventoryItem (nested product) into the flat row the UI tables use. */
+function toInventoryRow(item: InventoryItem): InventoryRow {
+  return {
+    id: item.id,
+    businessId: item.businessId,
+    productId: item.productId,
+    productName: item.product.name,
+    sku: item.product.sku,
+    unit: item.product.unit,
+    price: item.product.price,
+    quantity: item.quantity,
+    minStock: item.minStock,
+    reorderQuantity: item.reorderQuantity,
+    wholesalerId: item.product.wholesalerId,
+    wholesalerName: item.product.wholesalerName,
+    risk: item.stockoutRisk,
+    updatedAt: item.updatedAt,
+  };
+}
+
+// Demo data matching supabase/seed.sql — shown ONLY in developer preview mode (no real login, so the API returns 401)
+const SEED_INVENTORY: InventoryRow[] = [
   {
     id: "inv-1",
     businessId: "11111111-0000-0000-0000-000000000001",
@@ -221,7 +242,7 @@ function formatCurrency(amount: number) {
 
 export function InventoryView() {
   const [activeTab, setActiveTab] = useState<string>("stock");
-  const [items, setItems] = useState<InventoryItem[]>([]);
+  const [items, setItems] = useState<InventoryRow[]>([]);
   const [movements, setMovements] = useState<StockMovement[]>([]);
   const [selectedProductForSale, setSelectedProductForSale] = useState<string | undefined>();
 
@@ -230,70 +251,55 @@ export function InventoryView() {
   const [simulationBanner, setSimulationBanner] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const { isPreview } = useSession();
+
   const loadData = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
-    try {
-      // 1. Fetch inventory items
-      let fetchedItems: InventoryItem[] = [];
-      try {
-        const invRes = await apiClient.get<InventoryItem[]>("/inventory");
-        if (Array.isArray(invRes) && invRes.length > 0) {
-          fetchedItems = invRes;
-        } else {
-          fetchedItems = SEED_INVENTORY;
-        }
-      } catch {
-        // Fallback to seed data if API route not yet implemented
-        fetchedItems = SEED_INVENTORY;
-      }
+    // Developer preview has no Supabase session, so the API would answer 401 — show demo data instead.
+    if (isPreview) {
+      setItems(SEED_INVENTORY);
+      setMovements(SEED_MOVEMENTS);
+      setIsLoading(false);
+      return;
+    }
 
-      // 2. Fetch predictions to enrich risk badges if available
+    try {
+      // 1. Inventory (API contract: nested product) → flat UI rows
+      const inventory = await apiClient.get<InventoryItem[]>("/inventory");
+      let rows = inventory.map(toInventoryRow);
+
+      // 2. Enrich with probability-based predictions (optional: keep threshold risk if this fails)
       try {
-        const predRes = await apiClient.get<StockoutPrediction[]>("/predictions/stockout");
-        if (Array.isArray(predRes) && predRes.length > 0) {
-          const predMap = new Map(predRes.map((p) => [p.productId, p]));
-          fetchedItems = fetchedItems.map((item) => {
-            const pred = predMap.get(item.productId);
-            if (pred) {
-              return {
-                ...item,
+        const predictions = await apiClient.get<StockoutPrediction[]>("/predictions/stockout");
+        const byProduct = new Map(predictions.map((p) => [p.productId, p]));
+        rows = rows.map((row) => {
+          const pred = byProduct.get(row.productId);
+          return pred
+            ? {
+                ...row,
                 risk: pred.risk,
                 daysOfStockLeft: pred.daysOfStockLeft,
                 stockoutProbability: pred.stockoutProbability,
                 suggestedQuantity: pred.suggestedQuantity,
-              };
-            }
-            return item;
-          });
-        }
+              }
+            : row;
+        });
       } catch {
-        // Keep existing risk properties
+        // Predictions unavailable — the threshold-based risk from /inventory still applies.
       }
+      setItems(rows);
 
-      setItems(fetchedItems);
-
-      // 3. Fetch movements history
-      try {
-        const movRes = await apiClient.get<StockMovement[]>("/inventory/movements");
-        if (Array.isArray(movRes) && movRes.length > 0) {
-          setMovements(movRes);
-        } else {
-          setMovements(SEED_MOVEMENTS);
-        }
-      } catch {
-        setMovements(SEED_MOVEMENTS);
-      }
+      // 3. Stock movement history
+      const history = await apiClient.get<StockMovement[]>("/inventory/movements");
+      setMovements(history);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Failed to load inventory data";
-      setError(msg);
-      setItems(SEED_INVENTORY);
-      setMovements(SEED_MOVEMENTS);
+      setError(err instanceof Error ? err.message : "Failed to load inventory data");
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [isPreview]);
 
   useEffect(() => {
     void (async () => {
@@ -310,15 +316,12 @@ export function InventoryView() {
       await apiClient.post("/sales/simulate", { days: 7 });
       setSimulationBanner("Simulated 7 days of retail sales! Inventory levels and movements have updated.");
       await loadData();
-    } catch {
-      // If endpoint not implemented yet, simulate client-side locally
-      setItems((prev) =>
-        prev.map((item) => ({
-          ...item,
-          quantity: Math.max(1, item.quantity - Math.floor(Math.random() * 4)),
-        })),
+    } catch (err: unknown) {
+      setSimulationBanner(
+        isPreview
+          ? "Simulation needs a real login — developer preview cannot call the API."
+          : `Simulation failed: ${err instanceof Error ? err.message : "unknown error"}`,
       );
-      setSimulationBanner("Simulated demo sales transactions applied! Inventory levels and movements refreshed.");
     } finally {
       setIsSimulating(false);
     }

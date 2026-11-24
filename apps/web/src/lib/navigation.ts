@@ -5,9 +5,11 @@
 import {
   BarChart3,
   Boxes,
+  Handshake,
   LayoutDashboard,
   PackageSearch,
   ShoppingCart,
+  SlidersHorizontal,
   type LucideIcon,
 } from "lucide-react";
 import type { Role } from "@/types";
@@ -49,6 +51,20 @@ export const NAV_ITEMS: NavItem[] = [
     icon: Boxes,
     roles: ["RETAILER"],
     description: "Current stock, sales and stockout risk",
+  },
+  {
+    title: "Reorder Rules",
+    href: "/reorder-rules",
+    icon: SlidersHorizontal,
+    roles: ["RETAILER"],
+    description: "Automated threshold and replenishment sizes",
+  },
+  {
+    title: "Connections",
+    href: "/connections",
+    icon: Handshake,
+    roles: ["RETAILER", "WHOLESALER"],
+    description: "Partner network, incoming requests and discovery",
   },
   {
     title: "Orders",

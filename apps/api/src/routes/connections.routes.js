@@ -2,21 +2,21 @@
  * connections routes — mounted at /api/connections
  * OWNER: Member 1 — Authentication, Connections & Products
  *
- * Planned endpoints (see docs/API.md — keep both in sync):
+ * Endpoints:
  *   GET    /api/connections                 retailer: my wholesalers | wholesaler: my retailers
- *   GET    /api/connections/discover        businesses of the opposite role to connect with
- *   POST   /api/connections                 retailer requests a connection to a wholesaler
- *   PATCH  /api/connections/:id             wholesaler accepts / deactivates a connection
- *
- * Pattern:
- *   import { requireAuth, requireRole } from '../middleware/auth.js';
- *   import * as controller from '../controllers/connections.controller.js';
- *   router.get('/', requireAuth(), controller.list);
+ *   GET    /api/connections/discover        businesses of opposite role not connected yet
+ *   POST   /api/connections                 create a connection / request
+ *   PATCH  /api/connections/:id             update status (accept, deactivate, etc.)
  */
 import { Router } from 'express';
+import { requireAuth, requireRole } from '../middleware/auth.js';
+import * as controller from '../controllers/connections.controller.js';
 
 const router = Router();
 
-// TODO(Member 1): add connections endpoints here.
+router.get('/', requireAuth(), controller.list);
+router.get('/discover', requireAuth(), controller.discover);
+router.post('/', requireAuth(), requireRole('RETAILER'), controller.create);
+router.patch('/:id', requireAuth(), controller.updateStatus);
 
 export default router;

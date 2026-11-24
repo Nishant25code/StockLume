@@ -1,0 +1,23 @@
+// Cloudflare Worker for the StockLume Next.js frontend (built with OpenNext).
+//   Deploy: npm run cf:deploy --workspace @stocklume/web
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "stocklume-web",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-11-20",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  // Don't inject esbuild __name() helpers: next-themes serialises a function into an
+  // inline <script>, where __name doesn't exist ("ReferenceError: __name is not defined").
+  "keep_names": false,
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "stocklume-web"
+    }
+  ],
+  "observability": { "enabled": true }
+}

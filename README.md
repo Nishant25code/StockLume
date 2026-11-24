@@ -24,6 +24,7 @@ Retailers track stock and sales; StockLume predicts which products are likely to
 | 13 | **Delivery confirmation** — retailer confirms receipt; inventory updates | Member 3 |
 | 14 | **Dashboards & analytics** — inventory, orders, sales stats and alerts | Member 4 |
 
+
 ⭐ **Key rule:** an order suggestion is never sent to a wholesaler until the retailer explicitly submits it. Order statuses: `DRAFT → SUBMITTED → ACCEPTED → DISPATCHED → DELIVERED`, plus `REJECTED` and `CANCELLED`.
 
 ## Tech stack

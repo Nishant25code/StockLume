@@ -1,29 +1,30 @@
-/**
- * orders routes — mounted at /api/orders
- * OWNER: Member 3 — Orders & Fulfillment
- *
- * Planned endpoints (see docs/API.md — keep both in sync):
- *   POST   /api/orders/suggestions          build DRAFT orders (one per wholesaler) from low-stock items
- *   GET    /api/orders                      retailer: own orders | wholesaler: own orders EXCEPT DRAFT
- *   GET    /api/orders/:id                  order + items
- *   POST   /api/orders                      retailer creates an empty DRAFT
- *   PUT    /api/orders/:id/items            retailer edits items of a DRAFT (add/remove/change qty)
- *   POST   /api/orders/:id/submit           DRAFT → SUBMITTED (only now the wholesaler is notified)
- *   POST   /api/orders/:id/cancel           retailer: DRAFT/SUBMITTED → CANCELLED
- *   POST   /api/orders/:id/accept           wholesaler: SUBMITTED → ACCEPTED
- *   POST   /api/orders/:id/reject           wholesaler: SUBMITTED → REJECTED
- *   POST   /api/orders/:id/dispatch         wholesaler: ACCEPTED → DISPATCHED (reduces products.available_quantity)
- *   POST   /api/orders/:id/deliver          retailer: DISPATCHED → DELIVERED (increases inventory)
- *
- * Pattern:
- *   import { requireAuth, requireRole } from '../middleware/auth.js';
- *   import * as controller from '../controllers/orders.controller.js';
- *   router.get('/', requireAuth(), controller.list);
- */
+// orders routes — mounted at /api/orders (R = retailer, W = wholesaler)
 import { Router } from 'express';
+import { requireAuth, requireRole } from '../middleware/auth.js';
+import * as controller from '../controllers/orders.controller.js';
 
 const router = Router();
+const retailer = requireRole('RETAILER');
+const wholesaler = requireRole('WHOLESALER');
 
-// TODO(Member 3): add orders endpoints here.
+// Every order route needs a logged-in user.
+router.use(requireAuth());
+
+// "/suggestions" must be declared before "/:id" routes.
+router.post('/suggestions', retailer, controller.suggest);
+
+// Both roles can read orders; the service limits what each one sees.
+router.get('/', controller.list);
+router.get('/:id', controller.getById);
+router.post('/', retailer, controller.create);
+router.put('/:id/items', retailer, controller.replaceItems);
+
+// Status changes: the retailer's actions first, then the wholesaler's.
+router.post('/:id/submit', retailer, controller.submit);
+router.post('/:id/cancel', retailer, controller.cancel);
+router.post('/:id/accept', wholesaler, controller.accept);
+router.post('/:id/reject', wholesaler, controller.reject);
+router.post('/:id/dispatch', wholesaler, controller.dispatch);
+router.post('/:id/deliver', retailer, controller.deliver);
 
 export default router;

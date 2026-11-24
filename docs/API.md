@@ -118,32 +118,32 @@ Legend: **R** = retailer, **W** = wholesaler. Status: ✅ done · 🔜 planned.
 
 | Method | Path | Role | Description | Status |
 |---|---|---|---|---|
-| GET | `/sales` | R | History (`?productId=&from=&to=`) | 🔜 |
-| POST | `/sales` | R | Record sale. Body: `{ productId, quantity, unitPrice? }` → reduces inventory | 🔜 |
-| POST | `/sales/simulate` | R | Generate demo sales. Body: `{ days: 7 }` | 🔜 |
+| GET | `/sales` | R | History (`?productId=&from=&to=`) | ✅ |
+| POST | `/sales` | R | Record sale. Body: `{ productId, quantity, unitPrice? }` → reduces inventory | ✅ |
+| POST | `/sales/simulate` | R | Generate demo sales. Body: `{ days: 7 }` | ✅ |
 
 ### Predictions — Member 2
 
 | Method | Path | Role | Description | Status |
 |---|---|---|---|---|
-| GET | `/predictions/stockout` | R | Probability + risk per product ([model](STOCKOUT_MODEL.md)) | 🔜 |
-| GET | `/predictions/low-stock` | R | Only `MEDIUM`/`HIGH` items | 🔜 |
+| GET | `/predictions/stockout` | R | Probability + risk per product ([model](STOCKOUT_MODEL.md)) | ✅ |
+| GET | `/predictions/low-stock` | R | Only `MEDIUM`/`HIGH` items | ✅ |
 
 ### Orders — Member 3
 
 | Method | Path | Role | Description | Status |
 |---|---|---|---|---|
-| POST | `/orders/suggestions` | R | Build/refresh suggested `DRAFT` orders, one per wholesaler | 🔜 |
-| GET | `/orders` | R, W | List (`?status=`). **W never sees `DRAFT`** | 🔜 |
-| GET | `/orders/:id` | R, W | Order with items | 🔜 |
-| POST | `/orders` | R | Empty draft. Body: `{ wholesalerId, notes? }` | 🔜 |
-| PUT | `/orders/:id/items` | R | Replace items of a `DRAFT`. Body: `{ items: [{ productId, quantity }] }` | 🔜 |
-| POST | `/orders/:id/submit` | R | `DRAFT → SUBMITTED` ⭐ notifies wholesaler | 🔜 |
-| POST | `/orders/:id/cancel` | R | `DRAFT/SUBMITTED → CANCELLED` | 🔜 |
-| POST | `/orders/:id/accept` | W | `SUBMITTED → ACCEPTED` | 🔜 |
-| POST | `/orders/:id/reject` | W | `SUBMITTED → REJECTED`. Body: `{ reason }` | 🔜 |
-| POST | `/orders/:id/dispatch` | W | `ACCEPTED → DISPATCHED`, reduces wholesaler stock | 🔜 |
-| POST | `/orders/:id/deliver` | R | `DISPATCHED → DELIVERED`, increases retailer inventory | 🔜 |
+| POST | `/orders/suggestions` | R | Build/refresh suggested `DRAFT` orders, one per wholesaler | ✅ |
+| GET | `/orders` | R, W | List (`?status=`). **W never sees `DRAFT`** | ✅ |
+| GET | `/orders/:id` | R, W | Order with items | ✅ |
+| POST | `/orders` | R | Empty draft. Body: `{ wholesalerId, notes? }` | ✅ |
+| PUT | `/orders/:id/items` | R | Replace items of a `DRAFT`. Body: `{ items: [{ productId, quantity }] }` | ✅ |
+| POST | `/orders/:id/submit` | R | `DRAFT → SUBMITTED` ⭐ notifies wholesaler | ✅ |
+| POST | `/orders/:id/cancel` | R | `DRAFT/SUBMITTED → CANCELLED` | ✅ |
+| POST | `/orders/:id/accept` | W | `SUBMITTED → ACCEPTED` | ✅ |
+| POST | `/orders/:id/reject` | W | `SUBMITTED → REJECTED`. Body: `{ reason }` | ✅ |
+| POST | `/orders/:id/dispatch` | W | `ACCEPTED → DISPATCHED`, reduces wholesaler stock | ✅ |
+| POST | `/orders/:id/deliver` | R | `DISPATCHED → DELIVERED`, increases retailer inventory | ✅ |
 
 ### Notifications — Member 4
 

@@ -1,6 +1,6 @@
 # Stockout prediction model
 
-**Owner:** Member 2 · **Status:** designed, not implemented yet · **Endpoint:** `GET /api/predictions/stockout`
+**Owner:** Member 2 · **Status:** maths in `services/stockout-model.js`, data loading in `services/predictions.service.js` · **Endpoint:** `GET /api/predictions/stockout`
 
 The goal is a model that is simple enough to explain in a viva, but still uses real probability rather than a fixed threshold.
 

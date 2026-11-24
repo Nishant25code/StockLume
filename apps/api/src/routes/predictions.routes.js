@@ -1,20 +1,14 @@
-/**
- * predictions routes — mounted at /api/predictions
- * OWNER: Member 2 — Inventory & Stock Prediction
- *
- * Planned endpoints (see docs/API.md — keep both in sync):
- *   GET    /api/predictions/stockout        stockout probability per product (see docs/STOCKOUT_MODEL.md)
- *   GET    /api/predictions/low-stock       products at MEDIUM/HIGH risk (creates LOW_STOCK notifications)
- *
- * Pattern:
- *   import { requireAuth, requireRole } from '../middleware/auth.js';
- *   import * as controller from '../controllers/predictions.controller.js';
- *   router.get('/', requireAuth(), controller.list);
- */
+// predictions routes — mounted at /api/predictions (retailers only)
 import { Router } from 'express';
+import { requireAuth, requireRole } from '../middleware/auth.js';
+import * as controller from '../controllers/predictions.controller.js';
 
 const router = Router();
 
-// TODO(Member 2): add predictions endpoints here.
+// Only a logged-in retailer can use these routes.
+router.use(requireAuth(), requireRole('RETAILER'));
+
+router.get('/stockout', controller.stockout);
+router.get('/low-stock', controller.lowStock);
 
 export default router;

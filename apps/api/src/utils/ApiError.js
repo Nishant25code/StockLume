@@ -35,6 +35,18 @@ export class ApiError extends Error {
     return new ApiError(409, 'CONFLICT', message, details);
   }
 
+  static invalidStatusTransition(from, to) {
+    return new ApiError(409, 'INVALID_STATUS_TRANSITION', `An order cannot go from ${from} to ${to}`);
+  }
+
+  static insufficientStock(message = 'Not enough stock') {
+    return new ApiError(409, 'INSUFFICIENT_STOCK', message);
+  }
+
+  static notConnected() {
+    return new ApiError(409, 'NOT_CONNECTED', 'You do not have an active connection with this business');
+  }
+
   static serviceNotConfigured(service) {
     return new ApiError(503, 'SERVICE_NOT_CONFIGURED', `${service} is not configured. Check environment variables.`);
   }

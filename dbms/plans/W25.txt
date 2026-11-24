@@ -1,0 +1,77 @@
+=== W25 run 1 ===
+-- EXECUTE s('a4dd6500-a5ae-4aff-a222-a7989a10947e', 'b5853c37-25fc-464b-bc26-6f7784836fac', 'b5853c37-25fc-464b-bc26-6f7784836fac')
+Insert on stock_movements  (cost=4.73..64.86 rows=0 width=0) (actual time=0.577..0.579 rows=0 loops=1)
+  Buffers: shared hit=100
+  ->  Nested Loop  (cost=4.73..64.86 rows=5 width=148) (actual time=0.094..0.150 rows=5 loops=1)
+        Buffers: shared hit=21
+        ->  Bitmap Heap Scan on order_items oi  (cost=4.45..23.33 rows=5 width=36) (actual time=0.053..0.065 rows=5 loops=1)
+              Recheck Cond: (order_id = 'a4dd6500-a5ae-4aff-a222-a7989a10947e'::uuid)
+              Heap Blocks: exact=3
+              Buffers: shared hit=6
+              ->  Bitmap Index Scan on order_items_unique_product_per_order  (cost=0.00..4.45 rows=5 width=0) (actual time=0.027..0.027 rows=5 loops=1)
+                    Index Cond: (order_id = 'a4dd6500-a5ae-4aff-a222-a7989a10947e'::uuid)
+                    Buffers: shared hit=3
+        ->  Index Scan using products_pkey on products p  (cost=0.28..8.30 rows=1 width=20) (actual time=0.008..0.008 rows=1 loops=5)
+              Index Cond: (id = oi.product_id)
+              Buffers: shared hit=15
+Planning:
+  Buffers: shared hit=310
+Planning Time: 1.808 ms
+Trigger for constraint stock_movements_business_id_fkey: time=0.557 calls=5
+Trigger for constraint stock_movements_product_id_fkey: time=0.169 calls=5
+Trigger for constraint stock_movements_sale_id_fkey: time=0.036 calls=5
+Trigger for constraint stock_movements_order_id_fkey: time=0.501 calls=5
+Trigger for constraint stock_movements_created_by_fkey: time=0.540 calls=5
+Execution Time: 2.442 ms
+
+=== W25 run 2 ===
+-- EXECUTE s('a4dd6500-a5ae-4aff-a222-a7989a10947e', 'b5853c37-25fc-464b-bc26-6f7784836fac', 'b5853c37-25fc-464b-bc26-6f7784836fac')
+Insert on stock_movements  (cost=4.73..64.86 rows=0 width=0) (actual time=0.424..0.425 rows=0 loops=1)
+  Buffers: shared hit=100
+  ->  Nested Loop  (cost=4.73..64.86 rows=5 width=148) (actual time=0.110..0.146 rows=5 loops=1)
+        Buffers: shared hit=21
+        ->  Bitmap Heap Scan on order_items oi  (cost=4.45..23.33 rows=5 width=36) (actual time=0.079..0.086 rows=5 loops=1)
+              Recheck Cond: (order_id = 'a4dd6500-a5ae-4aff-a222-a7989a10947e'::uuid)
+              Heap Blocks: exact=3
+              Buffers: shared hit=6
+              ->  Bitmap Index Scan on order_items_unique_product_per_order  (cost=0.00..4.45 rows=5 width=0) (actual time=0.035..0.035 rows=5 loops=1)
+                    Index Cond: (order_id = 'a4dd6500-a5ae-4aff-a222-a7989a10947e'::uuid)
+                    Buffers: shared hit=3
+        ->  Index Scan using products_pkey on products p  (cost=0.28..8.30 rows=1 width=20) (actual time=0.004..0.004 rows=1 loops=5)
+              Index Cond: (id = oi.product_id)
+              Buffers: shared hit=15
+Planning:
+  Buffers: shared hit=310
+Planning Time: 1.743 ms
+Trigger for constraint stock_movements_business_id_fkey: time=0.721 calls=5
+Trigger for constraint stock_movements_product_id_fkey: time=0.257 calls=5
+Trigger for constraint stock_movements_sale_id_fkey: time=0.076 calls=5
+Trigger for constraint stock_movements_order_id_fkey: time=0.785 calls=5
+Trigger for constraint stock_movements_created_by_fkey: time=0.451 calls=5
+Execution Time: 2.814 ms
+
+=== W25 run 3 ===
+-- EXECUTE s('a4dd6500-a5ae-4aff-a222-a7989a10947e', 'b5853c37-25fc-464b-bc26-6f7784836fac', 'b5853c37-25fc-464b-bc26-6f7784836fac')
+Insert on stock_movements  (cost=4.73..64.86 rows=0 width=0) (actual time=0.503..0.504 rows=0 loops=1)
+  Buffers: shared hit=100
+  ->  Nested Loop  (cost=4.73..64.86 rows=5 width=148) (actual time=0.053..0.118 rows=5 loops=1)
+        Buffers: shared hit=21
+        ->  Bitmap Heap Scan on order_items oi  (cost=4.45..23.33 rows=5 width=36) (actual time=0.032..0.041 rows=5 loops=1)
+              Recheck Cond: (order_id = 'a4dd6500-a5ae-4aff-a222-a7989a10947e'::uuid)
+              Heap Blocks: exact=3
+              Buffers: shared hit=6
+              ->  Bitmap Index Scan on order_items_unique_product_per_order  (cost=0.00..4.45 rows=5 width=0) (actual time=0.015..0.015 rows=5 loops=1)
+                    Index Cond: (order_id = 'a4dd6500-a5ae-4aff-a222-a7989a10947e'::uuid)
+                    Buffers: shared hit=3
+        ->  Index Scan using products_pkey on products p  (cost=0.28..8.30 rows=1 width=20) (actual time=0.005..0.005 rows=1 loops=5)
+              Index Cond: (id = oi.product_id)
+              Buffers: shared hit=15
+Planning:
+  Buffers: shared hit=310
+Planning Time: 1.124 ms
+Trigger for constraint stock_movements_business_id_fkey: time=0.526 calls=5
+Trigger for constraint stock_movements_product_id_fkey: time=0.139 calls=5
+Trigger for constraint stock_movements_sale_id_fkey: time=0.032 calls=5
+Trigger for constraint stock_movements_order_id_fkey: time=0.435 calls=5
+Trigger for constraint stock_movements_created_by_fkey: time=0.266 calls=5
+Execution Time: 1.960 ms

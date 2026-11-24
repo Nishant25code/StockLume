@@ -1,0 +1,71 @@
+=== W18 run 1 ===
+-- EXECUTE s('31bba45b-606d-4019-95ab-85178c11e03a', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Update on orders o  (cost=0.29..31.69 rows=1 width=22) (actual time=1.979..1.982 rows=1 loops=1)
+  Buffers: shared hit=76
+  ->  Index Scan using orders_pkey on orders o  (cost=0.29..31.69 rows=1 width=22) (actual time=0.080..0.082 rows=1 loops=1)
+        Index Cond: (id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+        Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+        Buffers: shared hit=10
+        SubPlan 1
+          ->  Aggregate  (cost=23.37..23.38 rows=1 width=32) (actual time=0.052..0.052 rows=1 loops=1)
+                Buffers: shared hit=7
+                ->  Bitmap Heap Scan on order_items oi  (cost=4.45..23.33 rows=5 width=10) (actual time=0.030..0.042 rows=5 loops=1)
+                      Recheck Cond: (order_id = o.id)
+                      Heap Blocks: exact=4
+                      Buffers: shared hit=7
+                      ->  Bitmap Index Scan on order_items_unique_product_per_order  (cost=0.00..4.45 rows=5 width=0) (actual time=0.014..0.014 rows=6 loops=1)
+                            Index Cond: (order_id = o.id)
+                            Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=216
+Planning Time: 1.042 ms
+Trigger orders_set_updated_at: time=0.152 calls=1
+Execution Time: 2.116 ms
+
+=== W18 run 2 ===
+-- EXECUTE s('31bba45b-606d-4019-95ab-85178c11e03a', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Update on orders o  (cost=0.29..31.69 rows=1 width=22) (actual time=1.827..1.830 rows=1 loops=1)
+  Buffers: shared hit=79
+  ->  Index Scan using orders_pkey on orders o  (cost=0.29..31.69 rows=1 width=22) (actual time=0.088..0.091 rows=1 loops=1)
+        Index Cond: (id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+        Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+        Buffers: shared hit=12
+        SubPlan 1
+          ->  Aggregate  (cost=23.37..23.38 rows=1 width=32) (actual time=0.046..0.047 rows=1 loops=1)
+                Buffers: shared hit=7
+                ->  Bitmap Heap Scan on order_items oi  (cost=4.45..23.33 rows=5 width=10) (actual time=0.028..0.036 rows=5 loops=1)
+                      Recheck Cond: (order_id = o.id)
+                      Heap Blocks: exact=4
+                      Buffers: shared hit=7
+                      ->  Bitmap Index Scan on order_items_unique_product_per_order  (cost=0.00..4.45 rows=5 width=0) (actual time=0.017..0.017 rows=6 loops=1)
+                            Index Cond: (order_id = o.id)
+                            Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=216
+Planning Time: 1.342 ms
+Trigger orders_set_updated_at: time=0.148 calls=1
+Execution Time: 1.973 ms
+
+=== W18 run 3 ===
+-- EXECUTE s('31bba45b-606d-4019-95ab-85178c11e03a', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Update on orders o  (cost=0.29..31.69 rows=1 width=22) (actual time=1.794..1.797 rows=1 loops=1)
+  Buffers: shared hit=79
+  ->  Index Scan using orders_pkey on orders o  (cost=0.29..31.69 rows=1 width=22) (actual time=0.080..0.082 rows=1 loops=1)
+        Index Cond: (id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+        Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+        Buffers: shared hit=12
+        SubPlan 1
+          ->  Aggregate  (cost=23.37..23.38 rows=1 width=32) (actual time=0.043..0.044 rows=1 loops=1)
+                Buffers: shared hit=7
+                ->  Bitmap Heap Scan on order_items oi  (cost=4.45..23.33 rows=5 width=10) (actual time=0.026..0.034 rows=5 loops=1)
+                      Recheck Cond: (order_id = o.id)
+                      Heap Blocks: exact=4
+                      Buffers: shared hit=7
+                      ->  Bitmap Index Scan on order_items_unique_product_per_order  (cost=0.00..4.45 rows=5 width=0) (actual time=0.015..0.015 rows=6 loops=1)
+                            Index Cond: (order_id = o.id)
+                            Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=216
+Planning Time: 0.957 ms
+Trigger orders_set_updated_at: time=0.148 calls=1
+Execution Time: 1.919 ms

@@ -1,0 +1,86 @@
+=== W19 run 1 ===
+-- EXECUTE s('31bba45b-606d-4019-95ab-85178c11e03a', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Update on orders o  (cost=5.02..43.17 rows=1 width=30) (actual time=1.052..1.055 rows=1 loops=1)
+  Buffers: shared hit=76
+  ->  Nested Loop  (cost=5.02..43.17 rows=1 width=30) (actual time=0.067..0.068 rows=1 loops=1)
+        Buffers: shared hit=12
+        ->  Nested Loop Semi Join  (cost=4.74..31.66 rows=1 width=44) (actual time=0.057..0.059 rows=1 loops=1)
+              Buffers: shared hit=9
+              ->  Index Scan using orders_pkey on orders o  (cost=0.29..8.31 rows=1 width=54) (actual time=0.039..0.040 rows=1 loops=1)
+                    Index Cond: (id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+                    Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+                    Buffers: shared hit=5
+              ->  Bitmap Heap Scan on order_items oi  (cost=4.45..23.33 rows=5 width=22) (actual time=0.017..0.017 rows=1 loops=1)
+                    Recheck Cond: (order_id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+                    Heap Blocks: exact=1
+                    Buffers: shared hit=4
+                    ->  Bitmap Index Scan on order_items_unique_product_per_order  (cost=0.00..4.45 rows=5 width=0) (actual time=0.009..0.009 rows=6 loops=1)
+                          Index Cond: (order_id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+                          Buffers: shared hit=3
+        ->  Index Scan using business_connections_unique_pair on business_connections c  (cost=0.28..8.30 rows=1 width=38) (actual time=0.009..0.009 rows=1 loops=1)
+              Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (wholesaler_id = o.wholesaler_id))
+              Filter: (status = 'ACTIVE'::connection_status)
+              Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=371
+Planning Time: 1.483 ms
+Trigger orders_set_updated_at: time=0.125 calls=1
+Execution Time: 1.230 ms
+
+=== W19 run 2 ===
+-- EXECUTE s('31bba45b-606d-4019-95ab-85178c11e03a', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Update on orders o  (cost=5.02..43.17 rows=1 width=30) (actual time=1.429..1.430 rows=1 loops=1)
+  Buffers: shared hit=76
+  ->  Nested Loop  (cost=5.02..43.17 rows=1 width=30) (actual time=0.029..0.030 rows=1 loops=1)
+        Buffers: shared hit=12
+        ->  Nested Loop Semi Join  (cost=4.74..31.66 rows=1 width=44) (actual time=0.023..0.023 rows=1 loops=1)
+              Buffers: shared hit=9
+              ->  Index Scan using orders_pkey on orders o  (cost=0.29..8.31 rows=1 width=54) (actual time=0.012..0.012 rows=1 loops=1)
+                    Index Cond: (id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+                    Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+                    Buffers: shared hit=5
+              ->  Bitmap Heap Scan on order_items oi  (cost=4.45..23.33 rows=5 width=22) (actual time=0.010..0.010 rows=1 loops=1)
+                    Recheck Cond: (order_id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+                    Heap Blocks: exact=1
+                    Buffers: shared hit=4
+                    ->  Bitmap Index Scan on order_items_unique_product_per_order  (cost=0.00..4.45 rows=5 width=0) (actual time=0.006..0.006 rows=6 loops=1)
+                          Index Cond: (order_id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+                          Buffers: shared hit=3
+        ->  Index Scan using business_connections_unique_pair on business_connections c  (cost=0.28..8.30 rows=1 width=38) (actual time=0.005..0.005 rows=1 loops=1)
+              Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (wholesaler_id = o.wholesaler_id))
+              Filter: (status = 'ACTIVE'::connection_status)
+              Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=371
+Planning Time: 0.524 ms
+Trigger orders_set_updated_at: time=0.061 calls=1
+Execution Time: 1.474 ms
+
+=== W19 run 3 ===
+-- EXECUTE s('31bba45b-606d-4019-95ab-85178c11e03a', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Update on orders o  (cost=5.02..43.17 rows=1 width=30) (actual time=2.096..2.099 rows=1 loops=1)
+  Buffers: shared hit=76
+  ->  Nested Loop  (cost=5.02..43.17 rows=1 width=30) (actual time=0.088..0.091 rows=1 loops=1)
+        Buffers: shared hit=12
+        ->  Nested Loop Semi Join  (cost=4.74..31.66 rows=1 width=44) (actual time=0.073..0.075 rows=1 loops=1)
+              Buffers: shared hit=9
+              ->  Index Scan using orders_pkey on orders o  (cost=0.29..8.31 rows=1 width=54) (actual time=0.033..0.034 rows=1 loops=1)
+                    Index Cond: (id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+                    Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DRAFT'::order_status))
+                    Buffers: shared hit=5
+              ->  Bitmap Heap Scan on order_items oi  (cost=4.45..23.33 rows=5 width=22) (actual time=0.039..0.039 rows=1 loops=1)
+                    Recheck Cond: (order_id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+                    Heap Blocks: exact=1
+                    Buffers: shared hit=4
+                    ->  Bitmap Index Scan on order_items_unique_product_per_order  (cost=0.00..4.45 rows=5 width=0) (actual time=0.013..0.014 rows=6 loops=1)
+                          Index Cond: (order_id = '31bba45b-606d-4019-95ab-85178c11e03a'::uuid)
+                          Buffers: shared hit=3
+        ->  Index Scan using business_connections_unique_pair on business_connections c  (cost=0.28..8.30 rows=1 width=38) (actual time=0.013..0.013 rows=1 loops=1)
+              Index Cond: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (wholesaler_id = o.wholesaler_id))
+              Filter: (status = 'ACTIVE'::connection_status)
+              Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=371
+Planning Time: 1.401 ms
+Trigger orders_set_updated_at: time=0.127 calls=1
+Execution Time: 2.252 ms

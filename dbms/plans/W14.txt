@@ -1,0 +1,98 @@
+=== W14 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', 7)
+Insert on sales  (cost=78.30..1131.54 rows=13333 width=90) (actual time=0.709..1.663 rows=212 loops=1)
+  Buffers: shared hit=1583 dirtied=14 written=6
+  ->  Subquery Scan on "*SELECT*"  (cost=78.30..1131.54 rows=13333 width=90) (actual time=0.532..0.662 rows=212 loops=1)
+        Buffers: shared hit=39
+        ->  Hash Join  (cost=78.30..1064.87 rows=13333 width=50) (actual time=0.529..0.603 rows=212 loops=1)
+              Hash Cond: (i.product_id = p.id)
+              Join Filter: (random() < '0.8'::double precision)
+              Rows Removed by Join Filter: 68
+              Buffers: shared hit=39
+              ->  Nested Loop  (cost=0.30..515.10 rows=40000 width=40) (actual time=0.013..0.042 rows=280 loops=1)
+                    Buffers: shared hit=6
+                    ->  Function Scan on generate_series d  (cost=0.02..10.02 rows=1000 width=8) (actual time=0.007..0.007 rows=7 loops=1)
+                    ->  Materialize  (cost=0.29..5.19 rows=40 width=32) (actual time=0.001..0.003 rows=40 loops=7)
+                          Buffers: shared hit=6
+                          ->  Index Only Scan using inventory_unique_product_per_business on inventory i  (cost=0.29..4.99 rows=40 width=32) (actual time=0.005..0.013 rows=40 loops=1)
+                                Index Cond: (business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                                Heap Fetches: 8
+                                Buffers: shared hit=6
+              ->  Hash  (cost=53.00..53.00 rows=2000 width=22) (actual time=0.485..0.485 rows=2000 loops=1)
+                    Buckets: 2048  Batches: 1  Memory Usage: 124kB
+                    Buffers: shared hit=33
+                    ->  Seq Scan on products p  (cost=0.00..53.00 rows=2000 width=22) (actual time=0.004..0.261 rows=2000 loops=1)
+                          Buffers: shared hit=33
+Planning:
+  Buffers: shared hit=386
+Planning Time: 0.511 ms
+Trigger for constraint sales_retailer_id_fkey: time=0.798 calls=212
+Trigger for constraint sales_product_id_fkey: time=0.727 calls=212
+Trigger for constraint sales_created_by_fkey: time=0.091 calls=212
+Execution Time: 3.369 ms
+
+=== W14 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', 7)
+Insert on sales  (cost=78.30..1131.54 rows=13333 width=90) (actual time=0.299..2.156 rows=226 loops=1)
+  Buffers: shared hit=1679 dirtied=18 written=6
+  ->  Subquery Scan on "*SELECT*"  (cost=78.30..1131.54 rows=13333 width=90) (actual time=0.219..0.496 rows=226 loops=1)
+        Buffers: shared hit=37
+        ->  Hash Join  (cost=78.30..1064.87 rows=13333 width=50) (actual time=0.218..0.365 rows=226 loops=1)
+              Hash Cond: (i.product_id = p.id)
+              Join Filter: (random() < '0.8'::double precision)
+              Rows Removed by Join Filter: 54
+              Buffers: shared hit=37
+              ->  Nested Loop  (cost=0.30..515.10 rows=40000 width=40) (actual time=0.014..0.066 rows=280 loops=1)
+                    Buffers: shared hit=4
+                    ->  Function Scan on generate_series d  (cost=0.02..10.02 rows=1000 width=8) (actual time=0.008..0.009 rows=7 loops=1)
+                    ->  Materialize  (cost=0.29..5.19 rows=40 width=32) (actual time=0.001..0.004 rows=40 loops=7)
+                          Buffers: shared hit=4
+                          ->  Index Only Scan using inventory_unique_product_per_business on inventory i  (cost=0.29..4.99 rows=40 width=32) (actual time=0.005..0.012 rows=40 loops=1)
+                                Index Cond: (business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                                Heap Fetches: 6
+                                Buffers: shared hit=4
+              ->  Hash  (cost=53.00..53.00 rows=2000 width=22) (actual time=0.194..0.194 rows=2000 loops=1)
+                    Buckets: 2048  Batches: 1  Memory Usage: 124kB
+                    Buffers: shared hit=33
+                    ->  Seq Scan on products p  (cost=0.00..53.00 rows=2000 width=22) (actual time=0.004..0.112 rows=2000 loops=1)
+                          Buffers: shared hit=33
+Planning:
+  Buffers: shared hit=386
+Planning Time: 0.528 ms
+Trigger for constraint sales_retailer_id_fkey: time=1.130 calls=226
+Trigger for constraint sales_product_id_fkey: time=0.983 calls=226
+Trigger for constraint sales_created_by_fkey: time=0.123 calls=226
+Execution Time: 4.488 ms
+
+=== W14 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', 7)
+Insert on sales  (cost=78.30..1131.54 rows=13333 width=90) (actual time=0.586..2.988 rows=234 loops=1)
+  Buffers: shared hit=1743 read=2 dirtied=25 written=11
+  ->  Subquery Scan on "*SELECT*"  (cost=78.30..1131.54 rows=13333 width=90) (actual time=0.427..0.714 rows=234 loops=1)
+        Buffers: shared hit=37
+        ->  Hash Join  (cost=78.30..1064.87 rows=13333 width=50) (actual time=0.425..0.576 rows=234 loops=1)
+              Hash Cond: (i.product_id = p.id)
+              Join Filter: (random() < '0.8'::double precision)
+              Rows Removed by Join Filter: 46
+              Buffers: shared hit=37
+              ->  Nested Loop  (cost=0.30..515.10 rows=40000 width=40) (actual time=0.013..0.066 rows=280 loops=1)
+                    Buffers: shared hit=4
+                    ->  Function Scan on generate_series d  (cost=0.02..10.02 rows=1000 width=8) (actual time=0.007..0.008 rows=7 loops=1)
+                    ->  Materialize  (cost=0.29..5.19 rows=40 width=32) (actual time=0.001..0.004 rows=40 loops=7)
+                          Buffers: shared hit=4
+                          ->  Index Only Scan using inventory_unique_product_per_business on inventory i  (cost=0.29..4.99 rows=40 width=32) (actual time=0.005..0.011 rows=40 loops=1)
+                                Index Cond: (business_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                                Heap Fetches: 6
+                                Buffers: shared hit=4
+              ->  Hash  (cost=53.00..53.00 rows=2000 width=22) (actual time=0.397..0.397 rows=2000 loops=1)
+                    Buckets: 2048  Batches: 1  Memory Usage: 124kB
+                    Buffers: shared hit=33
+                    ->  Seq Scan on products p  (cost=0.00..53.00 rows=2000 width=22) (actual time=0.003..0.213 rows=2000 loops=1)
+                          Buffers: shared hit=33
+Planning:
+  Buffers: shared hit=386
+Planning Time: 0.471 ms
+Trigger for constraint sales_retailer_id_fkey: time=0.914 calls=234
+Trigger for constraint sales_product_id_fkey: time=0.718 calls=234
+Trigger for constraint sales_created_by_fkey: time=0.092 calls=234
+Execution Time: 4.813 ms

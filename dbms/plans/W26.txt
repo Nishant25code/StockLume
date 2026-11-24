@@ -1,0 +1,41 @@
+=== W26 run 1 ===
+-- EXECUTE s('e5372ed6-adfd-4583-9849-442211fa5164', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Update on orders  (cost=0.29..8.31 rows=1 width=18) (actual time=1.497..1.498 rows=1 loops=1)
+  Buffers: shared hit=69
+  ->  Index Scan using orders_pkey on orders  (cost=0.29..8.31 rows=1 width=18) (actual time=0.025..0.026 rows=1 loops=1)
+        Index Cond: (id = 'e5372ed6-adfd-4583-9849-442211fa5164'::uuid)
+        Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DISPATCHED'::order_status))
+        Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=155
+Planning Time: 0.820 ms
+Trigger orders_set_updated_at: time=0.073 calls=1
+Execution Time: 1.601 ms
+
+=== W26 run 2 ===
+-- EXECUTE s('e5372ed6-adfd-4583-9849-442211fa5164', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Update on orders  (cost=0.29..8.31 rows=1 width=18) (actual time=1.931..1.934 rows=1 loops=1)
+  Buffers: shared hit=69
+  ->  Index Scan using orders_pkey on orders  (cost=0.29..8.31 rows=1 width=18) (actual time=0.045..0.047 rows=1 loops=1)
+        Index Cond: (id = 'e5372ed6-adfd-4583-9849-442211fa5164'::uuid)
+        Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DISPATCHED'::order_status))
+        Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=155
+Planning Time: 0.801 ms
+Trigger orders_set_updated_at: time=0.125 calls=1
+Execution Time: 2.034 ms
+
+=== W26 run 3 ===
+-- EXECUTE s('e5372ed6-adfd-4583-9849-442211fa5164', '312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Update on orders  (cost=0.29..8.31 rows=1 width=18) (actual time=2.345..2.351 rows=1 loops=1)
+  Buffers: shared hit=69
+  ->  Index Scan using orders_pkey on orders  (cost=0.29..8.31 rows=1 width=18) (actual time=0.047..0.050 rows=1 loops=1)
+        Index Cond: (id = 'e5372ed6-adfd-4583-9849-442211fa5164'::uuid)
+        Filter: ((retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid) AND (status = 'DISPATCHED'::order_status))
+        Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=155
+Planning Time: 0.756 ms
+Trigger orders_set_updated_at: time=0.199 calls=1
+Execution Time: 2.473 ms

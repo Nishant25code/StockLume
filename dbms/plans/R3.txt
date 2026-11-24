@@ -1,0 +1,77 @@
+=== R3 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Sort  (cost=24.30..24.31 rows=4 width=78) (actual time=0.204..0.205 rows=4 loops=1)
+  Sort Key: w.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=15
+  ->  Hash Join  (cost=14.21..24.26 rows=4 width=78) (actual time=0.072..0.154 rows=4 loops=1)
+        Hash Cond: (w.id = c.wholesaler_id)
+        Buffers: shared hit=12
+        ->  Seq Scan on businesses w  (cost=0.00..9.20 rows=320 width=50) (actual time=0.009..0.049 rows=320 loops=1)
+              Buffers: shared hit=6
+        ->  Hash  (cost=14.16..14.16 rows=4 width=44) (actual time=0.047..0.048 rows=4 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=6
+              ->  Bitmap Heap Scan on business_connections c  (cost=4.31..14.16 rows=4 width=44) (actual time=0.027..0.041 rows=4 loops=1)
+                    Recheck Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                    Heap Blocks: exact=4
+                    Buffers: shared hit=6
+                    ->  Bitmap Index Scan on business_connections_unique_pair  (cost=0.00..4.31 rows=4 width=0) (actual time=0.016..0.016 rows=4 loops=1)
+                          Index Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                          Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=280
+Planning Time: 1.391 ms
+Execution Time: 0.264 ms
+
+=== R3 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Sort  (cost=24.30..24.31 rows=4 width=78) (actual time=0.193..0.194 rows=4 loops=1)
+  Sort Key: w.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=15
+  ->  Hash Join  (cost=14.21..24.26 rows=4 width=78) (actual time=0.078..0.146 rows=4 loops=1)
+        Hash Cond: (w.id = c.wholesaler_id)
+        Buffers: shared hit=12
+        ->  Seq Scan on businesses w  (cost=0.00..9.20 rows=320 width=50) (actual time=0.012..0.044 rows=320 loops=1)
+              Buffers: shared hit=6
+        ->  Hash  (cost=14.16..14.16 rows=4 width=44) (actual time=0.050..0.050 rows=4 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=6
+              ->  Bitmap Heap Scan on business_connections c  (cost=4.31..14.16 rows=4 width=44) (actual time=0.028..0.042 rows=4 loops=1)
+                    Recheck Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                    Heap Blocks: exact=4
+                    Buffers: shared hit=6
+                    ->  Bitmap Index Scan on business_connections_unique_pair  (cost=0.00..4.31 rows=4 width=0) (actual time=0.016..0.016 rows=4 loops=1)
+                          Index Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                          Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=280
+Planning Time: 1.284 ms
+Execution Time: 0.257 ms
+
+=== R3 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7')
+Sort  (cost=24.30..24.31 rows=4 width=78) (actual time=0.242..0.244 rows=4 loops=1)
+  Sort Key: w.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=15
+  ->  Hash Join  (cost=14.21..24.26 rows=4 width=78) (actual time=0.097..0.184 rows=4 loops=1)
+        Hash Cond: (w.id = c.wholesaler_id)
+        Buffers: shared hit=12
+        ->  Seq Scan on businesses w  (cost=0.00..9.20 rows=320 width=50) (actual time=0.012..0.055 rows=320 loops=1)
+              Buffers: shared hit=6
+        ->  Hash  (cost=14.16..14.16 rows=4 width=44) (actual time=0.064..0.064 rows=4 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=6
+              ->  Bitmap Heap Scan on business_connections c  (cost=4.31..14.16 rows=4 width=44) (actual time=0.038..0.055 rows=4 loops=1)
+                    Recheck Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                    Heap Blocks: exact=4
+                    Buffers: shared hit=6
+                    ->  Bitmap Index Scan on business_connections_unique_pair  (cost=0.00..4.31 rows=4 width=0) (actual time=0.022..0.022 rows=4 loops=1)
+                          Index Cond: (retailer_id = '312727fe-1c8a-40af-8c7b-a10e9db80ad7'::uuid)
+                          Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=280
+Planning Time: 1.586 ms
+Execution Time: 0.320 ms

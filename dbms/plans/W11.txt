@@ -1,0 +1,47 @@
+=== W11 run 1 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601', 8, 25, 3)
+Insert on reorder_rules  (cost=0.00..0.02 rows=1 width=77) (actual time=1.546..1.548 rows=1 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: reorder_rules_unique_product_per_retailer
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=32 read=4 dirtied=7 written=1
+  ->  Result  (cost=0.00..0.02 rows=1 width=77) (actual time=0.014..0.015 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=63
+Planning Time: 0.192 ms
+Trigger for constraint reorder_rules_retailer_id_fkey: time=0.738 calls=1
+Trigger for constraint reorder_rules_product_id_fkey: time=0.417 calls=1
+Execution Time: 2.849 ms
+
+=== W11 run 2 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601', 8, 25, 3)
+Insert on reorder_rules  (cost=0.00..0.02 rows=1 width=77) (actual time=0.419..0.420 rows=1 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: reorder_rules_unique_product_per_retailer
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=34
+  ->  Result  (cost=0.00..0.02 rows=1 width=77) (actual time=0.033..0.034 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=63
+Planning Time: 0.215 ms
+Trigger for constraint reorder_rules_retailer_id_fkey: time=0.845 calls=1
+Trigger for constraint reorder_rules_product_id_fkey: time=0.414 calls=1
+Execution Time: 1.898 ms
+
+=== W11 run 3 ===
+-- EXECUTE s('312727fe-1c8a-40af-8c7b-a10e9db80ad7', '73731027-e653-4f12-b079-5d4d5b8ad601', 8, 25, 3)
+Insert on reorder_rules  (cost=0.00..0.02 rows=1 width=77) (actual time=0.318..0.319 rows=1 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: reorder_rules_unique_product_per_retailer
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=33 read=1 dirtied=1
+  ->  Result  (cost=0.00..0.02 rows=1 width=77) (actual time=0.014..0.015 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=63
+Planning Time: 0.199 ms
+Trigger for constraint reorder_rules_retailer_id_fkey: time=0.614 calls=1
+Trigger for constraint reorder_rules_product_id_fkey: time=0.491 calls=1
+Execution Time: 1.574 ms

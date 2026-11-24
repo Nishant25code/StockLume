@@ -1,0 +1,62 @@
+=== R21 run 1 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', false, 50, 0)
+Limit  (cost=0.85..330.64 rows=50 width=130) (actual time=0.029..0.235 rows=50 loops=1)
+  Buffers: shared hit=198
+  ->  Nested Loop Left Join  (cost=0.85..3701.08 rows=561 width=130) (actual time=0.028..0.231 rows=50 loops=1)
+        Buffers: shared hit=198
+        ->  Nested Loop Left Join  (cost=0.57..3359.58 rows=561 width=114) (actual time=0.024..0.214 rows=50 loops=1)
+              Buffers: shared hit=198
+              ->  Index Scan using notifications_business_unread_idx on notifications n  (cost=0.29..1409.88 rows=561 width=106) (actual time=0.015..0.046 rows=50 loops=1)
+                    Index Cond: (business_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid)
+                    Buffers: shared hit=48
+              ->  Index Scan using orders_pkey on orders o  (cost=0.29..3.48 rows=1 width=24) (actual time=0.003..0.003 rows=1 loops=50)
+                    Index Cond: (id = n.related_order_id)
+                    Buffers: shared hit=150
+        ->  Index Scan using products_pkey on products p  (cost=0.28..0.61 rows=1 width=32) (actual time=0.000..0.000 rows=0 loops=50)
+              Index Cond: (id = n.related_product_id)
+Planning:
+  Buffers: shared hit=433
+Planning Time: 1.496 ms
+Execution Time: 0.281 ms
+
+=== R21 run 2 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', false, 50, 0)
+Limit  (cost=0.85..330.64 rows=50 width=130) (actual time=0.033..0.250 rows=50 loops=1)
+  Buffers: shared hit=198
+  ->  Nested Loop Left Join  (cost=0.85..3701.08 rows=561 width=130) (actual time=0.032..0.246 rows=50 loops=1)
+        Buffers: shared hit=198
+        ->  Nested Loop Left Join  (cost=0.57..3359.58 rows=561 width=114) (actual time=0.028..0.228 rows=50 loops=1)
+              Buffers: shared hit=198
+              ->  Index Scan using notifications_business_unread_idx on notifications n  (cost=0.29..1409.88 rows=561 width=106) (actual time=0.017..0.050 rows=50 loops=1)
+                    Index Cond: (business_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid)
+                    Buffers: shared hit=48
+              ->  Index Scan using orders_pkey on orders o  (cost=0.29..3.48 rows=1 width=24) (actual time=0.003..0.003 rows=1 loops=50)
+                    Index Cond: (id = n.related_order_id)
+                    Buffers: shared hit=150
+        ->  Index Scan using products_pkey on products p  (cost=0.28..0.61 rows=1 width=32) (actual time=0.000..0.000 rows=0 loops=50)
+              Index Cond: (id = n.related_product_id)
+Planning:
+  Buffers: shared hit=433
+Planning Time: 1.741 ms
+Execution Time: 0.301 ms
+
+=== R21 run 3 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', false, 50, 0)
+Limit  (cost=0.85..330.64 rows=50 width=130) (actual time=0.033..0.272 rows=50 loops=1)
+  Buffers: shared hit=198
+  ->  Nested Loop Left Join  (cost=0.85..3701.08 rows=561 width=130) (actual time=0.032..0.268 rows=50 loops=1)
+        Buffers: shared hit=198
+        ->  Nested Loop Left Join  (cost=0.57..3359.58 rows=561 width=114) (actual time=0.028..0.248 rows=50 loops=1)
+              Buffers: shared hit=198
+              ->  Index Scan using notifications_business_unread_idx on notifications n  (cost=0.29..1409.88 rows=561 width=106) (actual time=0.015..0.054 rows=50 loops=1)
+                    Index Cond: (business_id = 'aef21b4b-83ce-452d-88de-a5367af15521'::uuid)
+                    Buffers: shared hit=48
+              ->  Index Scan using orders_pkey on orders o  (cost=0.29..3.48 rows=1 width=24) (actual time=0.003..0.003 rows=1 loops=50)
+                    Index Cond: (id = n.related_order_id)
+                    Buffers: shared hit=150
+        ->  Index Scan using products_pkey on products p  (cost=0.28..0.61 rows=1 width=32) (actual time=0.000..0.000 rows=0 loops=50)
+              Index Cond: (id = n.related_product_id)
+Planning:
+  Buffers: shared hit=433
+Planning Time: 2.155 ms
+Execution Time: 0.322 ms

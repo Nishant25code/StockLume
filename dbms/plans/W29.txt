@@ -1,0 +1,38 @@
+=== W29 run 1 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', 'ORDER_SUBMITTED', 'New order', 'A retailer submitted an order', 'a1560421-d748-44ea-ba6b-596f420f43f6', NULL)
+Insert on notifications  (cost=0.00..0.01 rows=1 width=141) (actual time=0.413..0.414 rows=1 loops=1)
+  Buffers: shared hit=68
+  ->  Result  (cost=0.00..0.01 rows=1 width=141) (actual time=0.014..0.015 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=13
+Planning Time: 0.160 ms
+Trigger for constraint notifications_business_id_fkey: time=0.787 calls=1
+Trigger for constraint notifications_related_order_id_fkey: time=0.344 calls=1
+Trigger for constraint notifications_related_product_id_fkey: time=0.021 calls=1
+Execution Time: 1.589 ms
+
+=== W29 run 2 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', 'ORDER_SUBMITTED', 'New order', 'A retailer submitted an order', 'a1560421-d748-44ea-ba6b-596f420f43f6', NULL)
+Insert on notifications  (cost=0.00..0.01 rows=1 width=141) (actual time=0.367..0.368 rows=1 loops=1)
+  Buffers: shared hit=67
+  ->  Result  (cost=0.00..0.01 rows=1 width=141) (actual time=0.014..0.015 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=13
+Planning Time: 0.145 ms
+Trigger for constraint notifications_business_id_fkey: time=0.649 calls=1
+Trigger for constraint notifications_related_order_id_fkey: time=0.444 calls=1
+Trigger for constraint notifications_related_product_id_fkey: time=0.047 calls=1
+Execution Time: 1.532 ms
+
+=== W29 run 3 ===
+-- EXECUTE s('aef21b4b-83ce-452d-88de-a5367af15521', 'ORDER_SUBMITTED', 'New order', 'A retailer submitted an order', 'a1560421-d748-44ea-ba6b-596f420f43f6', NULL)
+Insert on notifications  (cost=0.00..0.01 rows=1 width=141) (actual time=0.389..0.391 rows=1 loops=1)
+  Buffers: shared hit=67
+  ->  Result  (cost=0.00..0.01 rows=1 width=141) (actual time=0.015..0.015 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=13
+Planning Time: 0.150 ms
+Trigger for constraint notifications_business_id_fkey: time=0.811 calls=1
+Trigger for constraint notifications_related_order_id_fkey: time=0.534 calls=1
+Trigger for constraint notifications_related_product_id_fkey: time=0.053 calls=1
+Execution Time: 1.823 ms

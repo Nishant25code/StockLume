@@ -109,12 +109,17 @@ on conflict do nothing;
 --   Order 2: DISPATCHED from GreenLeaf to FreshMart
 --   Order 3: SUBMITTED from Metro to Daily Needs
 --   Order 4: DRAFT for FreshMart
-insert into orders (id, order_number, retailer_id, wholesaler_id, status, is_suggested, total_amount, notes, submitted_at, created_at, updated_at) values
+-- order_number is "generated always as identity", so explicit values need OVERRIDING SYSTEM VALUE.
+insert into orders (id, order_number, retailer_id, wholesaler_id, status, is_suggested, total_amount, notes, submitted_at, created_at, updated_at)
+overriding system value values
   ('44444444-0000-0000-0000-000000000001', 1001, '11111111-0000-0000-0000-000000000001', '22222222-0000-0000-0000-000000000001', 'DELIVERED', false, 21400.00, 'Urgent stock refill', now() - interval '5 days', now() - interval '6 days', now() - interval '1 day'),
   ('44444444-0000-0000-0000-000000000002', 1002, '11111111-0000-0000-0000-000000000001', '22222222-0000-0000-0000-000000000002', 'DISPATCHED', true,  12100.00, 'Automated low stock suggestion', now() - interval '2 days', now() - interval '3 days', now() - interval '12 hours'),
   ('44444444-0000-0000-0000-000000000003', 1003, '11111111-0000-0000-0000-000000000002', '22222222-0000-0000-0000-000000000001', 'SUBMITTED', false, 15600.00, 'Standard weekly restock', now() - interval '4 hours', now() - interval '6 hours', now() - interval '4 hours'),
   ('44444444-0000-0000-0000-000000000004', 1004, '11111111-0000-0000-0000-000000000001', '22222222-0000-0000-0000-000000000001', 'DRAFT',     true,   7800.00, 'System proposed replenishment draft', null, now() - interval '1 hour', now() - interval '1 hour')
 on conflict (id) do nothing;
+
+-- Move the order_number counter past the seeded orders so new orders get #1005, #1006, …
+select setval(pg_get_serial_sequence('orders', 'order_number'), (select max(order_number) from orders));
 
 -- Order Items ----------------------------------------------------------------
 insert into order_items (id, order_id, product_id, quantity, suggested_quantity, unit_price) values
